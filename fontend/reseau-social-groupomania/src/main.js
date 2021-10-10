@@ -21,3 +21,14 @@ new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')
+
+fetch("http://localhost:3000/api/stuff")
+    .then(function(res) {
+        if (res.ok) {
+            return res.json();
+        }
+    })
+
+    .catch(function(err) {
+        console.log(err);
+    });
