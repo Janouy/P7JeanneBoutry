@@ -1,13 +1,18 @@
 const express = require('express');
+const User = require('./models/user');
 
 const app = express();
+
+// permet d'extraire un objet JSON d'une requete POST//
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 const mysql = require('mysql');
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "rootp7",
-  database: 'elevage'
+  database: "database_development"
 });
 
 app.use((req, res, next) => {
@@ -17,26 +22,54 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/stuff', (req, res, next) => {
-    const stuff = [
-      {
-        _id: 'oeihfzeoi',
-        title: 'Mon premier objet',
-        description: 'Les infos de mon premier objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 4900,
-        userId: 'qsomihvqios',
-      },
-      {
-        _id: 'oeihfzeomoihi',
-        title: 'Mon deuxième objet',
-        description: 'Les infos de mon deuxième objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 2900,
-        userId: 'qsomihvqios',
-      },
-    ];
-    res.status(200).json(stuff);
+// ajout contact//
+app.post("/save-contact", (request, response) => {
+  const req=request.query
+  const query="INSERT INTO users SET ?";
+  var CURRENT_TIMESTAMP = mysql.raw('now()');
+  const params={email:'test7@test.fr', password:'motdepasse3', username:'Moi', isAdmin:0, createdAt:CURRENT_TIMESTAMP, updatedAt:CURRENT_TIMESTAMP}
+  db.query(query,params,(err,result,fields) => {
+    if(err) throw err;
+    response.json({saved:result.affectedRows,inserted_id:result.insertId})
   });
+})
 
+//affichage 1 contact//
+  app.get("/get-contact-info", (request, response) => {
+    const req=request.query
+    db.query('SELECT * FROM users where id=?',[4], (err,rows) => {
+      if(err) throw err;
+      response.json({data:rows})
+    });
+  })
+
+  //affichage tous les contacts//
+  app.get("/get-all-contact", (request, response) => {
+    db.query('SELECT * FROM users', (err,rows) => {
+      if(err) throw err;
+      response.json({data:rows})
+    });
+  })
+
+  //mise à jout1 contact//
+  app.get("/update-contact", (request, response) => {
+    const req=request.query
+    const query="UPDATE users SET email=? where id=?";
+    const params=['test3@test.fr','2']
+    db.query(query,params,(err,result,fields) => {
+      if(err) throw err;
+      response.json({updated:result.affectedRows})
+    });
+  })
+
+  //suppression contact//
+  app.get("/delete-contact", (request, response) => {
+    const req=request.query
+    const query="DELETE FROM users where id=?";
+    const params=['1']
+    db.query(query,params,(err,result,fields) => {
+      if(err) throw err;
+      response.json({deleted:result.affectedRows})
+    });
+  })
 module.exports = app;

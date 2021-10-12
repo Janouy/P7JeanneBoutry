@@ -4,8 +4,7 @@ const mysql = require('mysql');
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "rootp7",
-  database: 'elevage'
+  password: "rootp7"
 });
 
 db.connect(function(err) {

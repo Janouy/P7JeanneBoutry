@@ -22,13 +22,40 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-fetch("http://localhost:3000/api/stuff")
+
+/*class User{
+  constructor(userData){
+      this.email = userData.email;
+      this.username = userData.username;
+      this.password = userData.password;
+      this.bio = userData.bio;
+      this.isAdmin = userData.isAdmin;
+  }
+};
+
+/*fetch("http://localhost:3000/api/user")
     .then(function(res) {
         if (res.ok) {
             return res.json();
         }
     })
 
+    .then(function(value) {
+        for (let userData of value) {
+            let user = new User(userData);
+            document
+                .getElementById("content") //ajout de l'id derrière le lien de la page "productview afin de l'afficher et le récupérer//
+                .innerHTML +=
+                `<div class="card">
+                            <div class="card-body">
+                                <div class= "card-title h2">${user.username}</div>
+                                <div class="card-title h2"> ${user.email}</div>
+                                <div class="card-text"> ${user.bio}</div> </br>
+                            </div>
+                      </div>`
+        }
+    })
+
     .catch(function(err) {
         console.log(err);
-    });
+    }); */
