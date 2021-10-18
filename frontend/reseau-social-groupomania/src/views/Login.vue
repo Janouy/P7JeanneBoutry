@@ -57,17 +57,36 @@ export default{
         switchToCreateAccount: function(){
             this.mode = 'create';
         },
-          switchToLogin: function(){
+        switchToLogin: function(){
             this.mode = 'login';
         },
         createAccount: function(){
-            this.$store.dispatch('createAccount',{
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
                 email: this.email,
-                firstname: this.firstName,
-                lastName: this.lastName,
-                password: this.password
+                password: this.password,
+                firstName: this.firstName,
+                lastName: this.lastName
             })
-        },
+        };
+        fetch("http://localhost:3000/api/users/signup", requestOptions)
+        .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+            const error = (data && data.message) || response.status;
+            return Promise.reject(error);
+            }
+            this.postId = data.id;
+            alert ("Utilisateur créé !!");
+        })
+        .catch(error => {
+            this.errorMessage = error;
+            console.error('There was an error!', error);
+            alert ("Cette adresse email est déjà utilisée sur un autre compte.")
+        });
+        }
     }
 }
 

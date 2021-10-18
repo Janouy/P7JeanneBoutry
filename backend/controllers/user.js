@@ -8,17 +8,24 @@ const db = mysql.createConnection({
     database: "database_development"
   });
 
-exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-    .then(hash =>{
-        const query="INSERT INTO users SET ?";
-        const params={email:req.body.email, password:hash}
-        db.query(query,params,(err,result,fields) => {
-            if(err) throw err;
-            res.json({saved:result.affectedRows,inserted_id:result.insertId})
+exports.signup = (req, res) => {
+    db.query('SELECT * FROM users where email=?',[req.body.email], (err,rows) => {
+        if(err) throw err;
+        if(rows.length == 0) {
+            bcrypt.hash(req.body.password, 10)
+            .then(hash =>{
+                const query="INSERT INTO users SET ?";
+                const params={email:req.body.email, password:hash, firstName: req.body.firstName, lastName: req.body.lastName}
+                db.query(query,params,(err,result) => {
+                    if(err) throw err;
+                    res.json({saved:result.affectedRows,inserted_id:result.insertId})
+                });
+            })
+            .catch(error => res.status(500).json({error})); 
+        }else{
+            return res.status(401).json({error: 'utilisateur déjà existant'})
+        };
     });
-    })
-    .catch(error => res.status(500).json({error}));
 };
 
 exports.login = (req, res, next) => {
