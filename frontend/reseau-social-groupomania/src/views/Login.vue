@@ -17,7 +17,7 @@
                   <input v-model="password" type="password" class="form-control  my-3 mx-3" placeholder="mot de passe">
             </div>
                 <div class='form-row'>
-                <button class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-if="mode == 'login'">Se connecter</button>
+                <button @click ="loginAccount()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-if="mode == 'login'">Se connecter</button>
                 <button @click ="createAccount()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-else> Créer un compte </button>
                 </div>
             </div>
@@ -86,7 +86,32 @@ export default{
             console.error('There was an error!', error);
             alert ("Cette adresse email est déjà utilisée sur un autre compte.")
         });
-        }
+        },
+        loginAccount: function(){
+                  const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                email: this.email,
+                password: this.password
+            })
+        };
+        fetch("http://localhost:3000/api/users/login", requestOptions)
+        .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+            const error = (data && data.message) || response.status;
+            return Promise.reject(error);
+            }
+            this.postId = data.id;
+            alert ("Connexion réussie !!");
+        })
+        .catch(error => {
+            this.errorMessage = error;
+            console.error('There was an error!', error);
+            alert ("Utilisateur non trouvé.")
+        });
+        },
     }
 }
 
