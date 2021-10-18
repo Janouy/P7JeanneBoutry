@@ -10,8 +10,6 @@ import './assets/custom.scss'
 import router from './router'
 
 
-
-
 library.add(faUserSecret)
 library.add(faPlusCircle)
 
