@@ -3,9 +3,9 @@
     <font-awesome-icon icon="user-secret"/>
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
     </div>
     <router-view/>
+
   </div>
 </template>
 
@@ -31,3 +31,8 @@
   }
 }
 </style>
+
+<Script>
+
+   
+</Script>

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import App from './App.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
@@ -8,11 +9,15 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import './assets/custom.scss'
 import router from './router'
 
+
+
+
 library.add(faUserSecret)
 library.add(faPlusCircle)
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(Vuex)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
