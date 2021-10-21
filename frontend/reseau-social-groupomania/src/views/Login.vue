@@ -17,8 +17,8 @@
                   <input v-model="password" type="password" class="form-control  my-3 mx-3" placeholder="mot de passe">
             </div>
                 <div class='form-row'>
-                <button @click ="loginAccount()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-if="mode == 'login'">Se connecter</button>
-                <button @click ="createAccount()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-else> Créer un compte </button>
+                <button @click ="login()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-if="mode == 'login'">Se connecter</button>
+                <button @click ="signup()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-else> Créer un compte </button>
                 </div>
             </div>
             </div>
@@ -33,7 +33,8 @@ export default{
             email: '',
             password: '',
             firstName: '',
-            lastName: ''
+            lastName: '', 
+            token: ''
         }
     }, 
     computed:{
@@ -60,57 +61,64 @@ export default{
         switchToLogin: function(){
             this.mode = 'login';
         },
-        createAccount: function(){
-        const requestOptions = {
+        signup: function(){
+        fetch("http://localhost:3000/api/users/signup", {    
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
                 email: this.email,
                 password: this.password,
                 firstName: this.firstName,
-                lastName: this.lastName
+                lastName: this.lastName, 
             })
-        };
-        fetch("http://localhost:3000/api/users/signup", requestOptions)
-        .then(async response => {
-            const data = await response.json();
-            if (!response.ok) {
-            const error = (data && data.message) || response.status;
+        })
+        .then(async res => {
+            const data = await res.json();
+            if (!res.ok) {
+            const error = (data && data.message) || res.status;
             return Promise.reject(error);
             }
             this.postId = data.id;
             alert ("Utilisateur créé !!");
+            fetch("http://localhost:3000/api/users/login",{
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+            body: JSON.stringify({ 
+                email: this.email,
+                password: this.password, 
+            })
+        })
         })
         .catch(error => {
             this.errorMessage = error;
             console.error('There was an error!', error);
-            alert ("Cette adresse email est déjà utilisée sur un autre compte.")
-        });
+            alert("Un compte existe déjà avec cette adresse email.")
+            });
         },
-        loginAccount: function(){
-                  const requestOptions = {
+        login: function(){
+        fetch("http://localhost:3000/api/users/login",{
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
             body: JSON.stringify({ 
                 email: this.email,
-                password: this.password
+                password: this.password, 
             })
-        };
-        fetch("http://localhost:3000/api/users/login", requestOptions)
-        .then(async response => {
-            const data = await response.json();
-            if (!response.ok) {
-            const error = (data && data.message) || response.status;
+        })
+        .then(async res => {
+            const data = await res.json();
+            if (!res.ok) {
+            const error = (data && data.message) || res.status;
             return Promise.reject(error);
             }
             this.postId = data.id;
+            localStorage.setItem("token", data.token);
             alert ("Connexion réussie !!");
         })
         .catch(error => {
             this.errorMessage = error;
             console.error('There was an error!', error);
-            alert ("Utilisateur non trouvé.")
-        });
+            alert ("Identifiants incorrects.")
+            });
         },
     }
 }
