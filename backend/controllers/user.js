@@ -54,12 +54,12 @@ exports.login = (req, res, next) => {
     })
 }; 
 
-exports.modifyUser = (req, response) => {
+exports.modifyUser = (req, res) => {
     const query="UPDATE users SET email=? where id=?";
     const params=[req.body.email, req.body.id]
     db.query(query,params,(err,result,fields) => {
         if(err) throw err;
-        response.json({updated:result.affectedRows})
+        res.json({updated:result.affectedRows})
     });
 };
 
@@ -72,17 +72,16 @@ exports.deleteUser = (req, res) => {
     });
 };
 
-exports.getOneUser = (request, response) => {
-    const req=request.query
-    db.query('SELECT * FROM users where id=?',[4], (err,rows) => {
+exports.getOneUser = (req, res) => {
+    db.query('SELECT * FROM users where id=?',[req.params.id], (err,rows) => {
         if(err) throw err;
-        response.json({data:rows})
+        res.json({data:rows})
     });
 };
 
-exports.getAllUsers = (request, response) => {
+exports.getAllUsers = (req, res) => {
     db.query('SELECT * FROM users', (err,rows) => {
         if(err) throw err;
-        response.json({data:rows})
+        res.json({data:rows})
     });
 }

@@ -20,6 +20,7 @@
                 <button @click ="login()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-if="mode == 'login'">Se connecter</button>
                 <button @click ="signup()" class="btn btn-primary col-3 my-3 mx-3" :class="{'disabled' : !validatedFields}" v-else> Créer un compte </button>
                 </div>
+                <router-link v-if="mode == 'signup'" to = "/profile"> Connexion... </router-link>
             </div>
             </div>
 </template>
@@ -30,6 +31,7 @@ export default{
     data: function(){
         return{
             mode: 'login', 
+            id: '',
             email: '',
             password: '',
             firstName: '',
@@ -62,38 +64,50 @@ export default{
             this.mode = 'login';
         },
         signup: function(){
-        fetch("http://localhost:3000/api/users/signup", {    
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                email: this.email,
-                password: this.password,
-                firstName: this.firstName,
-                lastName: this.lastName, 
+            this.mode = 'signup';
+            fetch("http://localhost:3000/api/users/signup", {    
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    email: this.email,
+                    password: this.password,
+                    firstName: this.firstName,
+                    lastName: this.lastName, 
+                })
             })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.status;
+                    return Promise.reject(error);
+                }
+                this.postId = data.id;
+                alert ("Utilisateur créé !!");
+                fetch("http://localhost:3000/api/users/login",{
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+                    body: JSON.stringify({ 
+                        email: this.email,
+                        password: this.password, 
+                    })
+                })
+                .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                const error = (data && data.message) || res.status;
+                return Promise.reject(error);
+                }
+                this.postId = data.id;
+                localStorage.setItem("token", data.token);
+                localStorage.setItem('userId', data.id);
+                
         })
-        .then(async res => {
-            const data = await res.json();
-            if (!res.ok) {
-            const error = (data && data.message) || res.status;
-            return Promise.reject(error);
-            }
-            this.postId = data.id;
-            alert ("Utilisateur créé !!");
-            fetch("http://localhost:3000/api/users/login",{
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
-            body: JSON.stringify({ 
-                email: this.email,
-                password: this.password, 
             })
-        })
-        })
-        .catch(error => {
-            this.errorMessage = error;
-            console.error('There was an error!', error);
-            alert("Un compte existe déjà avec cette adresse email.")
-            });
+            .catch(error => {
+                this.errorMessage = error;
+                console.error('There was an error!', error);
+                alert("Un compte existe déjà avec cette adresse email.")
+                });
         },
         login: function(){
         fetch("http://localhost:3000/api/users/login",{
