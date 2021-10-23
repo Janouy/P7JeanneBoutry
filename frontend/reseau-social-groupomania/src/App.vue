@@ -2,7 +2,8 @@
   <div id="app">
     <font-awesome-icon icon="user-secret"/>
     <div id="nav">
-      <router-link to="/profile"></router-link> 
+      <router-link to="/profile"> profile</router-link> 
+      <router-link to="/groupomania/main"> main</router-link>
     </div>
     <router-view/>
 

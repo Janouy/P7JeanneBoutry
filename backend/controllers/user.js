@@ -55,8 +55,8 @@ exports.login = (req, res, next) => {
 }; 
 
 exports.modifyUser = (req, res) => {
-    const query="UPDATE users SET email=? where id=?";
-    const params=[req.body.email, req.body.id]
+    const query="UPDATE users SET email=?, lastName=?, firstName=? where id=?";
+    const params=[req.body.email, req.body.lastName, req.body.firstName, req.params.id]
     db.query(query,params,(err,result,fields) => {
         if(err) throw err;
         res.json({updated:result.affectedRows})
@@ -65,7 +65,7 @@ exports.modifyUser = (req, res) => {
 
 exports.deleteUser = (req, res) => {
     const query="DELETE FROM users where id=?";
-    const params=[req.body.id]
+    const params=[req.params.id]
     db.query(query,params,(err,result,fields) => {
         if(err) throw err;
         res.json({deleted:result.affectedRows})
