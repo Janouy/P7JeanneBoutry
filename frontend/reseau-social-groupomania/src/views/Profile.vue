@@ -24,6 +24,7 @@
             <div class='form-row'>
                 <button class="btn col-3 my-3 mx-3" v-if="mode == 'view'" @click ="modifyProfile()"> Modifier mon profil</button>
                 <button @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3" v-else> Valider les modifications</button>
+                <Disconnection/>
             </div>
             
         </div>
@@ -33,8 +34,13 @@
 
 
 <script>
+import Disconnection from "../components/Deco.vue"
+
 export default {
     name: 'Profile',
+    components:{
+        Disconnection
+    },
     data: function(){
     return{
         mode: 'view',

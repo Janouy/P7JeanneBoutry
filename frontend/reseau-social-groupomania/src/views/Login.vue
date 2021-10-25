@@ -124,7 +124,8 @@ export default{
             }
             this.postId = data.id;
             localStorage.setItem("token", data.token);
-            alert ("Connexion réussie !!");
+            localStorage.setItem('userId', data.id);
+            window.location.href = window.location.href + 'groupomania/main';
         })
         .catch(error => {
             this.errorMessage = error;
