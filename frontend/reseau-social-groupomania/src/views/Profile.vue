@@ -4,9 +4,16 @@
             <div class="row">
                 <div class="card_title col-4 h2 " v-if="mode == 'view'"> Profil </div>
                 <div class="card_title col-4 h2 " v-else> Modification de votre Profil... </div>
-                <div class="card-img col-5 border" v-if="mode == 'view'"></div>
-                <div class="card-img col-5 border" v-else> 
-                    <input type="file" name="upfile" />
+                <div class="card-img col-5 border" v-if="mode == 'view'"> <img :src="image"/> </div>
+                <div class="card-img col-5 border" v-else>
+                    <div v-if="!image">
+                        <h3> Choississez une image...</h3>
+                    <input type="file" @change="onFileChange"/>
+                    </div>
+                    <div v-else>
+                    <img :src="image" />
+                    <button @click="removeImage">Supprimez l'image...</button>
+                     </div>
                 </div>
             </div>
             <div class="card-text my-3 mx-3 border" v-if="mode == 'view'"> {{this.email}} </div>
@@ -48,7 +55,8 @@ export default {
         password:'',
         firstName: '',
         lastName: '', 
-        pictureUrl:'',
+        image:'',
+        imageUrl:''
     }
 }, 
     methods:{
@@ -89,7 +97,8 @@ export default {
                 body: JSON.stringify({ 
                     email: this.email,
                     firstName: this.firstName,
-                    lastName: this.lastName,
+                    lastName: this.lastName, 
+                    image: this.imageUrl,
                 })
             })
             .then(async res => {
@@ -104,6 +113,28 @@ export default {
                 console.error("There was an error!", error);
             });
         },
+        onFileChange(e){
+            let files = e.target.files || e.dataTransfer.files;
+            if(!files.length)
+            return;
+            this.createImage(files[0]);
+            this.imageUrl = files[0].name;
+            console.log(this.imageUrl);
+            
+        },
+        createImage(file){
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            
+        },
+        removeImage: function(){
+            this.image = '';
+            this.imageUrl = 'NULL';
+        }
+
     },
     created(){
         this.displayProfile()

@@ -55,12 +55,13 @@ exports.login = (req, res, next) => {
 }; 
 
 exports.modifyUser = (req, res) => {
-    const query="UPDATE users SET email=?, lastName=?, firstName=? where id=?";
-    const params=[req.body.email, req.body.lastName, req.body.firstName, req.params.id]
+    const query="UPDATE users SET email=?, lastName=?, firstName=?, image=? where id=?";
+    const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.image, req.params.id]
     db.query(query,params,(err,result,fields) => {
         if(err) throw err;
         res.json({updated:result.affectedRows})
     });
+    console.log(req.body.image);
 };
 
 exports.deleteUser = (req, res) => {
