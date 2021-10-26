@@ -5,5 +5,6 @@ class User {
     this.password = data.password;
     this.lastName = data.lastName;
     this.firstName = data.firstName;
+    this.imageUrl = data.imageUrl;
   }
 }

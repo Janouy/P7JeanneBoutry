@@ -1,44 +1,44 @@
 <template>
-    <div class="container">
-        <div class='card'>
-            <div class="row">
-                <div class="card_title col-4 h2 " v-if="mode == 'view'"> Profil </div>
-                <div class="card_title col-4 h2 " v-else> Modification de votre Profil... </div>
-                <div class="card-img col-5 border" v-if="mode == 'view'"> <img :src="image"/> </div>
-                <div class="card-img col-5 border" v-else>
-                    <div v-if="!image">
-                        <h3> Choississez une image...</h3>
-                    <input type="file" @change="onFileChange"/>
-                    </div>
-                    <div v-else>
+<div class="container">
+    <div class='card'>
+        <div class="row">
+            <div class="card_title col-4 h2 " v-if="mode == 'view'"> Profil </div>
+            <div class="card_title col-4 h2 " v-else> Modification de votre Profil... </div>
+        </div>
+
+        <div class="card" v-if="mode == 'view'">
+            <div class="card-img col-5 border"><img :src="image"/> </div>
+            <div class="card-text my-3 mx-3 border"> {{this.email}} </div>
+            <div class="card-text my-3 mx-3 border"> {{this.firstName}}</div>
+            <div class="card-text my-3 mx-3 border"> {{this.lastName}}</div>
+            <button class="btn col-3 my-3 mx-3" @click ="modifyProfile()"> Modifier mon profil</button>
+            <Disconnection/>
+        </div>
+        <form method="put" enctype="multipart/form-data" v-else>
+            <div class="form-group">
+                <div v-if="!image">
+                    <h3> Choississez une image...</h3>
+                        <input class="form-control-file" type="file" name='image' @change="onFileChange"/>
+                </div>
+                <div v-else>
                     <img :src="image" />
                     <button @click="removeImage">Supprimez l'image...</button>
-                     </div>
                 </div>
             </div>
-            <div class="card-text my-3 mx-3 border" v-if="mode == 'view'"> {{this.email}} </div>
-            <div class="form-row" v-else> Email:
-                  <input v-model="email" type="email" class="form-control  my-3 mx-3"> 
+            <div class="form-group"> Email:
+                <input v-model="email" type="email" class="form-control  my-3 mx-3"> 
             </div>
-            <div class="card-text my-3 mx-3 border" v-if="mode =='view'"> {{this.firstName}}</div>
-            <div class="form-row" v-else> Prénom:
-            <input v-model="firstName" type="text" class="form-control my-3 mx-3">
+            <div class="form-group"> Prénom:
+                <input v-model="firstName" type="text" class="form-control my-3 mx-3">
             </div>
-            <div class="card-text my-3 mx-3 border" v-if="mode == 'view'"> {{this.lastName}}</div>
-            <div class="form-row" v-else> Nom:
-                  <input v-model="lastName" type="text" class="form-control my-3 mx-3">
+            <div class="form-group"> Nom:
+                <input v-model="lastName" type="text" class="form-control my-3 mx-3">
             </div>
-            <div class='form-row'>
-                <button class="btn col-3 my-3 mx-3" v-if="mode == 'view'" @click ="modifyProfile()"> Modifier mon profil</button>
-                <button @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3" v-else> Valider les modifications</button>
-                <Disconnection/>
-            </div>
-            
-        </div>
+            <button type="button" @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3"> Valider les modifications</button>
+        </form>
     </div>
+</div>
 </template>
-
-
 
 <script>
 import Disconnection from "../components/Deco.vue"
@@ -99,7 +99,8 @@ export default {
                     firstName: this.firstName,
                     lastName: this.lastName, 
                     image: this.imageUrl,
-                })
+                    imageUrl: this.image
+                }),
             })
             .then(async res => {
                 const data = await res.json();
@@ -119,16 +120,13 @@ export default {
             return;
             this.createImage(files[0]);
             this.imageUrl = files[0].name;
-            console.log(this.imageUrl);
-            
         },
         createImage(file){
             let reader = new FileReader();
             reader.onload = (e) => {
-                this.image = e.target.result;
+              this.image = e.target.result;
             };
             reader.readAsDataURL(file);
-            
         },
         removeImage: function(){
             this.image = '';

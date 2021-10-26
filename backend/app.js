@@ -1,13 +1,11 @@
 const express = require('express');
-
+const path = require('path');
 const userRoutes = require ('./routes/user');
 
 const app = express();
 
-// permet d'extraire un objet JSON d'une requete POST//
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,5 +15,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 module.exports = app;

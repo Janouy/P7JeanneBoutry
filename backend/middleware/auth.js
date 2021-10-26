@@ -15,4 +15,3 @@ module.exports = (req, res, next) => {
     }
 };
 
-// ne fonctionne pas, voir si c parceque l'utilisateur n'est pas connecté//
