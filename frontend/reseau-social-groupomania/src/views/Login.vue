@@ -55,9 +55,10 @@ export default{
         },
         checkData: function(){
             let nameVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-            let emailVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+            let emailVerif = /^[\w'\-,.][^!¡?÷?¿/\\+=" "#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+            let passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
             if(this.mode == 'create'){
-            if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || nameVerif.test(this.password)== false || emailVerif.test(this.email)== false || !this.email.includes('@')){
+            if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || passwordVerif.test(this.password)== false || this.password.length < 8 || emailVerif.test(this.email)== false || !this.email.includes('@')){
                 return true;
             }
             return false;
