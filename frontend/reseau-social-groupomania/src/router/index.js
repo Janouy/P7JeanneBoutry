@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import Main from '../views/Main.vue'
+import Test from '../views/Test.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/groupomania/main',
     name: 'main',
     component: Main
+  },
+  {
+    path: '/groupomania/test',
+    name: 'test',
+    component: Test
   },
 ]
 
