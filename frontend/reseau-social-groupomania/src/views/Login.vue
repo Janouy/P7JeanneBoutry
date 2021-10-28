@@ -18,7 +18,6 @@
                 <div class='form-row'>
                 <button @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
                 <button @click="signup()" class="btn btn-primary col-3 my-3 mx-3" :disabled="!validatedFields || checkData" v-else> Créer un compte </button>
-                
                 </div>
             </div>
             <p> * Le formulaire n'accepte pas les caractères spéciaux </p>
