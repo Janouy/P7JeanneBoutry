@@ -11,7 +11,7 @@
             <div class="card-text my-3 mx-3 border"> {{this.firstName}}</div>
             <div class="card-text my-3 mx-3 border"> {{this.lastName}}</div>
             <button class="btn col-3 my-3 mx-3" @click ="modifyProfile()"> Modifier mon profil</button>
-            <Disconnection/>
+            <Disconnection/> <DeleteProfile/>
         </div>
         <form v-else>
             <div class="form-group"> Email:
@@ -37,11 +37,13 @@
 
 <script>
 import Disconnection from "../components/Deco.vue"
+import DeleteProfile from "../components/DeleteProfile.vue"
 
 export default {
     name: 'Profile',
     components:{
-        Disconnection
+        Disconnection,
+        DeleteProfile
     },
     data: function(){
     return{
