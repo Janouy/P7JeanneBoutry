@@ -1,6 +1,4 @@
 const mysql = require('mysql');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -8,4 +6,9 @@ const db = mysql.createConnection({
     database: "database_development"
   });
 
-  
+  exports.getAllTexts = (req, res) => {
+    db.query('SELECT * FROM text', (err,rows) => {
+        if(err) throw err;
+        res.json({data:rows})
+    });
+}
