@@ -1,4 +1,4 @@
-fetch("http://localhost:3000/api/user")
+/*fetch("http://localhost:3000/api/user")
     .then(function(res) {
         if (res.ok) {
             return res.json();
@@ -24,4 +24,4 @@ fetch("http://localhost:3000/api/user")
 
     .catch(function(err) {
         console.log(err);
-    });
+    });*/

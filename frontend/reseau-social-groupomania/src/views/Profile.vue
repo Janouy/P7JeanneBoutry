@@ -15,7 +15,7 @@
         </div>
         <form v-else>
             <div class="form-group"> Email:
-                <input v-model="email" type="email" class="form-control  my-3 mx-3"> 
+                <input v-model="email" type="email" class="form-control my-3 mx-3"> 
             </div>
             <div class="form-group"> Prénom:
                 <input v-model="firstName" type="text" class="form-control my-3 mx-3">
@@ -23,9 +23,14 @@
             <div class="form-group"> Nom:
                 <input v-model="lastName" type="text" class="form-control my-3 mx-3">
             </div>
-            <button type="submit" @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3"> Valider les modifications</button>
+            <div class="form-group"> Nouveau mot de passe:
+                <input v-model="password" type="password" class="form-control my-3 mx-3">
+            </div>
+            <button type="submit" @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
         </form>
     </div>
+    <p v-if="mode == 'view'"></p>
+    <p v-else> * Le formulaire n'accepte pas les caractères spéciaux </p>
 </div>
 </template>
 
@@ -47,6 +52,33 @@ export default {
         lastName: ''
     }
 }, 
+    computed:{
+        validatedFields: function(){
+            if(this.email != "" && this.firstName != "" && this.lastName != ""){
+            return true;
+        }else{
+            return false;
+            }
+        },
+        checkData: function(){
+            let nameVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+            let emailVerif = /^[\w'\-,.][^!¡?÷?¿/\\+=" "#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+            let passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
+            if(this.password){
+                if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || emailVerif.test(this.email)== false || !this.email.includes('@')|| passwordVerif.test(this.password)== false || this.password.length < 12){
+                return true;
+            }else{
+                return false;
+            }
+            }else{
+                if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || emailVerif.test(this.email)== false || !this.email.includes('@')){
+                return true;
+            }else{
+                return false;
+            }
+            }
+        },
+    },
     methods:{
         viewProfile: function(){
             this.mode = 'view';
@@ -85,7 +117,8 @@ export default {
                 body: JSON.stringify({ 
                     email: this.email,
                     firstName: this.firstName,
-                    lastName: this.lastName
+                    lastName: this.lastName,
+                    password: this.password
                 }),
                 
             })
@@ -99,6 +132,8 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
+                location.reload();
+                alert("Une erreur est survenue, merci de vérifier les informations entrées.")
             });
         },
     },

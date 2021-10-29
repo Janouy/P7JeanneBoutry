@@ -1,4 +1,4 @@
-class User{
+/*class User{
     constructor(userData){
         this.email = userData.email;
         this.username = userData.username;
@@ -6,4 +6,4 @@ class User{
         this.bio = userData.bio;
         this.isAdmin = userData.isAdmin;
     }
-};
+};*/
