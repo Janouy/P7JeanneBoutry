@@ -9,12 +9,9 @@
             </div>
         </form>
     </div>
-    <div class="container">
-        
-        <p v-for="publi in publis" :key='publi.id'> 
-            {{publi.title}}
-        </p>
-        
+    <div class="card" v-for="publi in publis" :key='publi.id'>
+        <div class="card-text "> {{publi.name}}</div>
+        <div class= "card-text "> {{publi.title}}</div>
     </div>
 </div>
 </template>
@@ -43,9 +40,9 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
+                this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a dit:'})
                 this.publis.push({title :data.data[i].text})
-                }
-                   
+                } 
             })
             .catch(error => {
                 this.errorMessage = error;

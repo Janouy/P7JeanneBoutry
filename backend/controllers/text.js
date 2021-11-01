@@ -7,7 +7,7 @@ const db = mysql.createConnection({
   });
 
   exports.getAllTexts = (req, res) => {
-    db.query('SELECT * FROM text', (err,rows) => {
+    db.query('SELECT*FROM text JOIN users ON text.user_id = users.id', (err,rows) => {
         if(err) throw err;
         res.json({data:rows})
     });
