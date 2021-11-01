@@ -10,11 +10,11 @@
         </form>
     </div>
     <div class="container">
-        <ul>
-        <li> 
-            {{this.publi}}
-        </li>
-        </ul>
+        
+        <p v-for="publi in publis" :key='publi.id'> 
+            {{publi.title}}
+        </p>
+        
     </div>
 </div>
 </template>
@@ -25,7 +25,8 @@ export default {
     name: 'Main',
     data: function(){
     return{
-        publi:[],
+        publis:[
+        ],
     }
     }, 
     methods:{
@@ -41,10 +42,10 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
-                    console.log(this.publi);
-                   for(let i=0; i < 2; i++){
-                       this.publi.push (data.data[i].text)
-                   }
+                for (let i=0; i<data.data.length; i++){
+                this.publis.push({title :data.data[i].text})
+                }
+                   
             })
             .catch(error => {
                 this.errorMessage = error;
