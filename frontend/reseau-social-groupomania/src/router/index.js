@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import Main from '../views/Main.vue'
-import Test from '../views/Test.vue'
+import Publications from '../views/Publications.vue'
 
 Vue.use(VueRouter)
 
@@ -24,9 +24,9 @@ const routes = [
     component: Main
   },
   {
-    path: '/groupomania/test',
-    name: 'test',
-    component: Test
+    path: '/profile/publications',
+    name: 'publications',
+    component: Publications
   },
 ]
 

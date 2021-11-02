@@ -11,6 +11,7 @@
             <div class="card-text my-3 mx-3 border"> {{this.firstName}}</div>
             <div class="card-text my-3 mx-3 border"> {{this.lastName}}</div>
             <button class="btn col-3 my-3 mx-3" @click ="modifyProfile()"> Modifier mon profil</button>
+            <button type="submit" @click="displayMyPosts()" class="btn btn-primary col-3 my-3 mx-3"> Voir mes publications</button>
             <Disconnection/> <DeleteProfile/>
         </div>
         <form v-else>
@@ -82,6 +83,9 @@ export default {
         },
     },
     methods:{
+        displayMyPosts:function(){
+            window.location.href = window.location.href + '/publications';
+        },
         viewProfile: function(){
             this.mode = 'view';
         },
