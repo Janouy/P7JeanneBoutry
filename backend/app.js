@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const userRoutes = require ('./routes/user');
 const textsRoutes = require('./routes/text');
+const mediasRoutes = require('./routes/media');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/texts', textsRoutes);
+app.use('/api/medias', mediasRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 

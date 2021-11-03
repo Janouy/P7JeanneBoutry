@@ -6,6 +6,7 @@
         <div class="form-row">
         <input v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
         <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
+        <button type="submit" @click="addMedia()"> <font-awesome-icon icon="images"/></button>
             </div>
         </form>
     </div>
@@ -30,6 +31,9 @@ export default {
     }
     }, 
     methods:{
+        addMedia: function(){
+            window.open(window.location.href + '/media')
+        },
         displayText: function(){
             let url = "http://localhost:3000/api/texts";
             fetch(url,{
