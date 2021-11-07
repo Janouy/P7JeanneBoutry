@@ -10,15 +10,16 @@
             </div>
         </form>
     </div>
-    <div class="card">
+    <div class="card" id="card">
     <div v-for="publi in publis" :key='publi.id'>
-        <div class="card-text "> {{publi.name}}</div>
+        <div class="card-text" id='text'> {{publi.name}}</div>
+        <div class="card-img" id='image'><img class="publication_image" :src=publi.media > </div>
     </div>
+    
     
     </div>
 </div>
 </template>
-
 
 <script>
 export default {
@@ -32,7 +33,13 @@ export default {
     }, 
     methods:{
         addMedia: function(){
-            window.open(window.location.href + '/media')
+             var win = window.open(window.location.href + '/media', "nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=800, height=800");
+             var win_timer = setInterval(function() {   
+                if(win.closed) {
+                window.location.reload();
+                clearInterval(win_timer);
+            } 
+      }, 100); 
         },
         displayText: function(){
             let url = "http://localhost:3000/api/texts";
@@ -47,7 +54,7 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a dit:' + ' ' + data.data[i].text})
+                this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a partagé:' + ' ' + data.data[i].text}, {media :data.data[i].media})
                 } 
             })
             .catch(error => {
@@ -55,6 +62,27 @@ export default {
                 console.error("There was an error!", error);
             });
         },
+       /* displayMedia: function(){
+            let url = "http://localhost:3000/api/medias";
+            fetch(url,{
+                method: "GET",
+                headers: { "Content-Type": "application/json"},
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                for (let i=0; i<data.data.length; i++){
+                this.publis.push({date :data.data[i].date}, {name2: data.data[i].firstName + ' ' + 'a partagé:'}, {media :data.data[i].media})
+                } 
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        },*/
         addPost: function(){
             let userId = localStorage.getItem("userId");
             let url = "http://localhost:3000/api/texts/" + userId;
@@ -86,3 +114,9 @@ export default {
     },
 }
 </script>
+
+<style lang="scss">
+.publication_image{
+    max-width: 150px
+}
+</style>

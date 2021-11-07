@@ -4,6 +4,8 @@ const mediaCtrl = require('../controllers/media');
 const multer = require('../middleware/multer-config');
 
 
-router.post("/",multer, mediaCtrl.addMedia);
+router.get("/", mediaCtrl.getAllMedias);
+router.post("/:id",multer, mediaCtrl.addMedia);
+
 
 module.exports = router;

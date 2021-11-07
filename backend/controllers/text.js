@@ -21,8 +21,9 @@ exports.getAllTextsOneUser = (req, res) => {
 };
 
 exports.addText = (req, res) => {
+  let date = Date.now();
   const query="INSERT INTO text SET ?";
-  const params={text:req.body.text, user_id:req.params.id}
+  const params={text:req.body.text, user_id:req.params.id, date:date}
   db.query(query,params,(err,result) => {
     if(err) throw err;
     res.json({saved:result.affectedRows,inserted_id:result.insertId})

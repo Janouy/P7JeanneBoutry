@@ -24,7 +24,8 @@ export default {
         sendData: function(){
             const formData = new FormData();
             formData.set("image", this.file)
-            let url = "http://localhost:3000/api/medias";
+            let userId = localStorage.getItem("userId");
+            let url = "http://localhost:3000/api/medias/" + userId;
             fetch(url,{
                 method: "POST",
                 body: formData,
@@ -35,6 +36,7 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
+                window.close()
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -45,3 +47,7 @@ export default {
             
 }
 </script>
+
+<style scoped>
+
+</style>
