@@ -60,7 +60,7 @@ export default {
             let url = "http://localhost:3000/api/texts/" + postId;
             fetch(url,{
                 method: "delete",
-                headers: {"Content-Type": "application/json"}
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
             })
             .then(async res => {
                 const data = await res.json();

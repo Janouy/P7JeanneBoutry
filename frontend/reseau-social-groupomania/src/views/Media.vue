@@ -1,7 +1,7 @@
 <template>
     <form enctype="multipart/form-data">
     <input @change="onFileChange()" id='file' type="file" ref="file" name="image">
-    <button type="submit" @click="sendData()"> Envoi </button>
+    <button type="submit" @click="sendMedia()"> Envoi </button>
 </form>
 </template>
 
@@ -21,13 +21,14 @@ export default {
             this.file = this.$refs.file.files[0];
             this.newImage = URL.createObjectURL(this.file)
         },
-        sendData: function(){
+        sendMedia: function(){
             const formData = new FormData();
             formData.set("image", this.file)
             let userId = localStorage.getItem("userId");
             let url = "http://localhost:3000/api/medias/" + userId;
             fetch(url,{
                 method: "POST",
+                headers: {Authorization: "Bearer " + localStorage.getItem("token") },
                 body: formData,
             })
             .then(async res => {

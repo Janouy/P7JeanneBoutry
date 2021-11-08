@@ -8,23 +8,22 @@ const db = mysql.createConnection({
   });
 
 exports.getAllTexts = (req, res) => {
-  db.query('SELECT*FROM text JOIN users ON text.user_id = users.id', (err,rows) => {
+  db.query('SELECT*FROM post JOIN users ON post.user_id = users.id', (err,rows) => {
       if(err) throw err;
       res.json({data:rows})
   });
 };
 
 exports.getAllTextsOneUser = (req, res) => {
-  db.query('SELECT*FROM text JOIN users ON text.user_id = users.id WHERE user_id = ?',[req.params.id], (err,rows) => {
+  db.query('SELECT*FROM post JOIN users ON post.user_id = users.id WHERE user_id = ?',[req.params.id], (err,rows) => {
       if(err) throw err;
       res.json({data:rows})
   });
 };
 
 exports.addText = (req, res) => {
-  let date = Date.now();
-  const query="INSERT INTO text SET ?";
-  const params={text:req.body.text, user_id:req.params.id, date:date}
+  const query="INSERT INTO post SET ?";
+  const params={text:req.body.text, user_id:req.params.id}
   db.query(query,params,(err,result) => {
     if(err) throw err;
     res.json({saved:result.affectedRows,inserted_id:result.insertId})
@@ -32,9 +31,9 @@ exports.addText = (req, res) => {
 };
 
 exports.deleteText = (req, res) => {
-  const query="DELETE FROM text where id_post=?";
+  const query="DELETE FROM post where id_post=?";
   const params=[req.params.id];
-  db.query('SELECT media FROM text WHERE id_post=?', params, (err,rows) => {
+  db.query('SELECT media FROM post WHERE id_post=?', params, (err,rows) => {
     if(err) throw err;
     res.json({data:rows})
     let imageUrl = rows[0].media;

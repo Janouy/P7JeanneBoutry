@@ -9,7 +9,7 @@ const fsImages = require('../middleware/createImages');
 router.post("/signup", fsImages, checkData, passwordLength, userCtrl.signup);
 router.post("/login", userCtrl.login);
 router.put("/:id", auth, userCtrl.modifyUser);
-router.get("/:id", userCtrl.getOneUser);
+router.get("/:id", auth, userCtrl.getOneUser);
 router.get("/", userCtrl.getAllUsers);
 router.delete("/:id", auth, userCtrl.deleteUser);
 

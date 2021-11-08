@@ -7,6 +7,6 @@ const textCtrl = require('../controllers/text');
 router.get("/", textCtrl.getAllTexts);
 router.get("/:id", textCtrl.getAllTextsOneUser);
 router.post("/:id", auth, textCtrl.addText);
-router.delete("/:id", textCtrl.deleteText);
+router.delete("/:id", auth, textCtrl.deleteText);
 
 module.exports = router;
