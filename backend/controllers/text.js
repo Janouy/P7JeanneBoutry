@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const fs = require('fs');
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -32,9 +33,14 @@ exports.addText = (req, res) => {
 
 exports.deleteText = (req, res) => {
   const query="DELETE FROM text where id_post=?";
-  const params=[req.params.id]
-  db.query(query,params,(err,result,fields) => {
-      if(err) throw err;
-      res.json({deleted:result.affectedRows})
+  const params=[req.params.id];
+  db.query('SELECT media FROM text WHERE id_post=?', params, (err,rows) => {
+    if(err) throw err;
+    res.json({data:rows})
+    let imageUrl = rows[0].media;
+    const filename = imageUrl.split('/images/') [1];
+    fs.unlink(`images/${filename}`, () => {
+      db.query(query,params)
+    });
   });
 };
