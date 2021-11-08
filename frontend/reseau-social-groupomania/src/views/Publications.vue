@@ -4,7 +4,7 @@
     <div class="container">
     <div class="card">
     <div v-for="publi in publis" :key='publi.id'>
-        <div class="card-text "> {{publi.name}} </div>
+        <div class="card-text "> {{publi.name}} <img class="publication_image" :src=publi.media ></div>
         <button v-show="publi.display==true" @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
     </div>
     </div>
@@ -41,7 +41,7 @@ export default {
             }
             
             for(let i=0; i<data.data.length; i++){
-                this.publis.push({name :data.data[i].text, display:false})
+                this.publis.push({name :data.data[i].text, display:false}, {media :data.data[i].media, display:false})
                 this.publis.push({postId :data.data[i].id_post, display:true})
             } 
         })

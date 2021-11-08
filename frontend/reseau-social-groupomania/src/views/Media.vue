@@ -36,7 +36,7 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
-                window.close()
+                window.close();
             })
             .catch(error => {
                 this.errorMessage = error;

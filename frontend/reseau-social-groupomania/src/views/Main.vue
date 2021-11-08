@@ -10,12 +10,15 @@
             </div>
         </form>
     </div>
-    <div class="card" id="card">
+    <div>
     <div v-for="publi in publis" :key='publi.id'>
-        <div class="card-text" id='text'> {{publi.name}}</div>
-        <div class="card-img" id='image'><img class="publication_image" :src=publi.media > </div>
+        <div class="card">
+            <div class="card-text"> {{publi.name}}
+                <img class="publication_image" :src=publi.media v-if="!publi.media" v-show="publi.display==false">
+                <img class="publication_image" :src=publi.media v-else>
+            </div>
+        </div>
     </div>
-    
     
     </div>
 </div>
@@ -54,7 +57,7 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a partagé:' + ' ' + data.data[i].text}, {media :data.data[i].media})
+                this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:' + ' ' + data.data[i].text, display:true}, {media :data.data[i].media,display:true})
                 } 
             })
             .catch(error => {
