@@ -38,9 +38,13 @@ exports.deleteText = (req, res) => {
     if(err) throw err;
     res.json({data:rows})
     let imageUrl = rows[0].media;
+    if(imageUrl == null){
+      db.query(query,params)
+    }else{
     const filename = imageUrl.split('/images/') [1];
     fs.unlink(`images/${filename}`, () => {
       db.query(query,params)
     });
+  }
   });
 };

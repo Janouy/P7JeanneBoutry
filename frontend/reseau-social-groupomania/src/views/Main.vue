@@ -44,7 +44,7 @@ export default {
     methods:{
         addMedia: function(){
              var win = window.open(window.location.href + '/media', "nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=800, height=800");
-             var win_timer = setInterval(function() {   
+             var win_timer = setInterval(function() {  
                 if(win.closed) {
                 window.location.reload();
                 clearInterval(win_timer);
