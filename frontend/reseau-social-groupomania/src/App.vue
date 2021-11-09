@@ -4,7 +4,6 @@
     <div id="nav">
       <router-link to="/profile"> profile</router-link> 
       <router-link to="/groupomania/main"> main</router-link>
-      <router-link to="/groupomania/media"> Media</router-link> 
     </div>
     <router-view/>
 

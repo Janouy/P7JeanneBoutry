@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 const checkData = require('../middleware/checkData');
 const passwordLength = require('../middleware/passwordLength');
 const fsImages = require('../middleware/createImages');
+const multer = require('../middleware/multer-config');
 
 router.post("/signup", fsImages, checkData, passwordLength, userCtrl.signup);
 router.post("/login", userCtrl.login);

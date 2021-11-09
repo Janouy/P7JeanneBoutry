@@ -6,11 +6,10 @@
         <div class="form-row">
         <input v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
         <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
-        <button type="submit" @click="addMedia()"> <font-awesome-icon icon="images"/> Ajouter Photo/Vidéo</button>
+        <button type="submit" @click="addMedia()"> <font-awesome-icon icon="images"/> Ajouter Photo/Vidéo/Gif</button>
             </div>
         </form>
     </div>
-    <div>
     <div class="card">
     <div v-for="publi in publis" :key='publi.id'>
             <div class="card-text" v-if="!publi.media" v-show="publi.display==true"> 
@@ -19,16 +18,18 @@
             </div>
             <div class="card-text" v-else v-show="publi.display==false"> 
                 {{publi.name}}
-                <img class="publication_image" :src=publi.media >
+                <img class="publication_image" :src=publi.media>
+                <!--<video width="320" height="240" controls>
+                <source :src=publi.media type=video/mp4>
+                </video> -->
             </div>
             <div class="card-text"> 
                 {{publi.name}}
-                <span> {{publi.text}}</span>
+                <span>{{publi.text}}</span>
             </div>
         </div>
     </div>
     </div>
-</div>
 </template>
 
 <script>

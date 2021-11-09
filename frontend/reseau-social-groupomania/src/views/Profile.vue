@@ -5,8 +5,9 @@
             <div class="card_title col-4 h2 " v-if="mode == 'view'"> Profil </div>
             <div class="card_title col-4 h2 " v-else> Modification de votre Profil... </div>
         </div>
-
+       
         <div class="card" v-if="mode == 'view'">
+            <div class="card-img-top"> <img class="publication_image" :src=this.profilePicture> </div>
             <div class="card-text my-3 mx-3 border"> {{this.email}} </div>
             <div class="card-text my-3 mx-3 border"> {{this.firstName}}</div>
             <div class="card-text my-3 mx-3 border"> {{this.lastName}}</div>
@@ -15,6 +16,12 @@
             <Disconnection/> <DeleteProfile/>
         </div>
         <form v-else>
+            <div class="card-img-top"> <img class="publication_image" :src=this.profilePicture> </div>
+            <form enctype="multipart/form-data">
+                <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
+                <button type="submit" @click="sendPicture()"> Envoi </button>
+                <button @click="deletePicture()" class="btn border"> Supprimer ctte photo</button> 
+            </form>
             <div class="form-group"> Email:
                 <input v-model="email" type="email" class="form-control my-3 mx-3"> 
             </div>
@@ -52,7 +59,10 @@ export default {
         email: '',
         password:'',
         firstName: '',
-        lastName: ''
+        lastName: '',
+        profilePicture:'',
+        file: null,
+        newImage:'',
     }
 }, 
     computed:{
@@ -108,6 +118,7 @@ export default {
             this.email = data.data[0].email;
             this.lastName = data.data[0].lastName;
             this.firstName = data.data[0].firstName;
+            this.profilePicture = data.data[0].picture;
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -140,6 +151,54 @@ export default {
                 console.error("There was an error!", error);
                 location.reload();
                 alert("Une erreur est survenue, merci de vérifier les informations entrées.")
+            });
+        },
+        onFileChange() {
+            this.file = this.$refs.file.files[0];
+            this.newImage = URL.createObjectURL(this.file)
+        },
+        sendPicture: function(){
+            const formData = new FormData();
+            formData.set("image", this.file)
+            let userId = localStorage.getItem("userId");
+            let url = "http://localhost:3000/api/pictures/" + userId;
+            fetch(url,{
+                method: "POST",
+                headers: {Authorization: "Bearer " + localStorage.getItem("token") },
+                body: formData,
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+            location.reload();
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        }, 
+        deletePicture: function(){
+            let userId = localStorage.getItem('userId');
+            let url = "http://localhost:3000/api/pictures/" + userId;
+            fetch(url,{
+                method: "delete",
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                const error = (data && data.message) || res.statusText;
+                return Promise.reject(error);
+            }
+            alert("Votre photo de profil a bien été supprimée.");
+            location.reload();
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
             });
         },
     },

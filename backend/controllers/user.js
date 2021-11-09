@@ -98,4 +98,4 @@ exports.getAllUsers = (req, res) => {
         if(err) throw err;
         res.json({data:rows})
     });
-}
+};

@@ -1,6 +1,6 @@
 <template>
     <form enctype="multipart/form-data">
-    <input @change="onFileChange()" id='file' type="file" ref="file" name="image">
+    <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
     <button type="submit" @click="sendMedia()"> Envoi </button>
 </form>
 </template>
