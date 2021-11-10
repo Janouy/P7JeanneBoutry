@@ -8,7 +8,7 @@
             <span class="card-text border" v-else v-show="publi.display==false">{{publi.name}} </span>
             <img class="publication_image" :src=publi.media v-if='!publi.media' v-show="publi.display==true">
             <img class="publication_image" :src=publi.media v-else v-show="publi.display==false">
-        <button v-show="publi.display==true" @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
+            <button v-show="publi.display==true" @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
     </div>
     </div>
     </div>
@@ -26,9 +26,6 @@ export default {
     }
     },
     methods:{
-        postIdFind: function(e){
-            localStorage.setItem("publiId", e)
-        },
         displayText: function(){
             let userId = localStorage.getItem('userId');
             let url = "http://localhost:3000/api/texts/" + userId;
@@ -46,7 +43,6 @@ export default {
             for(let i=0; i<data.data.length; i++){
                 this.publis.push({name :data.data[i].text, display:false}, {media :data.data[i].media, display:false})
                 this.publis.push({postId :data.data[i].id_post, display:true})
-                console.log(data.data[i].text);
             } 
         })
         .catch(error => {
