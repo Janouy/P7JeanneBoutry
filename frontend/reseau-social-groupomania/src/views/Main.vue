@@ -15,8 +15,8 @@
             <div v-for="publi in publis" :key='publi.id'>
                 <div class="card-text" v-if="!publi.media" v-show="publi.display==true"> 
                     {{publi.name}}
-                    <div  class="card-text"> <input v-model="comment" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
-                        <button v-show="publi.display==true" type="submit" @click="addComment(publi.postId)" class="card-btn" > Ajouter un commentaire</button>
+                    <div  class="card-text"> <input v-model="publi.comment" :id="publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                        <button v-show="publi.display==true" type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
                     </div>
                 </div>
                 
@@ -45,9 +45,9 @@ export default {
     data: function(){
     return{
         publis:[
+            {comment:''}
         ],
         text:'',
-        comment:'',
         userId:'',
     }
     }, 
@@ -108,8 +108,9 @@ export default {
                 alert("Une erreur est survenue.")
             });
         },
-        addComment: function(e){
-            console.log(this.comment);
+        addComment: function(e, f){
+            this.publis[0].comment = f
+            console.log(this.publis[0].comment);
             localStorage.setItem("publiId", e)
             this.userId = localStorage.getItem('userId');
             let postId = localStorage.getItem('publiId');
@@ -118,7 +119,7 @@ export default {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
                 body: JSON.stringify({ 
-                    comment: this.comment,
+                    comment: this.publis[0].comment,
                     userId: this.userId,
                 })
             })
