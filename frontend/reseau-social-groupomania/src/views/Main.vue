@@ -15,8 +15,13 @@
             <div v-for="publi in publis" :key='publi.id'>
                 <div class="card-text" v-if="!publi.media" v-show="publi.display==true"> 
                     {{publi.name}}
-                    <div  class="card-text"> <input v-model="publi.comment" :id="publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                    <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
                         <button v-show="publi.display==true" type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
+                    </div>
+                        <div v-for="comment in comments" :key="comment.id">
+                        <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
+                           {{comment.name}} {{comment.comment}} 
+                        </div>
                     </div>
                 </div>
                 
@@ -47,6 +52,9 @@ export default {
         publis:[
             {comment:''}
         ],
+        comments:[
+
+        ],
         text:'',
         userId:'',
     }
@@ -74,8 +82,30 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', display:false}, {text : data.data[i].text, display:false}, {media :data.data[i].media,display:false})
-                this.publis.push({postId :data.data[i].id_post,display:true})
+                    this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', display:false}, {text : data.data[i].text, display:false}, {media :data.data[i].media,display:false})
+                    this.publis.push({postId :data.data[i].id_post,display:true})
+                } 
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        },
+        displayComments: function(){
+            let url = "http://localhost:3000/api/comments";
+            fetch(url,{
+                method: "GET",
+                headers: { "Content-Type": "application/json"},
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                for (let i=0; i<data.data.length; i++){
+                    console.log(data.data[i])
+                    this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:'})
                 } 
             })
             .catch(error => {
@@ -141,6 +171,7 @@ export default {
     },
     created(){
         this.displayPosts()
+        this.displayComments()
     },
 }
 </script>

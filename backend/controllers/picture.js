@@ -13,8 +13,9 @@ exports.addPicture = (req, res) => {
   db.query('SELECT picture FROM users WHERE id=?', params, (err,rows) => {
       if(err) throw err;
       res.json({data:rows})
-      let imageUrl = rows[0].picture;
-      const filename = imageUrl.split('/images/') [1];
+      let imageUrl = req.file.filename;
+      let oldImage = rows[0].picture;
+      const filename = oldImage.split('/images/') [1];
       fs.unlink(`images/${filename}`, () => {
         imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`; 
         const query="UPDATE users SET picture=? where id=?";

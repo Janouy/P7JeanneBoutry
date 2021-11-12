@@ -7,9 +7,9 @@ const db = mysql.createConnection({
     database: "database_development"
   });
 
-// non fait//
+
 exports.getAllComments = (req, res) => {
-  db.query('SELECT*FROM post JOIN users ON post.user_id = users.id ORDER BY id_post DESC', (err,rows) => {
+  db.query(' SELECT*FROM comment INNER JOIN post ON comment.post_id=post.id_post INNER JOIN users ON comment.user_id = users.id ORDER BY id_comment DESC', (err,rows) => {
       if(err) throw err;
       res.json({data:rows})
   });
