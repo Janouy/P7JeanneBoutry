@@ -10,34 +10,37 @@
                 </div>
             </form>
         </div>
-
-        <div class="card">
-            <div v-for="publi in publis" :key='publi.id'>
-                <div class="card-text" v-if="!publi.media" v-show="publi.display==true"> 
+        <div v-for="publi in publis" :key='publi.id'>
+            <div class="card border-info my-3 mx-5" v-if="publi.text">
+                <div class="card-text border" v-if="publi.text"> 
                     {{publi.name}}
-                    <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
-                        <button v-show="publi.display==true" type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
-                    </div>
-                        <div v-for="comment in comments" :key="comment.id">
+                </div>
+                <div class="card-text border" v-if="publi.text">
+                    {{publi.text}}
+                    <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
-                           {{comment.name}} {{comment.comment}} 
+                        {{comment.name}} {{comment.comment}} 
                         </div>
                     </div>
+                    <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                        <button type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
+                    </div>
                 </div>
-                
-                <div class="card-text" v-else v-show="publi.display==false"> 
+            </div>
+            <div class="card border-primary my-3 mx-5" v-if="publi.media">
+                <div class="card-text border" v-if="publi.media"> 
+                    {{publi.name}}
+                </div>
+                <div class="card-img border" v-if="publi.media">
                     <img class="publication_image" :src=publi.media>
-                    <!--<video width="320" height="240" controls>
-                    <source :src=publi.media type=video/mp4>
-                    </video> -->
-                </div>
-                
-                <div class="card-text" v-if="!publi.text" v-show="publi.display==false"> 
-                    {{publi.name}} 
-                </div>
-
-                <div class="card-text" v-else v-show="publi.display==false"> 
-                    <span>{{publi.text}}</span>
+                    <div v-for="comment in comments" :key="comment.id">
+                        <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
+                        {{comment.name}} {{comment.comment}} 
+                        </div>
+                    </div>
+                    <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                        <button type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,8 +85,7 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', display:false}, {text : data.data[i].text, display:false}, {media :data.data[i].media,display:false})
-                    this.publis.push({postId :data.data[i].id_post,display:true})
+                    this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
                 } 
             })
             .catch(error => {
@@ -104,7 +106,6 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    console.log(data.data[i])
                     this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:'})
                 } 
             })

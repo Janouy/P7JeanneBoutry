@@ -18,6 +18,7 @@
         </div>
         <form v-else>
             <div class="card-img-top" v-if="!this.profilePicture" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
+            <div class="card-img-top" v-else v-show="true"> <img class="publication_image" :src=this.profilePicture> </div>
             <form enctype="multipart/form-data">
                 <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
                 <button type="submit" @click="sendPicture()"> Envoi </button>
