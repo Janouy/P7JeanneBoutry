@@ -8,7 +8,7 @@
        
         <div class="card" v-if="mode == 'view'">
             <div class="card-img-top" v-if="!this.profilePicture" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
-            <div class="card-img-top" v-else v-show="true"> <img class="publication_image" :src=this.profilePicture> </div>
+            <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.profilePicture> </div>
             <div class="card-text my-3 mx-3 border"> {{this.email}} </div>
             <div class="card-text my-3 mx-3 border"> {{this.firstName}}</div>
             <div class="card-text my-3 mx-3 border"> {{this.lastName}}</div>
@@ -18,7 +18,7 @@
         </div>
         <form v-else>
             <div class="card-img-top" v-if="!this.profilePicture" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
-            <div class="card-img-top" v-else v-show="true"> <img class="publication_image" :src=this.profilePicture> </div>
+            <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.profilePicture> </div>
             <form enctype="multipart/form-data">
                 <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
                 <button type="submit" @click="sendPicture()"> Envoi </button>
@@ -36,6 +36,7 @@
             <div class="form-group"> Nouveau mot de passe:
                 <input v-model="password" type="password" class="form-control my-3 mx-3">
             </div>
+            <button type="submit" @click="viewProfile()" class="btn btn-primary col-3 my-3 mx-3"> Retour</button>
             <button type="submit" @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
         </form>
     </div>
@@ -209,3 +210,12 @@ export default {
     },
 }
 </script>
+
+<style lang="scss">
+.picture_profile{
+background-color: blue;
+display: block;
+max-width: 200px;
+};
+
+</style>

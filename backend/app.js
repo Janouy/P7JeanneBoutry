@@ -4,6 +4,7 @@ const userRoutes = require ('./routes/user');
 const textsRoutes = require('./routes/text');
 const commentsRoutes = require('./routes/comment');
 const mediasRoutes = require('./routes/media');
+const videosRoutes = require('./routes/video');
 const picturesRoutes = require('./routes/picture');
 
 const app = express();
@@ -23,8 +24,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/texts', textsRoutes);
 app.use('/api/comments', commentsRoutes);
 app.use('/api/medias', mediasRoutes);
+app.use('/api/videos', videosRoutes);
 app.use('/api/pictures', picturesRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/videos', express.static(path.join(__dirname, 'videos')));
 
 
 module.exports = app;

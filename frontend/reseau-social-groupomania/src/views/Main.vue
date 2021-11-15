@@ -21,7 +21,7 @@
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
                         {{comment.name}} {{comment.comment}} 
                         </div>
-                    </div>
+                        </div>
                     <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
                         <button type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
                     </div>
