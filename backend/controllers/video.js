@@ -8,9 +8,7 @@ const db = mysql.createConnection({
 
 
   exports.addVideo = (req, res) => {
-    console.log(req.file);
     let videoUrl = `${req.protocol}://${req.get('host')}/videos/${req.file.filename}`; 
-    console.log(videoUrl);
     const query="INSERT INTO post SET ?";
     const params={video:videoUrl, user_id:req.params.id}
     db.query(query,params,(err,result) => {
