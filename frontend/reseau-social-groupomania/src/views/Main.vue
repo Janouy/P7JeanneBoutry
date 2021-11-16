@@ -6,9 +6,13 @@
                 <div class="form-row">
                     <input v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
                     <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
-                    <button type="submit" @click="addMedia()"> <font-awesome-icon icon="images"/> Ajouter Photo/Vidéo/Gif</button>
+                    <form enctype="multipart/form-data">
+                        <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
+                        <button type="submit" @click="sendMedia()">Poster une photo </button>
+                    </form>
                 </div>
             </form>
+           
         </div>
         <div v-for="publi in publis" :key='publi.id'>
             <div class="card border-info my-3 mx-5" v-if="publi.text">
@@ -60,18 +64,50 @@ export default {
         ],
         text:'',
         userId:'',
+        file: null, 
+        image:'',
+        imageUrl:'',
+        newImage:'',
     }
     }, 
     methods:{
-        addMedia: function(){
-             var win = window.open(window.location.href + '/media', "nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=800, height=800");
-             var win_timer = setInterval(function() {  
-                if(win.closed) {
-                window.location.reload();
-                clearInterval(win_timer);
-            } 
-      }, 100); 
+        onFileChange() {
+            this.file = this.$refs.file.files[0];
+            this.newImage = URL.createObjectURL(this.file);
+            console.log(this.file);
+            console.log(this.newImage);
         },
+        onVideoChange() {
+            this.video = this.$refs.file.files[0];
+            this.newVideo = URL.createObjectURL(this.video);
+            console.log(this.video);
+            console.log(this.newVideo);
+        },
+        sendMedia: function(){
+            const formData = new FormData();
+            formData.set("image", this.file)
+            let userId = localStorage.getItem("userId");
+            let url = "http://localhost:3000/api/medias/" + userId;
+            fetch(url,{
+                method: "POST",
+                headers: {Authorization: "Bearer " + localStorage.getItem("token") },
+                body: formData,
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+            location.reload();
+            this.newImage ='';
+            this.file = '';
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        },   
         displayPosts: function(){
             let url = "http://localhost:3000/api/texts";
             fetch(url,{
@@ -85,8 +121,12 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
-                } 
+                    if (data.data[i].user_id == null){
+                        this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
+                    }else{
+                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
+                    } 
+                }
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -106,7 +146,11 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:'})
+                    if (data.data[i].id_user== null){
+                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:'})
+                    }else{
+                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:'})
+                    }
                 } 
             })
             .catch(error => {
