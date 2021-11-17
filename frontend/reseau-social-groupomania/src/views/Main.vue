@@ -281,16 +281,16 @@ export default {
             }
         },
         likedPost: function(e){
+            const userId = localStorage.getItem('userId');
             localStorage.setItem("postId", e);
-            let userId = localStorage.getItem("userId"); 
             let postId = localStorage.getItem("postId");
             let url = "http://localhost:3000/api/texts/" + postId;
             fetch(url,{
                 method: "POST",
                 headers: {"Content-Type": "application/json",Authorization: "Bearer " + localStorage.getItem("token") },
                 body: JSON.stringify({ 
-                userId: userId,
                 like: this.like,
+                userId: userId,
                 })
             })
             .then(async res => {
