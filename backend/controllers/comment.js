@@ -24,21 +24,14 @@ exports.addComment = (req, res) => {
   }); 
 };
 
-// non fait//
+
+// A TESTER //
 exports.deleteComment = (req, res) => {
-  const query="DELETE FROM post where id_post=?";
-  const params=[req.params.id];
-  db.query('SELECT media FROM post WHERE id_post=?', params, (err,rows) => {
-    if(err) throw err;
-    res.json({data:rows})
-    let imageUrl = rows[0].media;
-    if(imageUrl == null){
-      db.query(query,params)
-    }else{
-    const filename = imageUrl.split('/images/') [1];
-    fs.unlink(`images/${filename}`, () => {
-      db.query(query,params)
-    });
-  }
-  });
+  console.log(req.params);
+  const query="DELETE FROM comment where id_comment=?";
+    const params=[req.params]
+    db.query(query,params,(err,result,fields) => {
+        if(err) throw err;
+        res.json({deleted:result.affectedRows})
+    }); 
 };

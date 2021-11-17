@@ -23,7 +23,8 @@
                     {{publi.text}}
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
-                        {{comment.name}} {{comment.comment}} 
+                        {{comment.name}} {{comment.comment}}
+                        <button @click="deleteComment(comment.commentId)" :id="comment.commentId" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
                         </div>
                         </div>
                     <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
@@ -40,6 +41,7 @@
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
                         {{comment.name}} {{comment.comment}} 
+                        <button @click="deleteComment(comment.commentId)" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
                         </div>
                     </div>
                     <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
@@ -55,22 +57,23 @@
 export default {
     name: 'Main',
     data: function(){
-    return{
-        publis:[
-            {comment:''}
-        ],
-        comments:[
-
-        ],
-        text:'',
-        userId:'',
-        file: null, 
-        image:'',
-        imageUrl:'',
-        newImage:'',
-    }
+        return{
+            publis:[
+                {comment:''}
+            ],
+            comments:[
+                {thisUserId: localStorage.getItem('userId')}
+            ],
+            text:'',
+            userId:'',
+            file: null, 
+            image:'',
+            imageUrl:'',
+            newImage:'',
+            }
     }, 
     methods:{
+     
         onFileChange() {
             this.file = this.$refs.file.files[0];
             this.newImage = URL.createObjectURL(this.file);
@@ -147,9 +150,9 @@ export default {
                 }
                 for (let i=0; i<data.data.length; i++){
                     if (data.data[i].id_user== null){
-                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:'})
+                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
                     }else{
-                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:'})
+                        this.comments.push({userId: data.data[i].id_user, postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
                     }
                 } 
             })
@@ -213,6 +216,28 @@ export default {
                 alert("Une erreur est survenue.")
             }); 
         },
+        deleteComment: function(e){
+            localStorage.setItem("commentId", e)
+            let commentId = localStorage.getItem('commentId');
+            let url = "http://localhost:3000/api/comment/" + commentId;
+            fetch(url,{
+                method: "delete",
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                alert("Votre commentaire a bien été supprimé.");
+                location.reload();
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            }); 
+    }
     },
     created(){
         this.displayPosts()
