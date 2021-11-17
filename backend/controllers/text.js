@@ -23,7 +23,7 @@ exports.getAllTextsOneUser = (req, res) => {
 
 exports.addText = (req, res) => {
   const query="INSERT INTO post SET ?";
-  const params={text:req.body.text, user_id:req.params.id}
+  const params={text:req.body.text, user_id:req.body.id}
   db.query(query,params,(err,result) => {
     if(err) throw err;
     res.json({saved:result.affectedRows,inserted_id:result.insertId})
@@ -46,4 +46,30 @@ exports.deleteText = (req, res) => {
     });
   }
   });
+};
+
+exports.likeText = (req, res, next) => {
+	console.log(req.body);
+	/*Sauce.findOne({ _id: req.params.id})
+	.then(sauce => { 
+		if(like == 1){
+			Sauce.updateOne({ _id: req.params.id }, {$push: {usersLiked: userId}, $inc: {likes: +1}})
+			.then(() => res.status(200).json({message: 'Objet liké'}))
+			.catch(error => res.status(400).json({error}));
+		}else if (like == 0){
+			if (sauce.usersLiked.includes(userId)){
+				Sauce.updateOne({ _id: req.params.id }, {$pull: {usersLiked: userId}, $inc: {likes: -1}})
+				.then(() => res.status(200).json({message: 'Objet non liké'}))
+				.catch(error => res.status(400).json({error}));
+				}else{
+					Sauce.updateOne({ _id: req.params.id }, {$pull: {usersDisliked: userId}, $inc: {dislikes: -1}})
+					.then(() => res.status(200).json({message: 'Objet non liké'}))
+					.catch(error => res.status(400).json({error}));
+			}
+		}else if (like == -1){
+			Sauce.updateOne({ _id: req.params.id }, {$push: {usersDisliked: userId}, $inc: {dislikes: +1}})
+			.then(() => res.status(200).json({message: 'Objet disliké'}))
+			.catch(error => res.status(400).json({error}));
+		}
+	}); */
 };
