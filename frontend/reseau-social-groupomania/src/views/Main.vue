@@ -21,7 +21,10 @@
                 </div>
                 <div class="card-text border" v-if="publi.text">
                     {{publi.text}}
-                    <LikePost/>
+                    <form>
+                        <button type="submit" @click="liked(), likedPost(publi.postId)" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up" /></button>
+                        <button type="submit" @click="unliked(), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/></button>
+                    </form>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
                         {{comment.name}} {{comment.comment}}
@@ -39,7 +42,10 @@
                 </div>
                 <div class="card-img border" v-if="publi.media">
                     <img class="publication_image" :src=publi.media>
-                    <LikePost/>
+                    <form>
+                        <button type="submit" @click="liked(), likedPost()" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up" /></button>
+                        <button type="submit" @click="unliked(), likedPost()" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/></button>
+                    </form>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
                         {{comment.name}} {{comment.comment}} 
@@ -56,13 +62,10 @@
 </template>
 
 <script>
-import LikePost from "../components/LikePost.vue"
 
 export default {
     name: 'Main',
-    components:{
-        LikePost,
-    },
+
     data: function(){
         return{
             publis:[
@@ -77,180 +80,236 @@ export default {
             image:'',
             imageUrl:'',
             newImage:'',
+             like: 0,
             }
     }, 
+    computed:{
+        disabledLike: function(){
+            if(this.like == -1){
+                return true;
+            }else{
+                return false;
+            }
+        },
+        disabledUnlike: function(){
+            if(this.like == 1){
+                return true;
+            }else{
+                return false;
+            }
+        },
+    },
     methods:{
-    onFileChange() {
-        this.file = this.$refs.file.files[0];
-        this.newImage = URL.createObjectURL(this.file);
-        console.log(this.file);
-        console.log(this.newImage);
+        onFileChange() {
+            this.file = this.$refs.file.files[0];
+            this.newImage = URL.createObjectURL(this.file);
+            console.log(this.file);
+            console.log(this.newImage);
+        },
+        onVideoChange() {
+            this.video = this.$refs.file.files[0];
+            this.newVideo = URL.createObjectURL(this.video);
+            console.log(this.video);
+            console.log(this.newVideo);
     },
-    onVideoChange() {
-        this.video = this.$refs.file.files[0];
-        this.newVideo = URL.createObjectURL(this.video);
-        console.log(this.video);
-        console.log(this.newVideo);
-    },
-    sendMedia: function(){
-        const formData = new FormData();
-        formData.set("image", this.file)
-        let userId = localStorage.getItem("userId");
-        let url = "http://localhost:3000/api/medias/" + userId;
-        fetch(url,{
-            method: "POST",
-            headers: {Authorization: "Bearer " + localStorage.getItem("token") },
-            body: formData,
-        })
-        .then(async res => {
-            const data = await res.json();
-            if (!res.ok) {
-                const error = (data && data.message) || res.statusText;
-                return Promise.reject(error);
-            }
-            location.reload();
-            this.newImage ='';
-            this.file = '';
-        })
-        .catch(error => {
-            this.errorMessage = error;
-            console.error("There was an error!", error);
-        });
-    },   
-    displayPosts: function(){
-        let url = "http://localhost:3000/api/texts";
-        fetch(url,{
-            method: "GET",
-            headers: { "Content-Type": "application/json"},
-        })
-        .then(async res => {
-            const data = await res.json();
-            if (!res.ok) {
-                const error = (data && data.message) || res.statusText;
-                return Promise.reject(error);
-            }
-            for (let i=0; i<data.data.length; i++){
-                if (data.data[i].user_id == null){
-                    this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
-                }else{
-                    this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
-                } 
-            }
-        })
-        .catch(error => {
-            this.errorMessage = error;
-            console.error("There was an error!", error);
-        });
-    },
-    displayComments: function(){
-        let url = "http://localhost:3000/api/comments";
-        fetch(url,{
-            method: "GET",
-            headers: { "Content-Type": "application/json"},
-        })
-        .then(async res => {
-            const data = await res.json();
-            if (!res.ok) {
-                const error = (data && data.message) || res.statusText;
-                return Promise.reject(error);
-            }
-            for (let i=0; i<data.data.length; i++){
-                if (data.data[i].id_user== null){
-                    this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
-                }else{
-                    this.comments.push({userId: data.data[i].id_user, postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
+        sendMedia: function(){
+            const formData = new FormData();
+            formData.set("image", this.file)
+            let userId = localStorage.getItem("userId");
+            let url = "http://localhost:3000/api/medias/" + userId;
+            fetch(url,{
+                method: "POST",
+                headers: {Authorization: "Bearer " + localStorage.getItem("token") },
+                body: formData,
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
                 }
-            } 
-        })
-        .catch(error => {
-            this.errorMessage = error;
-            console.error("There was an error!", error);
-        });
-    },
-    addPost: function(){
-        let userId = localStorage.getItem("userId");
-        let url = "http://localhost:3000/api/texts/";
-        fetch(url, {    
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
-            body: JSON.stringify({ 
-            id: userId,
-            text: this.text,
+                location.reload();
+                this.newImage ='';
+                this.file = '';
             })
-        })
-        .then(async res => {
-            const data = await res.json();
-            if (!res.ok) {
-                const error = (data && data.message) || res.status;
-                return Promise.reject(error);
-            }
-            this.postId = data.id;
-            location.reload();
-        })
-        .catch(error => {
-            this.errorMessage = error;
-            console.error('There was an error!', error);
-            alert("Une erreur est survenue.")
-        });
-    },
-    addComment: function(e, f){
-        this.publis[0].comment = f
-        console.log(this.publis[0].comment);
-        localStorage.setItem("publiId", e)
-        this.userId = localStorage.getItem('userId');
-        let postId = localStorage.getItem('publiId');
-        let url = "http://localhost:3000/api/comments/" + postId;
-        fetch(url, {    
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
-            body: JSON.stringify({ 
-                comment: this.publis[0].comment,
-                userId: this.userId,
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        },   
+        displayPosts: function(){
+            let url = "http://localhost:3000/api/texts";
+            fetch(url,{
+                method: "GET",
+                headers: { "Content-Type": "application/json"},
             })
-        })
-        .then(async res => {
-            const data = await res.json();
-            if (!res.ok) {
-                const error = (data && data.message) || res.status;
-                return Promise.reject(error);
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                for (let i=0; i<data.data.length; i++){
+                    if (data.data[i].user_id == null){
+                        this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
+                    }else{
+                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
+                    } 
+                }
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        },
+        displayComments: function(){
+            let url = "http://localhost:3000/api/comments";
+            fetch(url,{
+                method: "GET",
+                headers: { "Content-Type": "application/json"},
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                for (let i=0; i<data.data.length; i++){
+                    if (data.data[i].id_user== null){
+                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
+                    }else{
+                        this.comments.push({userId: data.data[i].id_user, postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
+                    }
+                } 
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        },
+        addPost: function(){
+            let userId = localStorage.getItem("userId");
+            let url = "http://localhost:3000/api/texts/";
+            fetch(url, {    
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
+                body: JSON.stringify({ 
+                id: userId,
+                text: this.text,
+                })
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.status;
+                    return Promise.reject(error);
+                }
+                this.postId = data.id;
+                location.reload();
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error('There was an error!', error);
+                alert("Une erreur est survenue.")
+            });
+        },
+        addComment: function(e, f){
+            this.publis[0].comment = f
+            console.log(this.publis[0].comment);
+            localStorage.setItem("publiId", e)
+            this.userId = localStorage.getItem('userId');
+            let postId = localStorage.getItem('publiId');
+            let url = "http://localhost:3000/api/comments/" + postId;
+            fetch(url, {    
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
+                body: JSON.stringify({ 
+                    comment: this.publis[0].comment,
+                    userId: this.userId,
+                })
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.status;
+                    return Promise.reject(error);
+                }
+                this.postId = data.id;
+                location.reload();
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error('There was an error!', error);
+                alert("Une erreur est survenue.")
+            }); 
+        },
+        deleteComment: function(e){
+            localStorage.setItem("commentId", e)
+            let commentId = localStorage.getItem('commentId');
+            console.log(commentId);
+            let url = "http://localhost:3000/api/comments/" + commentId;
+            fetch(url,{
+                method: "delete",
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                alert("Votre commentaire a bien été supprimé.");
+                location.reload();
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            }); 
+        },
+        liked: function(){
+            if(this.like == 0){
+                this.like +=  +1
+            }else if (this.like == 1){
+                this.like += -1
             }
-            this.postId = data.id;
-            location.reload();
-        })
-        .catch(error => {
-            this.errorMessage = error;
-            console.error('There was an error!', error);
-            alert("Une erreur est survenue.")
-        }); 
-    },
-    deleteComment: function(e){
-        localStorage.setItem("commentId", e)
-        let commentId = localStorage.getItem('commentId');
-        console.log(commentId);
-        let url = "http://localhost:3000/api/comments/" + commentId;
-        fetch(url,{
-            method: "delete",
-            headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
-        })
-        .then(async res => {
-            const data = await res.json();
-            if (!res.ok) {
-                const error = (data && data.message) || res.statusText;
-                return Promise.reject(error);
+        },
+        unliked: function(){
+            if(this.like == 0){
+                this.like +=  -1
+            }else if (this.like == -1){
+                this.like += +1
             }
-            alert("Votre commentaire a bien été supprimé.");
-            location.reload();
-        })
-        .catch(error => {
-            this.errorMessage = error;
-            console.error("There was an error!", error);
-        }); 
-    }
+        },
+        likedPost: function(e){
+            localStorage.setItem("postId", e);
+            let userId = localStorage.getItem("userId"); 
+            let postId = localStorage.getItem("postId");
+            let url = "http://localhost:3000/api/texts/" + postId;
+            fetch(url,{
+                method: "POST",
+                headers: {"Content-Type": "application/json",Authorization: "Bearer " + localStorage.getItem("token") },
+                body: JSON.stringify({ 
+                userId: userId,
+                like: this.like,
+                })
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            }); 
+            },
     },
-    created(){
-        this.displayPosts()
-        this.displayComments()
-    },
+        created(){
+            this.displayPosts()
+            this.displayComments()
+        },
 }
 </script>
 

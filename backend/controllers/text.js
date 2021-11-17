@@ -49,27 +49,12 @@ exports.deleteText = (req, res) => {
 };
 
 exports.likeText = (req, res, next) => {
-	console.log(req.body);
-	/*Sauce.findOne({ _id: req.params.id})
-	.then(sauce => { 
-		if(like == 1){
-			Sauce.updateOne({ _id: req.params.id }, {$push: {usersLiked: userId}, $inc: {likes: +1}})
-			.then(() => res.status(200).json({message: 'Objet liké'}))
-			.catch(error => res.status(400).json({error}));
-		}else if (like == 0){
-			if (sauce.usersLiked.includes(userId)){
-				Sauce.updateOne({ _id: req.params.id }, {$pull: {usersLiked: userId}, $inc: {likes: -1}})
-				.then(() => res.status(200).json({message: 'Objet non liké'}))
-				.catch(error => res.status(400).json({error}));
-				}else{
-					Sauce.updateOne({ _id: req.params.id }, {$pull: {usersDisliked: userId}, $inc: {dislikes: -1}})
-					.then(() => res.status(200).json({message: 'Objet non liké'}))
-					.catch(error => res.status(400).json({error}));
-			}
-		}else if (like == -1){
-			Sauce.updateOne({ _id: req.params.id }, {$push: {usersDisliked: userId}, $inc: {dislikes: +1}})
-			.then(() => res.status(200).json({message: 'Objet disliké'}))
-			.catch(error => res.status(400).json({error}));
-		}
-	}); */
+  const postId = req.params.id;
+  const like = req.body.like;
+  const query="UPDATE post SET likes = likes + ? WHERE id_post=?";
+  const params={likes:like, id_post:postId};
+  db.query(query,params,(err,result) => {
+    if(err) throw err;
+    res.json({saved:result.affectedRows,inserted_id:result.insertId})
+  });
 };
