@@ -25,11 +25,10 @@ exports.addComment = (req, res) => {
 };
 
 
-// A TESTER //
 exports.deleteComment = (req, res) => {
-  console.log(req.params);
-  const query="DELETE FROM comment where id_comment=?";
-    const params=[req.params]
+  console.log(req.params.id);
+  const query="DELETE FROM comment WHERE id_comment=?";
+    const params=[req.params.id]
     db.query(query,params,(err,result,fields) => {
         if(err) throw err;
         res.json({deleted:result.affectedRows})
