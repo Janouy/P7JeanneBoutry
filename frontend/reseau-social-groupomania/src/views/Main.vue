@@ -272,6 +272,7 @@ export default {
             }else if (this.like == 1){
                 this.like += -1
             }
+            console.log(this.like);
         },
         unliked: function(){
             if(this.like == 0){
@@ -279,6 +280,7 @@ export default {
             }else if (this.like == -1){
                 this.like += +1
             }
+            console.log(this.like);
         },
         likedPost: function(e){
             const userId = localStorage.getItem('userId');

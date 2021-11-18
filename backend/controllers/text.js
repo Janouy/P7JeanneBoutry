@@ -31,7 +31,7 @@ exports.addText = (req, res) => {
 };
 
 exports.deleteText = (req, res) => {
-  const query="DELETE FROM post where id_post=?";
+  const query="DELETE FROM post WHERE id_post=?";
   const params=[req.params.id];
   db.query('SELECT media FROM post WHERE id_post=?', params, (err,rows) => {
     if(err) throw err;
@@ -62,19 +62,25 @@ exports.likeText = (req, res, next) => {
       const params={post_Id:postId, usersLiked:userId}
       db.query(query,params)
     }); 
-  }else if(like == 0){
-    const query="UPDATE post SET likes=likes-1 WHERE id_post=?";
-    const params=[postId];
-    db.query(query,params,(err,result) => {
-      if(err) throw err;
-      res.json({updated:result.affectedRows})
-    }); 
   }else if(like == -1){
     const query="UPDATE post SET dislikes=dislikes+1 WHERE id_post=?";
     const params=[postId];
     db.query(query,params,(err,result) => {
       if(err) throw err;
       res.json({updated:result.affectedRows})
+      const query="INSERT INTO userLikes SET ?"; 
+      const params={post_Id:postId, usersDisliked:userId}
+      db.query(query,params)
+    }); 
+  }else if(like == 0){
+    const query="UPDATE post SET likes=likes-1 WHERE id_post=?";
+    const params=[postId];
+    db.query(query,params,(err,result) => {
+      if(err) throw err;
+      res.json({updated:result.affectedRows})
+      const query="DELETE FROM userLikes WHERE usersLiked IS NOT NULL OR usersDisliked IS NOT NULL AND post_id=?";
+      const params=[postId]
+      db.query(query,params)
     }); 
   }
 };
