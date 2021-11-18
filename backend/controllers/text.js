@@ -73,14 +73,29 @@ exports.likeText = (req, res, next) => {
       db.query(query,params)
     }); 
   }else if(like == 0){
-    const query="UPDATE post SET likes=likes-1 WHERE id_post=?";
+    const query = "SELECT*FROM userLikes WHERE post_Id=?";
+    const query2="UPDATE post INNER JOIN userLikes ON userLikes.post_Id = post.id_post SET likes = likes-1 WHERE post_Id= ? AND usersLiked IS NOT NULL";
+    const query3="UPDATE post INNER JOIN userLikes ON userLikes.post_Id = post.id_post SET dislikes = dislikes-1 WHERE post_Id= ? AND usersDisliked IS NOT NULL";
     const params=[postId];
-    db.query(query,params,(err,result) => {
+    db.query(query,params,(err,rows) => {
       if(err) throw err;
-      res.json({updated:result.affectedRows})
-      const query="DELETE FROM userLikes WHERE usersLiked IS NOT NULL OR usersDisliked IS NOT NULL AND post_id=?";
-      const params=[postId]
-      db.query(query,params)
+      res.json({data:rows})
+      if(rows[0].usersDisliked != null){
+        db.query(query3,params)
+          const query="DELETE FROM userLikes WHERE usersLiked IS NOT NULL OR usersDisliked IS NOT NULL AND post_id=?";
+          db.query(query,params)
+      }else if(rows[0].usersLiked != null){
+        db.query(query2,params)
+          const query="DELETE FROM userLikes WHERE usersLiked IS NOT NULL OR usersDisliked IS NOT NULL AND post_id=?";
+          db.query(query,params)
+      }
     }); 
   }
+};
+
+exports.likesCount = (req, res) => {
+  db.query('SELECT*FROM userLikes ', (err,rows) => {
+      if(err) throw err;
+      res.json({data:rows})
+  });
 };

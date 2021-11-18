@@ -22,8 +22,8 @@
                 <div class="card-text border" v-if="publi.text">
                     {{publi.text}}
                     <form>
-                        <button type="submit" @click="liked(), likedPost(publi.postId)" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up" /></button>
-                        <button type="submit" @click="unliked(), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/></button>
+                        <button :id="'like'+publi.postId" type="submit" @click="liked(), likedPost(publi.postId)" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up"/><span> compteur </span></button>
+                        <button :id="'unlike'+publi.postId" type="submit" @click="unliked(), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/><span> compteur </span></button>
                     </form>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
@@ -31,7 +31,8 @@
                         <button @click="deleteComment(comment.commentId)" :id="comment.commentId" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
                         </div>
                         </div>
-                    <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                    <div  class="card-text"> 
+                        <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
                         <button type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
                     </div>
                 </div>
@@ -43,8 +44,8 @@
                 <div class="card-img border" v-if="publi.media">
                     <img class="publication_image" :src=publi.media>
                     <form>
-                        <button type="submit" @click="liked(), likedPost()" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up" /></button>
-                        <button type="submit" @click="unliked(), likedPost()" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/></button>
+                        <button :id="'like'+publi.postId" type="submit" @click="liked(), likedPost()" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up" /><span> compteur </span></button>
+                        <button :id="'unlike'+publi.postId" type="submit" @click="unliked(), likedPost()" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/><span>  </span></button>
                     </form>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
@@ -69,7 +70,7 @@ export default {
     data: function(){
         return{
             publis:[
-                {comment:''}
+                {comment:''},
             ],
             comments:[
                 {thisUserId: localStorage.getItem('userId')}
@@ -80,7 +81,7 @@ export default {
             image:'',
             imageUrl:'',
             newImage:'',
-             like: 0,
+            like: 0,
             }
     }, 
     computed:{
@@ -215,7 +216,6 @@ export default {
         },
         addComment: function(e, f){
             this.publis[0].comment = f
-            console.log(this.publis[0].comment);
             localStorage.setItem("publiId", e)
             this.userId = localStorage.getItem('userId');
             let postId = localStorage.getItem('publiId');
