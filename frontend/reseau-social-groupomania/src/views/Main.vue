@@ -21,10 +21,10 @@
                 </div>
                 <div class="card-text border" v-if="publi.text">
                     {{publi.text}}
-                    <form>
-                        <button :id="'like'+publi.postId" type="submit" @click="liked(), likedPost(publi.postId)" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up"/><span> compteur </span></button>
-                        <button :id="'unlike'+publi.postId" type="submit" @click="unliked(), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/><span> compteur </span></button>
-                    </form>
+                        <div>
+                            <button :id="'like'+publi.postId" type="submit" @click="liked(), likedPost(publi.postId)" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up"/><span> compteur</span></button>
+                            <button :id="'unlike'+publi.postId" type="submit" @click="unliked(), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike"><font-awesome-icon icon="thumbs-down"/><span> compteur</span></button>
+                        </div>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
                         {{comment.name}} {{comment.comment}}
@@ -43,10 +43,10 @@
                 </div>
                 <div class="card-img border" v-if="publi.media">
                     <img class="publication_image" :src=publi.media>
-                    <form>
-                        <button :id="'like'+publi.postId" type="submit" @click="liked(), likedPost()" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up" /><span> compteur </span></button>
-                        <button :id="'unlike'+publi.postId" type="submit" @click="unliked(), likedPost()" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/><span>  </span></button>
-                    </form>
+                    <div>
+                        <button :id="'like'+publi.postId" type="submit" @click="liked(), likedPost(publi.postId)" class="btn" :disabled ="disabledLike"><font-awesome-icon icon="thumbs-up" /><span> compteur </span></button>
+                        <button :id="'unlike'+publi.postId" type="submit" @click="unliked(), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike" ><font-awesome-icon icon="thumbs-down"/><span>  </span></button>
+                    </div>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
                         {{comment.name}} {{comment.comment}} 
@@ -70,7 +70,10 @@ export default {
     data: function(){
         return{
             publis:[
-                {comment:''},
+                {comment:''
+                },
+            ],
+            likes:[
             ],
             comments:[
                 {thisUserId: localStorage.getItem('userId')}
@@ -156,6 +159,7 @@ export default {
                     }else{
                         this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false})
                     } 
+                    console.log(data.data[i])
                 }
             })
             .catch(error => {
@@ -268,19 +272,17 @@ export default {
         },
         liked: function(){
             if(this.like == 0){
-                this.like +=  +1
+                this.like += 1
             }else if (this.like == 1){
                 this.like += -1
             }
-            console.log(this.like);
         },
         unliked: function(){
             if(this.like == 0){
                 this.like +=  -1
             }else if (this.like == -1){
-                this.like += +1
+                this.like += 1
             }
-            console.log(this.like);
         },
         likedPost: function(e){
             const userId = localStorage.getItem('userId');
@@ -307,10 +309,34 @@ export default {
                 console.error("There was an error!", error);
             }); 
             },
+      displayLikes: function(){
+            const userId = localStorage.getItem('userId');
+            let url = "http://localhost:3000/api/likes/" + userId;
+            fetch(url,{
+                method: "GET",
+                headers: { "Content-Type": "application/json"},
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                for (let i=0; i<data.data.length; i++){
+                    this.publis.push({userIdLike: data.data[i].usersLiked, userIdDisliked: data.data[i].usersDisliked, postId: data.data[i].id_post, like: data.data[i].likes, dislike: data.data[i].dislikes})
+                }
+                
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+      },
     },
         created(){
             this.displayPosts()
             this.displayComments()
+            this.displayLikes()
         },
 }
 </script>

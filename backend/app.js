@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const userRoutes = require ('./routes/user');
 const textsRoutes = require('./routes/text');
+const likesRoutes = require('./routes/like');
 const commentsRoutes = require('./routes/comment');
 const mediasRoutes = require('./routes/media');
 const picturesRoutes = require('./routes/picture');
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/texts', textsRoutes);
+app.use('/api/likes', likesRoutes);
 app.use('/api/comments', commentsRoutes);
 app.use('/api/medias', mediasRoutes);
 app.use('/api/pictures', picturesRoutes);
