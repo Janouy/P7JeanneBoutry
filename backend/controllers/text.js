@@ -11,7 +11,6 @@ exports.getAllTexts = (req, res) => {
   db.query('SELECT*FROM post INNER JOIN users ON users.id = post.user_id OR user_id IS NULL ORDER BY post.id_post DESC', (err,rows) => {
       if(err) {throw err};
       res.json({data:rows})
-     // db.query('SELECT*FROM userLikes LEFT JOIN userLikes ON userLikes.post_Id = post.id_post')//
   });
 };
 
@@ -74,23 +73,21 @@ exports.likeText = (req, res, next) => {
       db.query(query,params)
     }); 
   }else if(like == 0){
-    const query ="SELECT*FROM userLikes WHERE post_Id=?";
-    const query2="UPDATE post INNER JOIN userLikes ON userLikes.post_Id = post.id_post SET likes = likes-1 WHERE post_Id= ? AND usersLiked IS NOT NULL";
-    const query3="UPDATE post INNER JOIN userLikes ON userLikes.post_Id = post.id_post SET dislikes = dislikes-1 WHERE post_Id= ? AND usersDisliked IS NOT NULL";
-    const params=[postId];
+    const query = "SELECT INSTR(userLikes, ?) AS indexLike, INSTR(userDislikes, ?) AS indexDislike FROM post WHERE id_post=?";
+    const params=[userId, userId, postId]; 
     db.query(query,params,(err,rows) => {
       if(err) {throw err};
       res.json({data:rows})
-      if(rows[0].usersDisliked != null){
-        db.query(query3,params)
-          const query="DELETE FROM userLikes WHERE usersDisliked IS NOT NULL AND post_id=?";
-          db.query(query,params)
-      }else if(rows[0].usersLiked != null){
-        db.query(query2,params)
-          const query="DELETE FROM userLikes WHERE usersLiked IS NOT NULL AND post_id=?";
-          db.query(query,params)
+      if(rows[0].indexLike != 0){
+        const query="UPDATE post SET userLikes=REPLACE(userLikes, ?, '') WHERE id_post=?";
+        const params=[userId, postId]
+        db.query(query,params)
+      }else if(rows[0].indexDislike != 0){
+        const query="UPDATE post SET userDislikes=REPLACE(userDislikes, ?, '') WHERE id_post=?"; 
+        const params=[userId, postId]
+        db.query(query,params)
       }
     }); 
-  }
+  } 
 };
 
