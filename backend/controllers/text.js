@@ -8,7 +8,7 @@ const db = mysql.createConnection({
   });
 
 exports.getAllTexts = (req, res) => {
-  db.query('SELECT*FROM post INNER JOIN users ON users.id = post.user_id OR user_id IS NULL LEFT JOIN userLikes ON userLikes.post_Id = post.id_post ORDER BY post.id_post DESC', (err,rows) => {
+  db.query('SELECT*FROM post INNER JOIN users ON users.id = post.user_id OR user_id IS NULL ORDER BY post.id_post DESC', (err,rows) => {
       if(err) {throw err};
       res.json({data:rows})
      // db.query('SELECT*FROM userLikes LEFT JOIN userLikes ON userLikes.post_Id = post.id_post')//
@@ -24,7 +24,7 @@ exports.getAllTextsOneUser = (req, res) => {
 
 exports.addText = (req, res) => {
   const query="INSERT INTO post SET ?";
-  const params={text:req.body.text, user_id:req.body.id}
+  const params={text:req.body.text, user_id:req.body.id, userLikes: 0, userDislikes: 0}
   db.query(query,params,(err,result) => {
     if(err) {throw err};
     res.json({saved:result.affectedRows,inserted_id:result.insertId})
@@ -59,8 +59,8 @@ exports.likeText = (req, res, next) => {
     db.query(query,params,(err,result) => {
       if(err) {throw err};
       res.json({updated:result.affectedRows})
-      const query="INSERT INTO userLikes SET ?"; 
-      const params={post_Id:postId, usersLiked:userId}
+      const query="UPDATE post SET userLikes=CONCAT(userLikes,',',?) WHERE id_post=?"; 
+      const params=[userId, postId]
       db.query(query,params)
     }); 
   }else if(like == -1){
@@ -69,8 +69,8 @@ exports.likeText = (req, res, next) => {
     db.query(query,params,(err,result) => {
       if(err) {throw err};
       res.json({updated:result.affectedRows})
-      const query="INSERT INTO userLikes SET ?"; 
-      const params={post_Id:postId, usersDisliked:userId}
+      const query="UPDATE post SET userDislikes=CONCAT(userDislikes,',',?) WHERE id_post=?"; 
+      const params=[userId, postId]
       db.query(query,params)
     }); 
   }else if(like == 0){
