@@ -70,9 +70,6 @@ export default {
         return{
             publis:[
             ],
-            likes:[
-
-            ],
             comments:[
                 {thisUserId: localStorage.getItem('userId')}
             ],
@@ -92,7 +89,7 @@ export default {
     methods:{
         disabledLike: function(e){
             let userId = localStorage.getItem('userId');
-            if(e == userId){
+            if(e.includes(userId)){
                 return true;
             }else{
                 return false;
@@ -100,7 +97,7 @@ export default {
         },
         disabledUnlike: function(e){
             let userId = localStorage.getItem('userId');
-            if(e  == userId){
+            if(e.includes(userId)){
                 return true;
             }else{
                 return false;
@@ -155,12 +152,11 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
-                this.displayLikes()
                 for (let i=0; i<data.data.length; i++){
                     if (data.data[i].user_id == null){
-                        this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: data.data[i].usersDisliked, userIdLike: data.data[i].usersLiked})
+                        this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: data.data[i].userDislikes, userIdLike: data.data[i].userLikes})
                     }else{
-                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: data.data[i].usersDisliked, userIdLike: data.data[i].usersLiked})
+                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: (data.data[i].userDislikes).split(','), userIdLike: (data.data[i].userLikes).split(',')})
                     }
                     console.log(this.publis[i]);
                 }
@@ -275,28 +271,25 @@ export default {
             }); 
         },
         liked: function(e){
-            let userId = localStorage.getItem("userId");
-            if(e == null){
-                this.like += 1 
-                }else if (e == userId){
-                    this.like = 0
-                }else if(e != userId){
+            let userId = localStorage.getItem('userId');
+            if(e.includes(userId)){
+                this.like = 0
+                }else if (!e.includes(userId)){
                     this.like += 1
                 }
                 console.log(this.like)
         },
         unliked: function(e){
-            let userId = localStorage.getItem("userId");
-            if(e == null){
-                this.like += -1
-                }else if (e == userId){
-                    this.like = 0
-                }else if(e != userId){
+            let userId = localStorage.getItem('userId');
+            if(e.includes(userId)){
+                this.like = 0
+                }else if (!e.includes(userId)){
                     this.like += -1
                 }
                 console.log(this.like)
         },
         likedPost: function(e){
+            console.log(this.like)
             const userId = localStorage.getItem('userId');
             localStorage.setItem("postId", e);
             let postId = localStorage.getItem("postId");
@@ -322,7 +315,7 @@ export default {
                 console.error("There was an error!", error);
             }); 
             },
-        displayLikes: function(){
+        /*displayLikes: function(){
             let url = "http://localhost:3000/api/likes";
             fetch(url,{
                 method: "GET",
@@ -344,7 +337,7 @@ export default {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
             }); 
-      }, 
+      }, */
     },
         created(){
             this.displayPosts()
