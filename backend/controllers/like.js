@@ -7,9 +7,8 @@ const db = mysql.createConnection({
   });
 
 exports.likesDisplay = (req, res) => {
-  const query = "SELECT*FROM userLikes INNER JOIN post ON userLikes.post_Id = post.id_post WHERE userLikes.usersLiked=? OR userLikes.usersDisliked=?";
-  const params=[req.params.id, req.params.id];
-    db.query(query, params, (err,rows) => {
+  const query = "SELECT*FROM userLikes INNER JOIN post ON userLikes.post_Id = post.id_post";
+    db.query(query, (err,rows) => {
         if(err) {throw err};
         res.json({data:rows})
     });

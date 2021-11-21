@@ -30,7 +30,6 @@ methods: {
                 console.error("There was an error!", error);
                 location.reload();
             });
-        
     }
 }
 }

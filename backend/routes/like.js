@@ -4,6 +4,6 @@ const auth = require('../middleware/auth');
 const likeCtrl = require('../controllers/like');
 
 
-router.get("/:id",likeCtrl.likesDisplay);
+router.get("/",likeCtrl.likesDisplay);
 
 module.exports = router;

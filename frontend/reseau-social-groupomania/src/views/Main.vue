@@ -19,11 +19,11 @@
                 <div class="card-text border" v-if="publi.text"> 
                     {{publi.name}}
                 </div>
-                <div class="card-text border" v-if="publi.text">
+                <div :id="'post'+ publi.postId" class="card-text border" v-if="publi.text">
                     {{publi.text}}
                         <div>
-                            <button :id="'like'+publi.postId" type="submit" @click="liked(publi.likes), likedPost(publi.postId)" class="btn" :disabled ="disabledLike(publi.dislikes)"><font-awesome-icon icon="thumbs-up"/><span>compteur</span></button>
-                            <button :id="'unlike'+publi.postId" type="submit" @click="unliked(publi.dislikes), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike(publi.likes)"><font-awesome-icon icon="thumbs-down"/><span> compteur</span></button>
+                            <button :id="'like'+publi.postId" type="submit" @click="liked(publi.userIdLike), likedPost(publi.postId)" class="btn" :disabled ="disabledLike(publi.userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>compteur</span></button>
+                            <button :id="'unlike'+publi.postId" type="submit" @click="unliked(publi.userIdDislike), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike(publi.userIdLike)"><font-awesome-icon icon="thumbs-down"/><span> compteur</span></button>
                         </div>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
@@ -66,10 +66,12 @@
 
 export default {
     name: 'Main',
-
     data: function(){
         return{
             publis:[
+            ],
+            likes:[
+
             ],
             comments:[
                 {thisUserId: localStorage.getItem('userId')}
@@ -81,6 +83,7 @@ export default {
             imageUrl:'',
             newImage:'',
             like: 0,
+            idUser: localStorage.getItem('UserId'),
             }
     }, 
     computed:{
@@ -88,15 +91,16 @@ export default {
     },
     methods:{
         disabledLike: function(e){
-            if(e == 1){
+            let userId = localStorage.getItem('userId');
+            if(e == userId){
                 return true;
             }else{
                 return false;
             }
-            
         },
-        disabledUnlike: function(f){
-            if(f == 1){
+        disabledUnlike: function(e){
+            let userId = localStorage.getItem('userId');
+            if(e  == userId){
                 return true;
             }else{
                 return false;
@@ -151,13 +155,14 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
+                this.displayLikes()
                 for (let i=0; i<data.data.length; i++){
                     if (data.data[i].user_id == null){
-                        this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:''})
+                        this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: data.data[i].usersDisliked, userIdLike: data.data[i].usersLiked})
                     }else{
-                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:''})
-                    } 
-                    console.log(this.publis[i])
+                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: data.data[i].usersDisliked, userIdLike: data.data[i].usersLiked})
+                    }
+                    console.log(this.publis[i]);
                 }
             })
             .catch(error => {
@@ -166,6 +171,7 @@ export default {
             });
         },
         displayComments: function(){
+            console.log(this.like);
             let url = "http://localhost:3000/api/comments";
             fetch(url,{
                 method: "GET",
@@ -269,19 +275,26 @@ export default {
             }); 
         },
         liked: function(e){
-            console.log(e);
-            if(e == 0){
-                this.like += 1
-                }else if (e == 1){
-                console.log('ok')
-            }
+            let userId = localStorage.getItem("userId");
+            if(e == null){
+                this.like += 1 
+                }else if (e == userId){
+                    this.like = 0
+                }else if(e != userId){
+                    this.like += 1
+                }
+                console.log(this.like)
         },
-        unliked: function(f){
-            if(f == 0){
+        unliked: function(e){
+            let userId = localStorage.getItem("userId");
+            if(e == null){
                 this.like += -1
-                }else if (f == -1){
-                this.like = 0
-            }
+                }else if (e == userId){
+                    this.like = 0
+                }else if(e != userId){
+                    this.like += -1
+                }
+                console.log(this.like)
         },
         likedPost: function(e){
             const userId = localStorage.getItem('userId');
@@ -309,9 +322,8 @@ export default {
                 console.error("There was an error!", error);
             }); 
             },
-      /*displayLikes: function(){
-            const userId = localStorage.getItem('userId');
-            let url = "http://localhost:3000/api/likes/" + userId;
+        displayLikes: function(){
+            let url = "http://localhost:3000/api/likes";
             fetch(url,{
                 method: "GET",
                 headers: { "Content-Type": "application/json"},
@@ -323,15 +335,16 @@ export default {
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    this.publis.push({userIdLike: data.data[i].usersLiked, userIdDisliked: data.data[i].usersDisliked, postId: data.data[i].id_post, like: data.data[i].likes, dislike: data.data[i].dislikes})
+                    this.likes.push({userIdLike: data.data[i].usersLiked, userIdDisliked: data.data[i].usersDisliked, postId: data.data[i].id_post, like: data.data[i].likes, dislike: data.data[i].dislikes})
+                console.log(this.likes[i])
                 }
                 
             })
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
-            });
-      },*/
+            }); 
+      }, 
     },
         created(){
             this.displayPosts()

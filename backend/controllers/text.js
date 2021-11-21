@@ -11,6 +11,7 @@ exports.getAllTexts = (req, res) => {
   db.query('SELECT*FROM post INNER JOIN users ON users.id = post.user_id OR user_id IS NULL LEFT JOIN userLikes ON userLikes.post_Id = post.id_post ORDER BY post.id_post DESC', (err,rows) => {
       if(err) {throw err};
       res.json({data:rows})
+     // db.query('SELECT*FROM userLikes LEFT JOIN userLikes ON userLikes.post_Id = post.id_post')//
   });
 };
 
