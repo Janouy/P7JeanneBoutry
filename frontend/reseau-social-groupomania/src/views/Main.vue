@@ -22,8 +22,8 @@
                 <div :id="'post'+ publi.postId" class="card-text border" v-if="publi.text">
                     {{publi.text}}
                         <div>
-                            <button :id="'like'+publi.postId" type="submit" @click="liked(publi.userIdLike), likedPost(publi.postId)" class="btn" :disabled ="disabledLike(publi.userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>compteur</span></button>
-                            <button :id="'unlike'+publi.postId" type="submit" @click="unliked(publi.userIdDislike), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike(publi.userIdLike)"><font-awesome-icon icon="thumbs-down"/><span> compteur</span></button>
+                            <button :id="'like'+publi.postId" type="submit" @click="liked(publi.userIdLike), likedPost(publi.postId)" class="btn" :disabled ="disabledLike(publi.userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{publi.likes}}</span></button>
+                            <button :id="'unlike'+publi.postId" type="submit" @click="unliked(publi.userIdDislike), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike(publi.userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{publi.dislikes}}</span></button>
                         </div>
                     <div v-for="comment in comments" :key="comment.id">
                         <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
@@ -156,7 +156,7 @@ export default {
                     if (data.data[i].user_id == null){
                         this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: data.data[i].userDislikes, userIdLike: data.data[i].userLikes})
                     }else{
-                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: (data.data[i].userDislikes).split(','), userIdLike: (data.data[i].userLikes).split(',')})
+                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: (data.data[i].userDislikes).split(' '), userIdLike: (data.data[i].userLikes).split(' ')})
                     }
                     console.log(this.publis[i]);
                 }
