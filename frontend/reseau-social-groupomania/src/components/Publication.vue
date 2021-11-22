@@ -64,7 +64,34 @@ name: "Publication",
         }
     },
 methods: {
-  
+    displayPosts: function(){
+            let url = "http://localhost:3000/api/texts";
+            fetch(url,{
+                method: "GET",
+                headers: { "Content-Type": "application/json"},
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                for (let i=0; i<data.data.length; i++){
+                    if (data.data[i].user_id == null){
+                        this.publis.push({name: 'Utilisateur supprimé' + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislikes: data.data[i].usersDisliked, userIdLikes: data.data[i].usersLiked})
+                    }else{
+                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, display:false, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislikes: data.data[i].usersDisliked, userIdLikes: data.data[i].usersLiked})
+                    }
+                }
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
+        },
 },
+ created(){
+            this.displayPosts()
+        },
 }
 </script>

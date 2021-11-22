@@ -10,14 +10,14 @@ const db = mysql.createConnection({
 
 exports.signup = (req, res) => {
     db.query('SELECT * FROM users where email=?',[req.body.email], (err,rows) => {
-        if(err) throw err;
+        if(err) {throw err};
         if(rows.length == 0) {
             bcrypt.hash(req.body.password, 10)
             .then(hash =>{
                 const query="INSERT INTO users SET ?";
                 const params={email:req.body.email, password:hash, firstName: req.body.firstName, lastName: req.body.lastName}
                 db.query(query,params,(err,result) => {
-                    if(err) throw err;
+                    if(err) {throw err};
                     res.json({saved:result.affectedRows,inserted_id:result.insertId})
                 });
             })
@@ -30,7 +30,7 @@ exports.signup = (req, res) => {
 
 exports.login = (req, res, next) => {
     db.query('SELECT * FROM users where email=?',[req.body.email], (err,rows) => {
-        if(err) throw err;
+        if(err) {throw err};
         if(rows.length > 0) {
             bcrypt.compare(req.body.password, rows[0].password)
             .then (valid => {
@@ -61,7 +61,7 @@ exports.modifyUser = (req, res) => {
             const query="UPDATE users SET email=?, lastName=?, firstName=?, password=? where id=?";
             const params=[req.body.email, req.body.lastName, req.body.firstName, hash, req.params.id]
             db.query(query,params,(err,result,fields) => {
-                if(err) throw err;
+                if(err) {throw err};
                 res.json({updated:result.affectedRows})
             });
         })
@@ -71,7 +71,7 @@ exports.modifyUser = (req, res) => {
         const query="UPDATE users SET email=?, lastName=?, firstName=? where id=?";
         const params=[req.body.email, req.body.lastName, req.body.firstName, req.params.id]
         db.query(query,params,(err,result,fields) => {
-            if(err) throw err;
+            if(err) {throw err};
             res.json({updated:result.affectedRows})
         });
     }
@@ -81,21 +81,21 @@ exports.deleteUser = (req, res) => {
     const query="DELETE FROM users where id=?";
     const params=[req.params.id]
     db.query(query,params,(err,result,fields) => {
-        if(err) throw err;
+        if(err) {throw err};
         res.json({deleted:result.affectedRows})
     });
 };
 
 exports.getOneUser = (req, res) => {
     db.query('SELECT * FROM users where id=?',[req.params.id], (err,rows) => {
-        if(err) throw err;
+        if(err) {throw err};
         res.json({data:rows})
     });
 };
 
 exports.getAllUsers = (req, res) => {
     db.query('SELECT * FROM users', (err,rows) => {
-        if(err) throw err;
+        if(err) {throw err};
         res.json({data:rows})
     });
 };

@@ -14,61 +14,37 @@
             </form>
            
         </div>
-        <div v-for="publi in publis" :key='publi.id'>
-            <div class="card border-info my-3 mx-5" v-if="publi.text">
-                <div class="card-text border" v-if="publi.text"> 
-                    {{publi.name}}
-                </div>
-                <div :id="'post'+ publi.postId" class="card-text border" v-if="publi.text">
-                    {{publi.text}}
-                        <div>
-                            <button :id="'like'+publi.postId" type="submit" @click="liked(publi.userIdLike), likedPost(publi.postId)" class="btn" :disabled ="disabledLike(publi.userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{publi.likes}}</span></button>
-                            <button :id="'unlike'+publi.postId" type="submit" @click="unliked(publi.userIdDislike), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike(publi.userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{publi.dislikes}}</span></button>
-                        </div>
-                    <div v-for="comment in comments" :key="comment.id">
-                        <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
-                        {{comment.name}} {{comment.comment}}
-                        <button @click="deleteComment(comment.commentId)" :id="comment.commentId" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
-                        </div>
-                        </div>
-                    <div  class="card-text"> 
-                        <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
-                        <button type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card border-primary my-3 mx-5" v-if="publi.media">
-                <div class="card-text border" v-if="publi.media"> 
-                    {{publi.name}}
-                </div>
-                <div class="card-img border" v-if="publi.media">
-                    <img class="publication_image" :src=publi.media>
-                    <div>
-                        <button :id="'like'+publi.postId" type="submit" @click="liked(), likedPost(publi.postId)" class="btn" :disabled ="disabledLike()"><font-awesome-icon icon="thumbs-up" /><span> compteur </span></button>
-                        <button :id="'unlike'+publi.postId" type="submit" @click="unliked(), likedPost(publi.postId)" class="btn" :disabled ="disabledUnlike()" ><font-awesome-icon icon="thumbs-down"/><span>  </span></button>
-                    </div>
-                    <div v-for="comment in comments" :key="comment.id">
-                        <div :class="'comm'+ comment.commentId" v-if="comment.postId == publi.postId"> 
-                        {{comment.name}} {{comment.comment}} 
-                        <button @click="deleteComment(comment.commentId)" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
-                        </div>
-                    </div>
-                    <div  class="card-text"> <input v-model="publi.comment" :id="'post' + publi.postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
-                        <button type="submit" @click="addComment(publi.postId, publi.comment)" class="card-btn" > Ajouter un commentaire</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <Publis
+            v-for="publi in publis" 
+            :name = "publi.name"
+            :text = "publi.text"
+            :media = "publi.media"
+            :postId = "publi.postId"
+            :likes = "publi.likes"
+            :dislikes = "publi.dislikes"
+            :comment = "publi.comment"
+            :userIdDislike = "publi.userIdDislike"
+            :userIdLike = "publi.userIdLike"
+            @disablingLike = "disabledLike"
+            @disablingUnlike = 'disabledUnlike'
+            :key='publi.id'
+        />
+
     </div>
 </template>
 
 <script>
-
+import Publis from "../components/Publis"
 export default {
     name: 'Main',
+    components:{
+        Publis
+    },
     data: function(){
         return{
             publis:[
+                {}
             ],
             comments:[
                 {thisUserId: localStorage.getItem('userId')}
@@ -106,15 +82,7 @@ export default {
         onFileChange() {
             this.file = this.$refs.file.files[0];
             this.newImage = URL.createObjectURL(this.file);
-            console.log(this.file);
-            console.log(this.newImage);
         },
-        onVideoChange() {
-            this.video = this.$refs.file.files[0];
-            this.newVideo = URL.createObjectURL(this.video);
-            console.log(this.video);
-            console.log(this.newVideo);
-    },
         sendMedia: function(){
             const formData = new FormData();
             formData.set("image", this.file)
@@ -140,7 +108,7 @@ export default {
                 console.error("There was an error!", error);
             });
         },   
-        displayPosts: function(){
+        recoverPosts: function(){
             let url = "http://localhost:3000/api/texts";
             fetch(url,{
                 method: "GET",
@@ -158,7 +126,6 @@ export default {
                     }else{
                         this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: (data.data[i].userDislikes).split(' '), userIdLike: (data.data[i].userLikes).split(' ')})
                     }
-                    console.log(this.publis[i]);
                 }
             })
             .catch(error => {
@@ -166,8 +133,7 @@ export default {
                 console.error("There was an error!", error);
             });
         },
-        displayComments: function(){
-            console.log(this.like);
+        recoverComments: function(){
             let url = "http://localhost:3000/api/comments";
             fetch(url,{
                 method: "GET",
@@ -250,7 +216,6 @@ export default {
         deleteComment: function(e){
             localStorage.setItem("commentId", e)
             let commentId = localStorage.getItem('commentId');
-            console.log(commentId);
             let url = "http://localhost:3000/api/comments/" + commentId;
             fetch(url,{
                 method: "delete",
@@ -277,7 +242,6 @@ export default {
                 }else if (!e.includes(userId)){
                     this.like += 1
                 }
-                console.log(this.like)
         },
         unliked: function(e){
             let userId = localStorage.getItem('userId');
@@ -286,7 +250,6 @@ export default {
                 }else if (!e.includes(userId)){
                     this.like += -1
                 }
-                console.log(this.like)
         },
         likedPost: function(e){
             console.log(this.like)
@@ -340,8 +303,8 @@ export default {
       }, */
     },
         created(){
-            this.displayPosts()
-            this.displayComments()
+            this.recoverPosts()
+            this.recoverComments()
         },
 }
 </script>

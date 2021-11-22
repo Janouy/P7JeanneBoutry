@@ -9,9 +9,9 @@ const db = mysql.createConnection({
   exports.addMedia = (req, res) => {
     let imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`; 
     const query="INSERT INTO post SET ?";
-    const params={media:imageUrl, user_id:req.params.id}
+    const params={media:imageUrl, user_id:req.params.id, userLikes: 0, userDislikes: 0}
     db.query(query,params,(err,result) => {
-      if(err) throw err;
+      if(err) {throw err};
       res.json({saved:result.affectedRows,inserted_id:result.insertId})
     }); 
   };

@@ -11,7 +11,7 @@ exports.addPicture = (req, res) => {
   const query="UPDATE users SET picture='NULL' WHERE id=?";
   const params=[req.params.id];
   db.query('SELECT picture FROM users WHERE id=?', params, (err,rows) => {
-      if(err) throw err;
+      if(err) {throw err};
       res.json({data:rows})
       let imageUrl = req.file.filename;
       let oldImage = rows[0].picture;
@@ -29,7 +29,7 @@ exports.deletePicture = (req, res)=>{
   const query="UPDATE users SET picture='NULL' WHERE id=?";
   const params=[req.params.id];
   db.query('SELECT picture FROM users WHERE id=?', params, (err,rows) => {
-      if(err) throw err;
+      if(err) {throw err};
       res.json({data:rows})
       let imageUrl = rows[0].picture;
       const filename = imageUrl.split('/images/') [1];
