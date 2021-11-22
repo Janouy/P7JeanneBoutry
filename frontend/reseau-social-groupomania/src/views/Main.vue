@@ -12,9 +12,7 @@
                     </form>
                 </div>
             </form>
-           
         </div>
-
         <Publis
             v-for="publi in publis" 
             :name = "publi.name"
@@ -23,28 +21,32 @@
             :postId = "publi.postId"
             :likes = "publi.likes"
             :dislikes = "publi.dislikes"
-            :comment = "publi.comment"
             :userIdDislike = "publi.userIdDislike"
             :userIdLike = "publi.userIdLike"
             @disablingLike = "disabledLike"
             @disablingUnlike = 'disabledUnlike'
+            @sendComment= "addComment"
             :key='publi.id'
         />
-
+        <Comments 
+        @dropTheComment= "deleteComment"
+        />
     </div>
 </template>
 
 <script>
 import Publis from "../components/Publis"
+import Comments from "../components/Comments"
 export default {
     name: 'Main',
     components:{
-        Publis
+        Publis,
+        Comments
     },
     data: function(){
         return{
             publis:[
-                {}
+                {comment:''}
             ],
             comments:[
                 {thisUserId: localStorage.getItem('userId')}
@@ -151,6 +153,7 @@ export default {
                     }else{
                         this.comments.push({userId: data.data[i].id_user, postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
                     }
+                    console.log(data.data[i])
                 } 
             })
             .catch(error => {

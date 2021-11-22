@@ -10,12 +10,15 @@
                         <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likedPost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                         <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likedPost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                     </div>
-                <div v-for="comment in comments" :key="comment.id">
-                    <div :class="'comm'+ comment.commentId" v-if="comment.postId == postId"> 
-                    {{comment.name}} {{comment.comment}}
-                    <button @click="deleteComment(comment.commentId)" :id="comment.commentId" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
-                    </div>
-                    </div>
+                    <Comments 
+                        v-for="comment in comments" 
+                        :key="comment.id"
+                        :userId = "comment.userId"
+                        :postId = "comment.postId"
+                        :comment = "comment.comment"
+                        :name = "comment.name"
+                        :commentId = "comment.commentId"
+                    />
                 <div  class="card-text"> 
                     <input v-model="comment" :id="'post' + postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
                     <button type="submit" @click="addComment(postId, comment)" class="card-btn" > Ajouter un commentaire</button>
@@ -32,13 +35,16 @@
                     <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likedPost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                     <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likedPost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                 </div>
-                <div v-for="comment in comments" :key="comment.id">
-                    <div :class="'comm'+ comment.commentId" v-if="comment.postId == postId"> 
-                    {{comment.name}} {{comment.comment}} 
-                    <button @click="deleteComment(comment.commentId)" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
-                    </div>
-                </div>
-                <div  class="card-text"> <input v-model="comment" :id="'post' + postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                    <Comments 
+                        v-for="comment in comments" 
+                        :key="comment.id"
+                        :userId = "comment.userId"
+                        :postId = "comment.postId"
+                        :comment = "comment.comment"
+                        :name = "comment.name"
+                        :commentId = "comment.commentId"
+                    />
+                <div class="card-text"> <input v-model="comment" :id="'post' + postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
                     <button type="submit" @click="addComment(postId, comment)" class="card-btn" > Ajouter un commentaire</button>
                 </div>
             </div>
@@ -47,8 +53,12 @@
 </template>
 
 <script>
+import Comments from "../components/Comments"
 export default{
     name: "Publis",
+    components:{
+        Comments
+    },
     props:{
         name: String,
         text: String,
@@ -56,16 +66,25 @@ export default{
         postId: Number,
         likes: Number,
         dislikes: Number,
-        comment: String,
         userIdDislike: Array,
         userIdLike: Array,
     },
+     data: function(){
+        return{
+            comments:[
+            ],
+            comment:'',
+        }
+    }, 
     methods: {
 		disabledLike(userIdDislike) {
 			this.$emit("disablingLike", userIdDislike)
 		},
         disabledUnlike(userIdLike) {
 			this.$emit("disablingUnlike", userIdLike)
+		},
+        addComment(postId, comment) {
+			this.$emit("sendComment", postId,comment)
 		},
     },
 }
