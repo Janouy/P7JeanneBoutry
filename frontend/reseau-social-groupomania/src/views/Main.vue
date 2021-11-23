@@ -1,7 +1,7 @@
 <template>
     <div>
   <div id="nav">
-      <router-link to="/profile"> profile</router-link> 
+      <router-link to="/profile"> Mon profil</router-link> 
     </div>
         <h1> Page principale </h1>
         <div class="container">

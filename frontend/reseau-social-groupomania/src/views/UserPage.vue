@@ -6,9 +6,9 @@
             <div class="card_title col-12 h2 ">{{this.firstName}} {{this.lastName}}</div>
         </div>
         <div class="card">
-            <div class="card-img-top" v-if="!this.picture" v-show="false"> <img class="publication_image" :src=this.picture> </div>
-            <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.profilePicture> </div>
-            <div class="card-text my-3 mx-3 border"> future description </div>
+            <div class="card-img-top" v-if="this.picture == 'NULL'" v-show="false"> <img class="publication_image" :src=this.picture> </div>
+            <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.picture> </div>
+            <div class="card-text my-3 mx-3 border"> {{this.description}}</div>
             <router-link to="/groupomania/main"> Retour à l'accueil </router-link>
        </div>
     </div> 
@@ -43,7 +43,8 @@ export default {
             }
             this.lastName = data.data[0].lastName;
             this.firstName = data.data[0].firstName;
-            this.profilePicture = data.data[0].picture;
+            this.picture = data.data[0].picture;
+            this.description = data.data[0].description;
             })
             .catch(error => {
                 this.errorMessage = error;

@@ -58,8 +58,8 @@ exports.modifyUser = (req, res) => {
     if(req.body.password){
         bcrypt.hash(req.body.password, 10)
         .then(hash => {
-            const query="UPDATE users SET email=?, lastName=?, firstName=?, password=? where id=?";
-            const params=[req.body.email, req.body.lastName, req.body.firstName, hash, req.params.id]
+            const query="UPDATE users SET email=?, lastName=?, firstName=?, description=?, password=? where id=?";
+            const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, hash, req.params.id]
             db.query(query,params,(err,result,fields) => {
                 if(err) {throw err};
                 res.json({updated:result.affectedRows})
@@ -68,8 +68,8 @@ exports.modifyUser = (req, res) => {
         .catch(error => res.status(500).json({error}))
 
     }else{
-        const query="UPDATE users SET email=?, lastName=?, firstName=? where id=?";
-        const params=[req.body.email, req.body.lastName, req.body.firstName, req.params.id]
+        const query="UPDATE users SET email=?, lastName=?, firstName=?, description=? where id=?";
+        const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, req.params.id]
         db.query(query,params,(err,result,fields) => {
             if(err) {throw err};
             res.json({updated:result.affectedRows})

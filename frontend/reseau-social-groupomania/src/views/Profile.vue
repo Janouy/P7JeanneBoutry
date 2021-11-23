@@ -11,18 +11,23 @@
         </div>
        
         <div class="card" v-if="mode == 'view'">
-            <div class="card-img-top" v-if="!this.profilePicture" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
-            <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.profilePicture> </div>
+            <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"></div>
+            <div class="card-img-top" v-else v-show="true">
+                <img class="publication_image" :src=this.profilePicture>
+            </div>
             <div class="card-text my-3 mx-3 border"> {{this.email}} </div>
             <div class="card-text my-3 mx-3 border"> {{this.firstName}}</div>
             <div class="card-text my-3 mx-3 border"> {{this.lastName}}</div>
+            <div class="card-text my-3 mx-3 border"> {{this.description}}</div>
             <button class="btn col-3 my-3 mx-3" @click ="modifyProfile()"> Modifier mon profil</button>
             <button type="submit" @click="displayMyPosts()" class="btn btn-primary col-3 my-3 mx-3"> Voir mes publications</button>
             <Disconnection/> <DeleteProfile/>
         </div>
         <form v-else>
-            <div class="card-img-top" v-if="!this.profilePicture" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
-            <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.profilePicture> </div>
+            <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
+            <div class="card-img-top" v-else v-show="true"> 
+                <img class="picture_profile" :src=this.profilePicture> 
+            </div>
             <form enctype="multipart/form-data">
                 <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
                 <button type="submit" @click="sendPicture()"> Envoi </button>
@@ -36,6 +41,9 @@
             </div>
             <div class="form-group"> Nom:
                 <input v-model="lastName" type="text" class="form-control my-3 mx-3">
+            </div>
+            <div class="form-group"> Description:
+                <input v-model="description" type="text" class="form-control my-3 mx-3">
             </div>
             <div class="form-group"> Nouveau mot de passe:
                 <input v-model="password" type="password" class="form-control my-3 mx-3">
@@ -68,6 +76,7 @@ export default {
         password:'',
         firstName: '',
         lastName: '',
+        description:'',
         profilePicture:'',
         file: null,
         newImage:'',
@@ -127,6 +136,7 @@ export default {
             this.lastName = data.data[0].lastName;
             this.firstName = data.data[0].firstName;
             this.profilePicture = data.data[0].picture;
+            this.description = data.data[0].description;
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -143,7 +153,8 @@ export default {
                     email: this.email,
                     firstName: this.firstName,
                     lastName: this.lastName,
-                    password: this.password
+                    password: this.password,
+                    description: this.description,
                 }),
                 
             })

@@ -1,7 +1,8 @@
 <template>
     <div class="col-3" >
     <div v-for="user in users" :key="user.id">
-    <router-link :to="{name:'userPage', params:{id: user.userId}}"> {{user.name}} </router-link>
+    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-if="user.userId == userId" v-show="display=false"> {{user.name}} </router-link>
+    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-else v-show="display=true"> {{user.name}} </router-link>
     </div>
     </div>
 </template>
@@ -13,6 +14,7 @@ export default{
         return{
             users:[
             ],
+            userId: localStorage.getItem('userId'),
         }
     },
     methods:{
