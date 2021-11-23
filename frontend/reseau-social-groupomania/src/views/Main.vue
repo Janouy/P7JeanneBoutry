@@ -23,25 +23,18 @@
             :dislikes = "publi.dislikes"
             :userIdDislike = "publi.userIdDislike"
             :userIdLike = "publi.userIdLike"
-            @disablingLike = "disabledLike"
-            @disablingUnlike = 'disabledUnlike'
             @sendComment= "addComment"
             :key='publi.id'
-        />
-        <Comments 
-        @dropTheComment= "deleteComment"
         />
     </div>
 </template>
 
 <script>
 import Publis from "../components/Publis"
-import Comments from "../components/Comments"
 export default {
     name: 'Main',
     components:{
-        Publis,
-        Comments
+        Publis
     },
     data: function(){
         return{
@@ -49,7 +42,6 @@ export default {
                 {comment:''}
             ],
             comments:[
-                {thisUserId: localStorage.getItem('userId')}
             ],
             text:'',
             userId:'',
@@ -57,7 +49,6 @@ export default {
             image:'',
             imageUrl:'',
             newImage:'',
-            like: 0,
             idUser: localStorage.getItem('UserId'),
             }
     }, 
@@ -65,27 +56,12 @@ export default {
     
     },
     methods:{
-        disabledLike: function(e){
-            let userId = localStorage.getItem('userId');
-            if(e.includes(userId)){
-                return true;
-            }else{
-                return false;
-            }
-        },
-        disabledUnlike: function(e){
-            let userId = localStorage.getItem('userId');
-            if(e.includes(userId)){
-                return true;
-            }else{
-                return false;
-            }
-        },
         onFileChange() {
             this.file = this.$refs.file.files[0];
             this.newImage = URL.createObjectURL(this.file);
         },
         sendMedia: function(){
+            console.log('test')
             const formData = new FormData();
             formData.set("image", this.file)
             let userId = localStorage.getItem("userId");
@@ -129,32 +105,6 @@ export default {
                         this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a publié:', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: (data.data[i].userDislikes).split(' '), userIdLike: (data.data[i].userLikes).split(' ')})
                     }
                 }
-            })
-            .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-            });
-        },
-        recoverComments: function(){
-            let url = "http://localhost:3000/api/comments";
-            fetch(url,{
-                method: "GET",
-                headers: { "Content-Type": "application/json"},
-            })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
-                }
-                for (let i=0; i<data.data.length; i++){
-                    if (data.data[i].id_user== null){
-                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
-                    }else{
-                        this.comments.push({userId: data.data[i].id_user, postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
-                    }
-                    console.log(data.data[i])
-                } 
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -216,71 +166,6 @@ export default {
                 alert("Une erreur est survenue.")
             }); 
         },
-        deleteComment: function(e){
-            localStorage.setItem("commentId", e)
-            let commentId = localStorage.getItem('commentId');
-            let url = "http://localhost:3000/api/comments/" + commentId;
-            fetch(url,{
-                method: "delete",
-                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
-            })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
-                }
-                alert("Votre commentaire a bien été supprimé.");
-                location.reload();
-            })
-            .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-            }); 
-        },
-        liked: function(e){
-            let userId = localStorage.getItem('userId');
-            if(e.includes(userId)){
-                this.like = 0
-                }else if (!e.includes(userId)){
-                    this.like += 1
-                }
-        },
-        unliked: function(e){
-            let userId = localStorage.getItem('userId');
-            if(e.includes(userId)){
-                this.like = 0
-                }else if (!e.includes(userId)){
-                    this.like += -1
-                }
-        },
-        likedPost: function(e){
-            console.log(this.like)
-            const userId = localStorage.getItem('userId');
-            localStorage.setItem("postId", e);
-            let postId = localStorage.getItem("postId");
-            let url = "http://localhost:3000/api/texts/" + postId;
-            fetch(url,{
-                method: "POST",
-                headers: {"Content-Type": "application/json",Authorization: "Bearer " + localStorage.getItem("token") },
-                body: JSON.stringify({ 
-                like: this.like,
-                userId: userId,
-                })
-            })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
-                }
-                location.reload();
-            })
-            .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-            }); 
-            },
         /*displayLikes: function(){
             let url = "http://localhost:3000/api/likes";
             fetch(url,{
@@ -307,7 +192,6 @@ export default {
     },
         created(){
             this.recoverPosts()
-            this.recoverComments()
         },
 }
 </script>
