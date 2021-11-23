@@ -1,9 +1,13 @@
 <template>
     <div>
+  <div id="nav">
+      <router-link to="/profile"> profile</router-link> 
+    </div>
         <h1> Page principale </h1>
         <div class="container">
+        <DisplayUsers/>
             <form>
-                <div class="form-row">
+                <div class="form col-9">
                     <input v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
                     <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
                     <form enctype="multipart/form-data">
@@ -31,10 +35,12 @@
 
 <script>
 import Publis from "../components/Publis"
+import DisplayUsers from "../components/DisplayUsers"
 export default {
     name: 'Main',
     components:{
-        Publis
+        Publis,
+        DisplayUsers
     },
     data: function(){
         return{
@@ -166,29 +172,6 @@ export default {
                 alert("Une erreur est survenue.")
             }); 
         },
-        /*displayLikes: function(){
-            let url = "http://localhost:3000/api/likes";
-            fetch(url,{
-                method: "GET",
-                headers: { "Content-Type": "application/json"},
-            })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
-                }
-                for (let i=0; i<data.data.length; i++){
-                    this.likes.push({userIdLike: data.data[i].usersLiked, userIdDisliked: data.data[i].usersDisliked, postId: data.data[i].id_post, like: data.data[i].likes, dislike: data.data[i].dislikes})
-                console.log(this.likes[i])
-                }
-                
-            })
-            .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-            }); 
-      }, */
     },
         created(){
             this.recoverPosts()

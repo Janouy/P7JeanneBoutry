@@ -94,7 +94,7 @@ exports.getOneUser = (req, res) => {
 };
 
 exports.getAllUsers = (req, res) => {
-    db.query('SELECT * FROM users', (err,rows) => {
+    db.query('SELECT firstName, lastName, id FROM users', (err,rows) => {
         if(err) {throw err};
         res.json({data:rows})
     });

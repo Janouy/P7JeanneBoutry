@@ -1,4 +1,8 @@
 <template>
+<div>
+    <div id="nav">
+      <router-link to="/groupomania/main" v-if="mode == 'view'"> Accueil </router-link>
+    </div>
 <div class="container">
     <div class='card'>
         <div class="row">
@@ -42,6 +46,7 @@
     </div>
     <p v-if="mode == 'view'"></p>
     <p v-else> * Le formulaire n'accepte pas les caractères spéciaux </p>
+</div>
 </div>
 </template>
 
@@ -162,7 +167,7 @@ export default {
         },
         sendPicture: function(){
             const formData = new FormData();
-            formData.set("image", this.file)
+            formData.set("image", this.file);
             let userId = localStorage.getItem("userId");
             let url = "http://localhost:3000/api/pictures/" + userId;
             fetch(url,{

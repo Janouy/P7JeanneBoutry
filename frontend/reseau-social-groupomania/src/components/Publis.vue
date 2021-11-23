@@ -61,7 +61,7 @@ export default{
         userIdDislike: Array,
         userIdLike: Array,
     },
-     data: function(){
+    data: function(){
         return{
             comments:[
                 {thisUserId: localStorage.getItem("userId")}
