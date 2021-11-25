@@ -47,8 +47,6 @@ export default {
             publis:[
                 {comment:''}
             ],
-            comments:[
-            ],
             text:'',
             userId:'',
             file: null, 
@@ -67,7 +65,6 @@ export default {
             this.newImage = URL.createObjectURL(this.file);
         },
         sendMedia: function(){
-            console.log('test')
             const formData = new FormData();
             formData.set("image", this.file)
             let userId = localStorage.getItem("userId");

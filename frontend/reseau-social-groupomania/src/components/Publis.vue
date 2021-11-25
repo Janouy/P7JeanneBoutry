@@ -7,15 +7,20 @@
             <div :id="'post'+ postId" class="card-text border" v-if="text">
                 {{text}}
                     <div>
-                        <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likedPost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
-                        <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likedPost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
+                        <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
+                        <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                     </div>
-                    <div v-for="comment in comments" :key="comment.id">
-                        <div :class="'comm'+ comment.commentId" v-if="comment.postId == postId"> 
-                            {{comment.name}} {{comment.comment}}
-                            <button @click="deleteComment(comment.commentId)" :id="comment.commentId" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
-                        </div>
-                    </div>
+                      <Comments 
+                        v-for= "comment in comments" 
+                        :commentId= "comment.commentId"
+                        :comment= "comment.comment"
+                        :userId= "comment.userId"
+                        :idPost = "comment.idPost"
+                        :name= "comment.name"
+                        :postId = "postId"
+                        @dropComment = "deleteComment"
+                        :key= "comment.id"
+                      /> 
                 <div  class="card-text"> 
                     <input v-model="comment" :id="'post' + postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
                     <button type="submit" @click="addComment(postId, comment)" class="card-btn" > Ajouter un commentaire</button>
@@ -29,17 +34,20 @@
             <div class="card-img border" v-if="media">
                 <img class="publication_image" :src=media>
                 <div>
-                    <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likedPost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
-                    <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likedPost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
+                    <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
+                    <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                 </div>
-                <div>
-                     <div v-for="comment in comments" :key="comment.id">
-                        <div :class="'comm'+ comment.commentId" v-if="comment.postId == postId"> 
-                            {{comment.name}} {{comment.comment}}
-                            <button @click="deleteComment(comment.commentId)" :id="comment.commentId" class="btn-primary" v-if="comment.userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
-                        </div>
-                    </div>
-                </div>
+                    <Comments 
+                        v-for="comment in comments" 
+                        :commentId= "comment.commentId"
+                        :comment= "comment.comment"
+                        :userId= "comment.userId"
+                        :idPost= "comment.idPost"
+                        :name= "comment.name"
+                        :postId = "postId"
+                        @dropComment = "deleteComment"
+                        :key= "comment.id"
+                    /> 
                 <div class="card-text"> <input v-model="comment" :id="'post' + postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
                     <button type="submit" @click="addComment(postId, comment)" class="card-btn"> Ajouter un commentaire</button>
                 </div>
@@ -49,8 +57,12 @@
 </template>
 
 <script>
+import Comments from "../components/Comments"
 export default{
     name: "Publis",
+    components:{
+        Comments,
+    },
     props:{
         name: String,
         text: String,
@@ -70,6 +82,8 @@ export default{
             like: 0,
         }
     }, 
+    computed:{
+    },
     methods: {
         addComment(postId, comment) {
 			this.$emit("sendComment", postId,comment)
@@ -88,9 +102,9 @@ export default{
                 }
                 for (let i=0; i<data.data.length; i++){
                     if (data.data[i].id_user== null){
-                        this.comments.push({postId: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
+                        this.comments.push({idPost: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
                     }else{
-                        this.comments.push({userId: data.data[i].id_user, postId: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
+                        this.comments.push({userId: data.data[i].id_user, idPost: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
                     }
                 } 
             })
@@ -137,7 +151,7 @@ export default{
                     this.like += -1
                 }
         },
-        likedPost: function(e){
+        likePost: function(e){
             console.log(this.like)
             const userId = localStorage.getItem('userId');
             localStorage.setItem("postId", e);
@@ -164,7 +178,7 @@ export default{
                 console.error("There was an error!", error);
             }); 
         },
-                disabledLike: function(e){
+        disabledLike: function(e){
             let userId = localStorage.getItem('userId');
             if(e.includes(userId)){
                 return true;

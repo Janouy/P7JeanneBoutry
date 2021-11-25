@@ -26,7 +26,6 @@ exports.addComment = (req, res) => {
 
 
 exports.deleteComment = (req, res) => {
-  console.log(req.params.id);
   const query="DELETE FROM comment WHERE id_comment=?";
     const params=[req.params.id]
     db.query(query,params,(err,result,fields) => {
