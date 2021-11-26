@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import './assets/custom.scss'
 import router from './router';
+import store from './store'
 
 library.add(faUserSecret)
 library.add(faPlusCircle)
@@ -25,6 +26,7 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
 
