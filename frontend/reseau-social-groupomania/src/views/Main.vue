@@ -3,7 +3,7 @@
   <div id="nav">
       <router-link to="/profile"> Mon profil</router-link> 
     </div>
-        <h1> Page principale </h1>
+        <h1> Page principale</h1>
         <div class="container">
         <DisplayUsers/>
             <form>
@@ -36,6 +36,7 @@
 <script>
 import Publis from "../components/Publis"
 import DisplayUsers from "../components/DisplayUsers"
+import { mapState } from 'vuex'
 export default {
     name: 'Main',
     components:{
@@ -55,9 +56,9 @@ export default {
             newImage:'',
             idUser: localStorage.getItem('UserId'),
             }
-    }, 
+    },
     computed:{
-    
+         ...mapState(['year', 'month', 'day'])
     },
     methods:{
         changeLikeValue: function () {

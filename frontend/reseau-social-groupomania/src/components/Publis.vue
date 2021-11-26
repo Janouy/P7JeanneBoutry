@@ -2,12 +2,13 @@
     <div>
         <div class="card border-info my-3 mx-5" v-if="text">
             <div class="card-text border" v-if="text"> 
-                {{name}} a publié:
+                {{name}} a publié: 
             </div>
             <div :id="'post'+ postId" :class="'card-text border' + ' ' +name" v-if="text">
                 {{text}}
                     <div>
-                        <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
+                        <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}{{updatedLikes}}</span></button>
+                        <button @click="incrementLike">like</button>
                         <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                     </div>
                       <Comments 
@@ -58,6 +59,7 @@
 
 <script>
 import Comments from "../components/Comments"
+import { mapState } from 'vuex'
 export default{
     name: "Publis",
     components:{
@@ -80,14 +82,14 @@ export default{
             ],
             comment:'',
             like: 0,
-            thatLike : this.likes,
         }
     }, 
-    computed:{
+     computed:{
+         ...mapState(['updatedLikes'])
     },
     methods: {
-        changeLikeValue: function () {
-            this.thatLike++
+        incrementLike() {
+            this.$store.commit("INCREMENT_LIKE", this.likes)
         },
         addComment(postId, comment) {
 			this.$emit("sendComment", postId,comment)
