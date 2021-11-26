@@ -9,7 +9,7 @@ const db = mysql.createConnection({
 
 
 exports.getAllComments = (req, res) => {
-  db.query('SELECT*FROM comment INNER JOIN post ON comment.post_id=post.id_post INNER JOIN users ON comment.id_user = users.id OR comment.id_user IS NULL ORDER BY id_comment DESC', (err,rows) => {
+  db.query('SELECT id_user, id_post, comment, firstName, lastName, id_comment FROM comment LEFT JOIN users ON comment.id_user=users.id JOIN post ON comment.post_id=post.id_post ORDER BY id_comment DESC', (err,rows) => {
       if(err) {throw err};
       res.json({data:rows})
   });

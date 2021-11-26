@@ -2,9 +2,9 @@
     <div>
         <div class="card border-info my-3 mx-5" v-if="text">
             <div class="card-text border" v-if="text"> 
-                {{name}}
+                {{name}} a publié:
             </div>
-            <div :id="'post'+ postId" class="card-text border" v-if="text">
+            <div :id="'post'+ postId" :class="'card-text border' + ' ' +name" v-if="text">
                 {{text}}
                     <div>
                         <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
@@ -29,9 +29,9 @@
         </div>
         <div class="card border-primary my-3 mx-5" v-if="media">
             <div class="card-text border" v-if="media"> 
-                {{name}}
+                {{name}} a publié:
             </div>
-            <div class="card-img border" v-if="media">
+            <div :class="'card-img border' + ' ' +name" v-if="media">
                 <img class="publication_image" :src=media>
                 <div>
                     <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
@@ -80,11 +80,15 @@ export default{
             ],
             comment:'',
             like: 0,
+            thatLike : this.likes,
         }
     }, 
     computed:{
     },
     methods: {
+        changeLikeValue: function () {
+            this.thatLike++
+        },
         addComment(postId, comment) {
 			this.$emit("sendComment", postId,comment)
 		},
@@ -101,11 +105,7 @@ export default{
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    if (data.data[i].id_user== null){
-                        this.comments.push({idPost: data.data[i].id_post , comment :data.data[i].comment, name : 'Utilisateur supprimé' + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
-                    }else{
-                        this.comments.push({userId: data.data[i].id_user, idPost: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment})
-                    }
+                    this.comments.push({userId: data.data[i].id_user, idPost: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment}) 
                 } 
             })
             .catch(error => {
@@ -152,7 +152,6 @@ export default{
                 }
         },
         likePost: function(e){
-            console.log(this.like)
             const userId = localStorage.getItem('userId');
             localStorage.setItem("postId", e);
             let postId = localStorage.getItem("postId");
@@ -171,7 +170,26 @@ export default{
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
-                location.reload();
+            let url = "http://localhost:3000/api/texts";
+            fetch(url,{
+                method: "GET",
+                headers: { "Content-Type": "application/json"},
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                console.log(this.likes)
+                for (let i=0; i<data.data.length; i++){
+                    this.thatLike = data.data[i].likes
+                } 
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            })
             })
             .catch(error => {
                 this.errorMessage = error;

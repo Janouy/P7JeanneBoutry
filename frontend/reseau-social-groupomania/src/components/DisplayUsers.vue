@@ -1,9 +1,13 @@
 <template>
-    <div class="col-3" >
-    <div v-for="user in users" :key="user.id">
-    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-if="user.userId == userId" v-show="display=false"> {{user.name}} </router-link>
-    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-else v-show="display=true"> {{user.name}} </router-link>
-    </div>
+    <div class="col-3 allUsers" >
+        <p> Découvrez vos collaborateurs <p/>
+            <label for="site-search"></label>
+            <input type="search" id="site-search" name="q" aria-label="Search through site content">
+            <button>Rechercher</button>
+    <ul v-for="user in users" :key="user.id">
+    <li v-if="user.userId == userId" v-show="display=false"><router-link :to="{name:'userPage', params:{id: user.userId}}">{{user.name}}</router-link></li>
+    <li v-else v-show="display=true"><router-link :to="{name:'userPage', params:{id: user.userId}}">{{user.name}}</router-link></li>
+    </ul>
     </div>
 </template>
 
@@ -48,3 +52,13 @@ export default{
         },
 }
 </script>
+
+<style lang="scss">
+.allUsers{
+    border: 1px black solid;
+
+}
+ul {
+    list-style: none;
+}
+</style>
