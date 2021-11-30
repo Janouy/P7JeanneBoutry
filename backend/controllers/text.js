@@ -82,9 +82,6 @@ exports.likeText = (req, res, next) => {
         const query="UPDATE post SET userLikes=REPLACE(userLikes, ?, '') WHERE id_post=?";
         const params=[userId, postId];
         db.query(query,params)
-        const query2 = "UPDATE post SET userLikes=REPLACE(userLikes,' ','') WHERE id_post=?";
-        const params2 = [postId];
-        db.query(query2, params2)
         const query3 = "UPDATE post SET likes=likes-1 WHERE id_post=?";
         const params3 = [postId];
         db.query(query3, params3)
@@ -92,9 +89,6 @@ exports.likeText = (req, res, next) => {
         const query="UPDATE post SET userDislikes=REPLACE(userDislikes, ?, '') WHERE id_post=?"; 
         const params=[userId, postId]
         db.query(query,params)
-        const query2 = "UPDATE post SET userDislikes=REPLACE(userDislikes,' ','') WHERE id_post=?";
-        const params2 = [postId];
-        db.query(query2, params2)
         const query3 = "UPDATE post SET dislikes=dislikes-1 WHERE id_post=?";
         const params3 = [postId];
         db.query(query3, params3)

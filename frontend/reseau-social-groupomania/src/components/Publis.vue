@@ -7,12 +7,11 @@
             <div :id="'post'+ postId" :class="'card-text border' + ' ' +name" v-if="text">
                 {{text}}
                     <div>
-                        <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}{{updatedLikes}}</span></button>
-                        <button @click="incrementLike">like</button>
+                        <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                         <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                     </div>
                       <Comments 
-                        v-for= "comment in comments" 
+                        v-for= "comment in comms" 
                         :commentId= "comment.commentId"
                         :comment= "comment.comment"
                         :userId= "comment.userId"
@@ -39,7 +38,7 @@
                     <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                 </div>
                     <Comments 
-                        v-for="comment in comments" 
+                        v-for="comment in comms" 
                         :commentId= "comment.commentId"
                         :comment= "comment.comment"
                         :userId= "comment.userId"
@@ -59,7 +58,7 @@
 
 <script>
 import Comments from "../components/Comments"
-import { mapState } from 'vuex'
+import {mapActions, mapState} from 'vuex'
 export default{
     name: "Publis",
     components:{
@@ -84,37 +83,15 @@ export default{
             like: 0,
         }
     }, 
-     computed:{
-         ...mapState(['updatedLikes'])
+    computed:{
+         ...mapState(['comms']),
     },
     methods: {
-        incrementLike() {
-            this.$store.commit("INCREMENT_LIKE", this.likes)
-        },
+        ...mapActions(['recoverPosts', 'recoverComments']),
         addComment(postId, comment) {
 			this.$emit("sendComment", postId,comment)
+            this.recoverComments()
 		},
-        recoverComments: function(){
-            let url = "http://localhost:3000/api/comments";
-            fetch(url,{
-                method: "GET",
-                headers: { "Content-Type": "application/json"},
-            })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
-                }
-                for (let i=0; i<data.data.length; i++){
-                    this.comments.push({userId: data.data[i].id_user, idPost: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment}) 
-                } 
-            })
-            .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-            });
-        },
         deleteComment: function(e){
             localStorage.setItem("commentId", e)
             let commentId = localStorage.getItem('commentId');
@@ -130,7 +107,7 @@ export default{
                     return Promise.reject(error);
                 }
                 alert("Votre commentaire a bien été supprimé.");
-                location.reload();
+                this.recoverComments();
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -141,17 +118,17 @@ export default{
             let userId = localStorage.getItem('userId');
             if(e.includes(userId)){
                 this.like = 0
-                }else if (!e.includes(userId)){
-                    this.like += 1
-                }
+            }else if (!e.includes(userId)){
+                this.like += 1
+            }
         },
         unliked: function(e){
             let userId = localStorage.getItem('userId');
             if(e.includes(userId)){
                 this.like = 0
-                }else if (!e.includes(userId)){
-                    this.like += -1
-                }
+            }else if (!e.includes(userId)){
+                this.like += -1
+            }
         },
         likePost: function(e){
             const userId = localStorage.getItem('userId');
@@ -172,26 +149,7 @@ export default{
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
-            let url = "http://localhost:3000/api/texts";
-            fetch(url,{
-                method: "GET",
-                headers: { "Content-Type": "application/json"},
-            })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
-                }
-                console.log(this.likes)
-                for (let i=0; i<data.data.length; i++){
-                    this.thatLike = data.data[i].likes
-                } 
-            })
-            .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-            })
+                this.recoverPosts()
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -215,7 +173,7 @@ export default{
             }
         },
     },
-    created(){
+    mounted(){
             this.recoverComments()
         },
 }

@@ -8,7 +8,7 @@
         <DisplayUsers/>
             <form>
                 <div class="form col-9">
-                    <input v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
+                    <input id="output" v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
                     <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
                     <form enctype="multipart/form-data">
                         <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
@@ -18,7 +18,7 @@
             </form>
         </div>
         <Publis
-            v-for="publi in publis" 
+            v-for="publi in posts" 
             :name = "publi.name"
             :text = "publi.text"
             :media = "publi.media"
@@ -36,7 +36,7 @@
 <script>
 import Publis from "../components/Publis"
 import DisplayUsers from "../components/DisplayUsers"
-import { mapState } from 'vuex'
+import { mapState, mapActions} from 'vuex'
 export default {
     name: 'Main',
     components:{
@@ -55,20 +55,14 @@ export default {
             imageUrl:'',
             newImage:'',
             idUser: localStorage.getItem('UserId'),
+            test:'',
             }
     },
     computed:{
-         ...mapState(['year', 'month', 'day'])
+         ...mapState(['posts']),
     },
     methods:{
-        changeLikeValue: function () {
-            this.thatLike= !this.thatLike
-            this.$emit('change-likes', this.thatLike)
-        },
-        changeDislikeValue: function () {
-            this.thatDislike= !this.thatDislike
-            this.$emit('change-dislikes', this.thatDislike)
-        },
+        ...mapActions(['recoverPosts', 'recoverComments']),
         onFileChange() {
             this.file = this.$refs.file.files[0];
             this.newImage = URL.createObjectURL(this.file);
@@ -89,7 +83,7 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
-                location.reload();
+                this.recoverPosts()
                 this.newImage ='';
                 this.file = '';
             })
@@ -98,31 +92,6 @@ export default {
                 console.error("There was an error!", error);
             });
         },   
-        recoverPosts: function(){
-            let url = "http://localhost:3000/api/texts";
-            fetch(url,{
-                method: "GET",
-                headers: { "Content-Type": "application/json"},
-            })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
-                }
-                for (let i=0; i<data.data.length; i++){
-                    if (data.data[i].user_id == null){
-                        this.publis.push({name: 'Utilisateur supprimé', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: data.data[i].userDislikes, userIdLike: data.data[i].userLikes})
-                    }else{
-                        this.publis.push({name :data.data[i].firstName + ' ' + data.data[i].lastName, text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, likes: data.data[i].likes, dislikes: data.data[i].dislikes, comment:'', userIdDislike: (data.data[i].userDislikes).split(' '), userIdLike: (data.data[i].userLikes).split(' ')})
-                    }
-                }
-            })
-            .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-            });
-        },
         addPost: function(){
             let userId = localStorage.getItem("userId");
             let url = "http://localhost:3000/api/texts/";
@@ -141,7 +110,7 @@ export default {
                     return Promise.reject(error);
                 }
                 this.postId = data.id;
-                location.reload();
+                this.recoverPosts()
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -170,7 +139,7 @@ export default {
                     return Promise.reject(error);
                 }
                 this.postId = data.id;
-                location.reload();
+                this.recoverComments();
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -179,9 +148,9 @@ export default {
             }); 
         },
     },
-        created(){
-            this.recoverPosts()
-        },
+    mounted(){
+        this.recoverPosts()
+    },
 }
 </script>
 
