@@ -13,15 +13,13 @@
 <script>
 export default{
     name:'Comments',
-     components:{
-    },
     props:{
-      commentId: Number,
-      comment: String,
-      userId: Number,
-      idPost: Number,
-      postId:Number,
-      name: String,
+        commentId: Number,
+        comment: String,
+        userId: Number,
+        idPost: Number,
+        postId:Number,
+        name: String,
     },
     data: function(){
         return{

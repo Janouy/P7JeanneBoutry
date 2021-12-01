@@ -1,13 +1,15 @@
 <template>
-    <div class="col-3 allUsers" >
+    <div class="col-3 allUsers">
         <p> Découvrez vos collaborateurs <p/>
-            <label for="site-search"></label>
-            <input type="search" id="site-search" name="q" aria-label="Search through site content">
-            <button>Rechercher</button>
-    <ul v-for="user in users" :key="user.id">
-    <li v-if="user.userId == userId" v-show="display=false"><router-link :to="{name:'userPage', params:{id: user.userId}}">{{user.name}}</router-link></li>
-    <li v-else v-show="display=true"><router-link :to="{name:'userPage', params:{id: user.userId}}">{{user.name}}</router-link></li>
-    </ul>
+        <form>
+            <ul>
+                <input type="text" v-model="inputFilter"/>
+                <li v-for="user in filteredUsers" :key="user.id">
+                    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-if="user.userId == userId" v-show="display=false">{{user.name}}</router-link>
+                    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-else v-show="display=true">{{user.name}}</router-link>
+                </li>
+            </ul>
+        </form>
     </div>
 </template>
 
@@ -16,10 +18,19 @@ export default{
     name: "DisplayUsers",
     data: function(){
         return{
-            users:[
+            users:[ 
             ],
+            inputFilter:'',
             userId: localStorage.getItem('userId'),
         }
+    },
+    computed:{
+        filteredUsers(){
+        
+            return this.users.filter((user) =>{
+                return user.name.match(this.inputFilter);
+            })
+        },
     },
     methods:{
         displayUsers: function(){
@@ -30,13 +41,13 @@ export default{
             })
             .then(async res => {
                 const data = await res.json();
-            if (!res.ok) {
-                const error = (data && data.message) || res.statusText;
-                return Promise.reject(error);
-            }
-            for (let i=0; i<data.data.length; i++){
-                this.users.push({name: data.data[i].firstName + ' ' + data.data[i].lastName, userId:data.data[i].id})
-            }
+                if (!res.ok) {
+                    const error = (data && data.message) || res.statusText;
+                    return Promise.reject(error);
+                }
+                for (let i=0; i<data.data.length; i++){
+                    this.users.push({name: data.data[i].firstName + ' ' + data.data[i].lastName, userId:data.data[i].id})
+                }
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -47,7 +58,7 @@ export default{
             this.userId += e
         }
     },
-    created(){
+    mounted(){
             this.displayUsers()
         },
 }

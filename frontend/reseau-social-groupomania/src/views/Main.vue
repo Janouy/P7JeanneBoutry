@@ -1,11 +1,11 @@
 <template>
     <div>
-  <div id="nav">
-      <router-link to="/profile"> Mon profil</router-link> 
-    </div>
+        <div id="nav">
+            <router-link to="/profile"> Mon profil</router-link> 
+        </div>
         <h1> Page principale</h1>
         <div class="container">
-        <DisplayUsers/>
+            <DisplayUsers/>
             <form>
                 <div class="form col-9">
                     <input id="output" v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
@@ -56,10 +56,10 @@ export default {
             newImage:'',
             idUser: localStorage.getItem('UserId'),
             test:'',
-            }
+        }
     },
     computed:{
-         ...mapState(['posts']),
+        ...mapState(['posts']),
     },
     methods:{
         ...mapActions(['recoverPosts', 'recoverComments']),
@@ -99,18 +99,20 @@ export default {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
                 body: JSON.stringify({ 
-                id: userId,
-                text: this.text,
+                    id: userId,
+                    text: this.text,
                 })
             })
             .then(async res => {
                 const data = await res.json();
-                if (!res.ok) {
+                if (!res.ok){
                     const error = (data && data.message) || res.status;
                     return Promise.reject(error);
                 }
                 this.postId = data.id;
-                this.recoverPosts()
+                this.text='';
+                this.file='';
+                this.recoverPosts();
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -119,7 +121,7 @@ export default {
             });
         },
         addComment: function(e, f){
-            this.publis[0].comment = f
+            this.publis[0].comment = f;
             localStorage.setItem("publiId", e)
             this.userId = localStorage.getItem('userId');
             let postId = localStorage.getItem('publiId');
@@ -134,7 +136,7 @@ export default {
             })
             .then(async res => {
                 const data = await res.json();
-                if (!res.ok) {
+                if (!res.ok){
                     const error = (data && data.message) || res.status;
                     return Promise.reject(error);
                 }

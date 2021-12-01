@@ -4,15 +4,12 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    posts:[],
-    comms:[],
+    state: {
+        posts:[],
+        comms:[],
   },
-  mutations: {
-    ERASE_TEXT(){
-        document.getElementById("output").value = "Publiez quelque chose...";
-        },
-    DISPLAY_POSTS: function(state){
+    mutations: {
+        DISPLAY_POSTS: function(state){
             let url = "http://localhost:3000/api/texts";
             fetch(url,{
                 method: "GET",
@@ -30,7 +27,7 @@ export default new Vuex.Store({
                         state.posts.push({likes: data.data[i].likes, dislikes: data.data[i].dislikes, name: 'Utilisateur supprimé', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, comment:'', userIdDislike: data.data[i].userDislikes, userIdLike: data.data[i].userLikes})
                     }else{
                         state.posts.push({likes: data.data[i].likes, dislikes: data.data[i].dislikes, name :data.data[i].firstName + ' ' + data.data[i].lastName, text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, comment:'', userIdDislike: (data.data[i].userDislikes).split(' '), userIdLike: (data.data[i].userLikes).split(' ')})
-                      }
+                    }
                 }  
             })
             .catch(error => {
@@ -38,7 +35,7 @@ export default new Vuex.Store({
                 console.error("There was an error!", error);
             });
         },
-    DISPLAY_COMMENTS: function(state){
+        DISPLAY_COMMENTS: function(state){
             let url = "http://localhost:3000/api/comments";
             fetch(url,{
                 method: "GET",
@@ -59,16 +56,16 @@ export default new Vuex.Store({
                 this.errorMessage = error;
                 console.error("There was an error!", error);
             });
+            },
+    },
+    actions: {
+        recoverPosts({commit}){
+            commit("DISPLAY_POSTS")
         },
-  },
-  actions: {
-    recoverPosts({commit}){
-      commit("DISPLAY_POSTS")
+        recoverComments({commit}){
+            commit("DISPLAY_COMMENTS")
+        },
     },
-    recoverComments({commit}){
-      commit("DISPLAY_COMMENTS")
-    },
-  },
   modules: {
   }
 })

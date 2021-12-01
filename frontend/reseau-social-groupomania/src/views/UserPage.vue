@@ -1,19 +1,19 @@
 <template>
-<div>
-    <div class="container">
-    <div class='card'>
-        <div class="row">
-            <div class="card_title col-12 h2 ">{{this.firstName}} {{this.lastName}}</div>
+    <div>
+        <div class="container">
+            <div class='card'>
+                <div class="row">
+                    <div class="card_title col-12 h2 ">{{this.firstName}} {{this.lastName}}</div>
+                </div>
+                <div class="card">
+                    <div class="card-img-top" v-if="this.picture == 'NULL'" v-show="false"> <img class="publication_image" :src=this.picture> </div>
+                    <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.picture> </div>
+                    <div class="card-text my-3 mx-3 border"> {{this.description}}</div>
+                    <router-link to="/groupomania/main"> Retour à l'accueil </router-link>
+                </div>
+            </div> 
         </div>
-        <div class="card">
-            <div class="card-img-top" v-if="this.picture == 'NULL'" v-show="false"> <img class="publication_image" :src=this.picture> </div>
-            <div class="card-img-top" v-else v-show="true"> <img class="picture_profile" :src=this.picture> </div>
-            <div class="card-text my-3 mx-3 border"> {{this.description}}</div>
-            <router-link to="/groupomania/main"> Retour à l'accueil </router-link>
-       </div>
-    </div> 
-</div>
-</div>
+    </div>
 </template>
 
 <script>

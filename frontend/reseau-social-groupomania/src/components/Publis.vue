@@ -84,14 +84,14 @@ export default{
         }
     }, 
     computed:{
-         ...mapState(['comms']),
+        ...mapState(['comms']),
     },
     methods: {
         ...mapActions(['recoverPosts', 'recoverComments']),
-        addComment(postId, comment) {
-			this.$emit("sendComment", postId,comment)
-            this.recoverComments()
-		},
+        addComment(postId, comment){
+            this.$emit("sendComment", postId,comment)
+            this.comment='';
+        },
         deleteComment: function(e){
             localStorage.setItem("commentId", e)
             let commentId = localStorage.getItem('commentId');
@@ -103,8 +103,8 @@ export default{
             .then(async res => {
                 const data = await res.json();
                 if (!res.ok) {
-                    const error = (data && data.message) || res.statusText;
-                    return Promise.reject(error);
+                const error = (data && data.message) || res.statusText;
+                return Promise.reject(error);
                 }
                 alert("Votre commentaire a bien été supprimé.");
                 this.recoverComments();
@@ -139,8 +139,8 @@ export default{
                 method: "POST",
                 headers: {"Content-Type": "application/json",Authorization: "Bearer " + localStorage.getItem("token") },
                 body: JSON.stringify({ 
-                like: this.like,
-                userId: userId,
+                    like: this.like,
+                    userId: userId,
                 })
             })
             .then(async res => {
@@ -174,7 +174,7 @@ export default{
         },
     },
     mounted(){
-            this.recoverComments()
-        },
+        this.recoverComments()
+    },
 }
 </script>

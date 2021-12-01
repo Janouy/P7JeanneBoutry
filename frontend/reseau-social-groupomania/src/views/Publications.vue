@@ -1,29 +1,33 @@
 <template>
-<div>
-    <h1> Mes publications </h1>
-    <div class="container">
-    <div class="card">
-    <div v-for="publi in publis" :key='publi.id'>
+    <div>
+        <h1> Mes publications </h1>
+        <div class="container">
+        <div class="card">
+        <div v-for="publi in publis" :key='publi.id'>
             <span class="card-text">{{publi.text}} </span>
             <img class="publication_image" :src=publi.media >
             <button @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
+        </div>
+        </div>
+        </div>
+        <button @click="backToProfile()"> Retour </button>
     </div>
-    </div>
-    </div>
-</div>
 </template>
 
 <script>
 export default {
     name: 'Publications',
     data: function(){
-    return{
-        publis:[
-        ],
-        text:''
-    }
+        return{
+            publis:[
+            ],
+            text:''
+        }
     },
     methods:{
+        backToProfile: function(){
+            this.$router.go(-1)
+        },
         displayText: function(){
             let userId = localStorage.getItem('userId');
             let url = "http://localhost:3000/api/texts/" + userId;
@@ -37,7 +41,7 @@ export default {
                 const error = (data && data.message) || res.statusText;
                 return Promise.reject(error);
             }
-            
+            this.publis=[]
             for(let i=0; i<data.data.length; i++){
                 this.publis.push({text :data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post})
             } 
@@ -62,7 +66,7 @@ export default {
                 return Promise.reject(error);
             }
             alert("Votre post a bien été supprimé.");
-            location.reload();
+            this.displayText()
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -70,7 +74,7 @@ export default {
             });
         },
     },
-    created(){
+    mounted(){
         this.displayText()
     },
 }

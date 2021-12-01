@@ -1,34 +1,36 @@
 <template>
-<div class="container">
-    <div class='card'>
-        <p class="card_title h2" v-if="mode == 'login'"> Connexion </p>
-        <p class="card_title h2" v-else> Inscription </p>
-        <p class="card_subtitle" v-if="mode== 'login'"> Vous n'avez pas encore de compte?<span class="card_action" @click="switchToCreateAccount()"> Créer un compte </span> </p>
-         <p class="card_subtitle" v-else> Vous possédez déjà un compte ?<span class="card_action" @click="switchToLogin()"> Se connecter. </span> </p>
-            <div class="form-row" v-if="mode == 'create'">
-                  <input v-model="email" type="email" class="form-control  my-3 mx-3" placeholder="jean.dupont@email.fr*">
-            </div>
-             <div class="form-row" v-else>
-                  <input v-model="email" type="email" class="form-control  my-3 mx-3" placeholder="email">
-            </div>
-             <div class="form-row" v-if="mode == 'create'">
-                  <input v-model="lastName" type="text" class="form-control my-3 mx-3" placeholder="nom*">
-                  <input v-model="firstName" type="text" class="form-control my-3 mx-3" placeholder="prénom*">
-            </div>
-            <div class="form-row" v-if="mode == 'create'">
-                  <input v-model="password" type="password" class="form-control my-3 mx-3" placeholder="le mot de passe doit contenir au moins 12 caractères*">
-            </div>
-             <div class="form-row" v-else>
-                  <input v-model="password" type="password" class="form-control my-3 mx-3" placeholder="mot de passe">
-            </div>
-                <div class='form-row'>
-                <button @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
-                <button @click="signup()" class="btn btn-primary col-3 my-3 mx-3" :disabled="!validatedFields || checkData" v-else> Créer un compte </button>
+    <div class="container">
+        <div class='card'>
+            <p class="card_title h2" v-if="mode == 'login'"> Connexion </p>
+            <p class="card_title h2" v-else> Inscription </p>
+            <p class="card_subtitle" v-if="mode== 'login'"> Vous n'avez pas encore de compte?<span class="card_action" @click="switchToCreateAccount()"> Créer un compte </span> </p>
+            <p class="card_subtitle" v-else> Vous possédez déjà un compte ?<span class="card_action" @click="switchToLogin()"> Se connecter. </span> </p>
+            <form>
+                <div class="form-row" v-if="mode == 'create'">
+                    <input v-model="email" type="email" class="form-control  my-3 mx-3" placeholder="jean.dupont@email.fr*">
                 </div>
-            </div>
-            <p  v-if="mode == 'create'">  * Le formulaire n'accepte pas les caractères spéciaux</p>
-            <p v-else></p>
-            </div>
+                <div class="form-row" v-else>
+                    <input v-model="email" type="email" class="form-control  my-3 mx-3" placeholder="email">
+                </div>
+                <div class="form-row" v-if="mode == 'create'">
+                    <input v-model="lastName" type="text" class="form-control my-3 mx-3" placeholder="nom*">
+                    <input v-model="firstName" type="text" class="form-control my-3 mx-3" placeholder="prénom*">
+                </div>
+                <div class="form-row" v-if="mode == 'create'">
+                    <input v-model="password" type="password" class="form-control my-3 mx-3" placeholder="le mot de passe doit contenir au moins 12 caractères*">
+                </div>
+                <div class="form-row" v-else>
+                    <input v-model="password" type="password" class="form-control my-3 mx-3" placeholder="mot de passe">
+                </div>
+                <div class='form-row'>
+                    <button id="connectButton" type="submit" @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
+                    <button id="createAccountButton" type="submit" @onsubmit="preventDefault(e)" @click="signup()" class="btn btn-primary col-3 my-3 mx-3" :disabled="!validatedFields || checkData" v-else> Créer un compte </button>
+                </div>
+            </form>
+        </div>
+        <p  v-if="mode == 'create'">  * Le formulaire n'accepte pas les caractères spéciaux</p>
+        <p v-else></p>
+    </div>
 </template> 
 
 <script>
@@ -80,6 +82,10 @@ export default{
         },
     },
     methods:{ 
+        preventDefault(e){
+            e.preventDefault();
+            return false;
+        },
         switchToCreateAccount: function(){
             this.mode = 'create';
         },
