@@ -5,7 +5,7 @@
             <p class="card_title h2" v-else> Inscription </p>
             <p class="card_subtitle" v-if="mode== 'login'"> Vous n'avez pas encore de compte?<span class="card_action" @click="switchToCreateAccount()"> Créer un compte </span> </p>
             <p class="card_subtitle" v-else> Vous possédez déjà un compte ?<span class="card_action" @click="switchToLogin()"> Se connecter. </span> </p>
-            <form>
+            <form v-on:submit.prevent>
                 <div class="form-row" v-if="mode == 'create'">
                     <input v-model="email" type="email" class="form-control  my-3 mx-3" placeholder="jean.dupont@email.fr*">
                 </div>
@@ -23,8 +23,8 @@
                     <input v-model="password" type="password" class="form-control my-3 mx-3" placeholder="mot de passe">
                 </div>
                 <div class='form-row'>
-                    <button id="connectButton" type="submit" @onsubmit="preventDefault(e)" @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
-                    <button id="createAccountButton" type="submit" @onsubmit="preventDefault(e)" @click="signup()" class="btn btn-primary col-3 my-3 mx-3" :disabled="!validatedFields || checkData" v-else> Créer un compte </button>
+                    <button id="connectButton" type="submit" @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
+                    <button id="createAccountButton" type="submit" @click="signup()" class="btn btn-primary col-3 my-3 mx-3" :disabled="!validatedFields || checkData" v-else> Créer un compte </button>
                 </div>
             </form>
         </div>
@@ -72,7 +72,7 @@ export default{
             }
             return false;
             }else{
-                 if(nameVerif.test(this.password)== false || emailVerif.test(this.email)== false || !this.email.includes('@')){
+                 if(passwordVerif.test(this.password)== false || emailVerif.test(this.email)== false || !this.email.includes('@')){
                      return true;
                  }else{
                      return false;
@@ -82,10 +82,6 @@ export default{
         },
     },
     methods:{ 
-        preventDefault(e){
-            e.preventDefault();
-            return false;
-        },
         switchToCreateAccount: function(){
             this.mode = 'create';
         },
@@ -126,9 +122,9 @@ export default{
                 const error = (data && data.message) || res.status;
                 return Promise.reject(error);
                 }
-                this.postId = data.id;
                 localStorage.setItem("token", data.token);
                 localStorage.setItem('userId', data.id);
+                localStorage.setItem('isAdmin', data.admin);
                 window.location.href = window.location.href + 'groupomania/main';
                 
         })
@@ -155,9 +151,9 @@ export default{
             const error = (data && data.message) || res.status;
             return Promise.reject(error);
             }
-            this.postId = data.id;
             localStorage.setItem("token", data.token);
             localStorage.setItem('userId', data.id);
+            localStorage.setItem('isAdmin', data.admin);
             window.location.href = window.location.href + 'groupomania/main';
         })
         .catch(error => {

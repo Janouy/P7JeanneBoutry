@@ -26,7 +26,6 @@ export default{
     },
     computed:{
         filteredUsers(){
-            
             return this.users.filter((user) =>{
                 const lowerCase = user.name.toLowerCase();
                 return lowerCase.startsWith(this.inputFilter);

@@ -6,7 +6,7 @@
             </div>
             <div :id="'post'+ postId" :class="'card-text border' + ' ' +name" v-if="text">
                 {{text}}
-                <button @click="deletePost(postId)" :id="postId" class="btn-primary" v-if="userId == comments[0].thisUserId"> Supprimer cette publication </button>
+                <button @click="deletePost(postId)" :id="postId" class="btn-primary" v-if="userId == comments[0].thisUserId || admin==1"> Supprimer cette publication </button>
                     <div>
                         <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                         <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
@@ -34,6 +34,7 @@
             </div>
             <div :class="'card-img border' + ' ' +name" v-if="media">
                 <img class="publication_image" :src=media>
+                <button @click="deletePost(postId)" :id="postId" class="btn-primary" v-if="userId == comments[0].thisUserId || admin==1"> Supprimer cette publication </button>
                 <div>
                     <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                     <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
@@ -83,6 +84,7 @@ export default{
             ],
             comment:'',
             like: 0,
+            admin: localStorage.getItem('isAdmin'),
         }
     }, 
     computed:{
