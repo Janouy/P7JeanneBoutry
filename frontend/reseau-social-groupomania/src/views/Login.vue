@@ -106,7 +106,7 @@ export default{
             })
             .then(async res => {
                 const data = await res.json();
-                if (!res.ok) {git 
+                if (!res.ok) {
                     const error = (data && data.message) || res.status;
                     console.log(data.err);
                     return Promise.reject(error);
