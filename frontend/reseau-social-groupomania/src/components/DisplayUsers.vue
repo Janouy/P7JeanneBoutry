@@ -26,9 +26,10 @@ export default{
     },
     computed:{
         filteredUsers(){
-        
+            
             return this.users.filter((user) =>{
-                return user.name.match(this.inputFilter);
+                const lowerCase = user.name.toLowerCase();
+                return lowerCase.startsWith(this.inputFilter);
             })
         },
     },
@@ -46,7 +47,7 @@ export default{
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    this.users.push({name: data.data[i].firstName + ' ' + data.data[i].lastName, userId:data.data[i].id})
+                    this.users.push({name: data.data[i].lastName + ' ' +data.data[i].firstName, userId:data.data[i].id})
                 }
             })
             .catch(error => {

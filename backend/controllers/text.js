@@ -80,14 +80,14 @@ exports.likeText = (req, res, next) => {
       res.json({data:rows})
       if(rows[0].indexLike != 0){
         const query="UPDATE post SET userLikes=REPLACE(userLikes, ?, '') WHERE id_post=?";
-        const params=[userId, postId];
+        const params=[' '+userId, postId];
         db.query(query,params)
         const query3 = "UPDATE post SET likes=likes-1 WHERE id_post=?";
         const params3 = [postId];
         db.query(query3, params3)
       }else if(rows[0].indexDislike != 0){
         const query="UPDATE post SET userDislikes=REPLACE(userDislikes, ?, '') WHERE id_post=?"; 
-        const params=[userId, postId]
+        const params=[' '+userId, postId]
         db.query(query,params)
         const query3 = "UPDATE post SET dislikes=dislikes-1 WHERE id_post=?";
         const params3 = [postId];

@@ -2,13 +2,13 @@
     <div>
         <h1> Mes publications </h1>
         <div class="container">
-        <div class="card">
-        <div v-for="publi in publis" :key='publi.id'>
-            <span class="card-text">{{publi.text}} </span>
-            <img class="publication_image" :src=publi.media >
-            <button @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
-        </div>
-        </div>
+            <div class="card">
+                <div v-for="publi in publis" :key='publi.id'>
+                    <span class="card-text">{{publi.text}} </span>
+                    <img class="publication_image" :src=publi.media >
+                    <button @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
+                </div>
+            </div>
         </div>
         <button @click="backToProfile()"> Retour </button>
     </div>

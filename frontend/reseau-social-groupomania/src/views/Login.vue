@@ -23,7 +23,7 @@
                     <input v-model="password" type="password" class="form-control my-3 mx-3" placeholder="mot de passe">
                 </div>
                 <div class='form-row'>
-                    <button id="connectButton" type="submit" @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
+                    <button id="connectButton" type="submit" @onsubmit="preventDefault(e)" @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
                     <button id="createAccountButton" type="submit" @onsubmit="preventDefault(e)" @click="signup()" class="btn btn-primary col-3 my-3 mx-3" :disabled="!validatedFields || checkData" v-else> Créer un compte </button>
                 </div>
             </form>
@@ -108,6 +108,7 @@ export default{
                 const data = await res.json();
                 if (!res.ok) {
                     const error = (data && data.message) || res.status;
+                    console.log(data.err);
                     return Promise.reject(error);
                 }
                 this.postId = data.id;

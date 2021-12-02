@@ -6,6 +6,7 @@
             </div>
             <div :id="'post'+ postId" :class="'card-text border' + ' ' +name" v-if="text">
                 {{text}}
+                <button @click="deletePost(postId)" :id="postId" class="btn-primary" v-if="userId == comments[0].thisUserId"> Supprimer cette publication </button>
                     <div>
                         <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                         <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
@@ -65,6 +66,7 @@ export default{
         Comments,
     },
     props:{
+        userId: Number,
         name: String,
         text: String,
         media: String,
@@ -91,6 +93,28 @@ export default{
         addComment(postId, comment){
             this.$emit("sendComment", postId,comment)
             this.comment='';
+        },
+        deletePost: function(e){
+            localStorage.setItem("publiId", e)
+            let postId = localStorage.getItem('publiId');
+            let url = "http://localhost:3000/api/texts/" + postId;
+            fetch(url,{
+                method: "delete",
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) {
+                const error = (data && data.message) || res.statusText;
+                return Promise.reject(error);
+            }
+            alert("Votre post a bien été supprimé.");
+            this.recoverPosts()
+            })
+            .catch(error => {
+                this.errorMessage = error;
+                console.error("There was an error!", error);
+            });
         },
         deleteComment: function(e){
             localStorage.setItem("commentId", e)

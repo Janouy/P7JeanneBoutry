@@ -19,6 +19,7 @@
         </div>
         <Publis
             v-for="publi in posts" 
+            :userId = "publi.userId"
             :name = "publi.name"
             :text = "publi.text"
             :media = "publi.media"
