@@ -1,19 +1,22 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const mysql = require('mysql');
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "rootp7",
-    database: "database_development"
-  });
+const db = require('../models/dbConnect');
 
 exports.signup = (req, res) => {
+    const password = req.body.password;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
+    const nameVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+    const emailVerif = /^[\w'\-,.][^!¡?÷?¿/\\+=" "#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
     db.query('SELECT * FROM users where email=?',[req.body.email], (err,rows) => {
         if(err) {
             return res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'})
         }else{
-            if(rows.length == 0) {
+            if(passwordVerif.test(password)== false || password.length < 12 || nameVerif.test(firstName)==false || nameVerif.test(lastName)==false || emailVerif.test(email)==false){
+                return res.status(401).json({err: 'les données renseignées sont incorrectes'})
+            }else if(rows.length == 0){
                 bcrypt.hash(req.body.password, 10)
                 .then(hash =>{
                     const query="INSERT INTO users SET ?";

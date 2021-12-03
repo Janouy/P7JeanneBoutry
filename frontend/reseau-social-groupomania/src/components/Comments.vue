@@ -2,7 +2,7 @@
     <div>
         <div :class="'comm'+ commentId" v-if="postId == idPost && userId != null"> 
             {{name}} {{comment}} 
-            <button @click="deleteComment(commentId)" :id="commentId" class="btn-primary" v-if="userId == comments[0].thisUserId"> Supprimer ce commentaire </button>
+            <button @click="deleteComment(commentId)" :id="commentId" class="btn-primary" v-if="userId == comments[0].thisUserId || admin== 1"> Supprimer ce commentaire </button>
         </div>
         <div :class="'comm'+ commentId" v-else-if="postId == idPost && userId == null"> 
             Utilisateur supprimé a commenté:  {{comment}} 
@@ -28,6 +28,7 @@ export default{
             ],
             publis:[
             ],
+            admin: localStorage.getItem('isAdmin'),
         }
     },
     methods:{

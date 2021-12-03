@@ -1,10 +1,4 @@
-const mysql = require('mysql');
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "rootp7",
-    database: "database_development"
-  });
+const db = require('../models/dbConnect');
 
 exports.likesDisplay = (req, res) => {
 	const query = "SELECT*FROM userLikes INNER JOIN post ON userLikes.post_Id = post.id_post";

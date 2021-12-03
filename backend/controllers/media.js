@@ -1,10 +1,4 @@
-const mysql = require('mysql');
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "rootp7",
-    database: "database_development"
-  });
+const db = require('../models/dbConnect');
 
 exports.addMedia = (req, res) => {
 	let imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`; 

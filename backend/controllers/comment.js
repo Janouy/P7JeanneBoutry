@@ -1,11 +1,5 @@
 const fs = require('fs');
-const mysql = require('mysql');
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "rootp7",
-    database: "database_development"
-  });
+const db = require('../models/dbConnect');
 
 
 exports.getAllComments = (req, res) => {

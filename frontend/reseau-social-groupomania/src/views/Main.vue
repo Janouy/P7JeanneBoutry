@@ -56,7 +56,6 @@ export default {
             imageUrl:'',
             newImage:'',
             idUser: localStorage.getItem('UserId'),
-            test:'',
         }
     },
     computed:{
@@ -110,7 +109,6 @@ export default {
                     const error = (data && data.message) || res.status;
                     return Promise.reject(error);
                 }
-                this.postId = data.id;
                 this.text='';
                 this.file='';
                 this.recoverPosts();
@@ -118,7 +116,6 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error('There was an error!', error);
-                alert("Une erreur est survenue.")
             });
         },
         addComment: function(e, f){
@@ -141,7 +138,6 @@ export default {
                     const error = (data && data.message) || res.status;
                     return Promise.reject(error);
                 }
-                this.postId = data.id;
                 this.recoverComments();
             })
             .catch(error => {
