@@ -24,7 +24,7 @@ export default new Vuex.Store({
                 state.posts = [];
                 for (let i=0; i<data.data.length; i++){
                     if (data.data[i].user_id == null){
-                        state.posts.push({likes: data.data[i].likes, dislikes: data.data[i].dislikes, name: 'Utilisateur supprimé', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, comment:'', userIdDislike: data.data[i].userDislikes, userIdLike: data.data[i].userLikes})
+                        state.posts.push({likes: data.data[i].likes, dislikes: data.data[i].dislikes, name: 'Utilisateur supprimé', text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, comment:'', userIdDislike: (data.data[i].userDislikes).split(' '), userIdLike: (data.data[i].userLikes).split(' ')})
                     }else{
                         state.posts.push({userId: data.data[i].user_id, likes: data.data[i].likes, dislikes: data.data[i].dislikes, name :data.data[i].firstName + ' ' + data.data[i].lastName, text : data.data[i].text, media :data.data[i].media, postId :data.data[i].id_post, comment:'', userIdDislike: (data.data[i].userDislikes).split(' '), userIdLike: (data.data[i].userLikes).split(' ')})
                     }

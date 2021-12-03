@@ -3,7 +3,7 @@ const db = require('../models/dbConnect');
 
 exports.getAllTexts = (req, res) => {
 	try{
-		db.query('SELECT*FROM post INNER JOIN users ON users.id = post.user_id OR user_id IS NULL ORDER BY post.id_post DESC', (err,rows) => {
+		db.query('SELECT id_post, text, user_id, media, likes, dislikes, userLikes, userDislikes, id, firstName, lastName, admin FROM post LEFT JOIN users ON users.id = post.user_id ORDER BY post.id_post DESC', (err,rows) => {
 		if(err) {
 			console.error('Une erreur est survenue');
 		};
@@ -16,7 +16,7 @@ exports.getAllTexts = (req, res) => {
 
 exports.getAllTextsOneUser = (req, res) => {
 	try{
-		db.query('SELECT*FROM post JOIN users ON post.user_id = users.id WHERE user_id = ?',[req.params.id], (err,rows) => {
+		db.query('SELECT * FROM post JOIN users ON post.user_id = users.id WHERE user_id = ?',[req.params.id], (err,rows) => {
 			if(err) {
 				console.error('Une erreur est survenue');
 			};

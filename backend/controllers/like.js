@@ -1,7 +1,7 @@
 const db = require('../models/dbConnect');
 
 exports.likesDisplay = (req, res) => {
-	const query = "SELECT*FROM userLikes INNER JOIN post ON userLikes.post_Id = post.id_post";
+	const query = "SELECT * FROM userLikes INNER JOIN post ON userLikes.post_Id = post.id_post";
 	try{
 		db.query(query, (err,rows) => {
 			if(err) {

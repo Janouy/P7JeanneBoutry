@@ -34,7 +34,7 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res, next) => {
-    db.query('SELECT*FROM users where email=?',[req.body.email], (err,rows) => {
+    db.query('SELECT * FROM users where email=?',[req.body.email], (err,rows) => {
         if(err) {
             return res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'})
         }else{

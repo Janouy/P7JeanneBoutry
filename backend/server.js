@@ -13,11 +13,12 @@ const db = mysql.createConnection({
 db.connect(function(err, res) {
   try{
     if (err) {
-      console.error('Problème de connection à mysql.');
+      throw err;
     };
     console.log("Connecté à la base de données MySQL!");
-  }catch (err) {
+  }catch (error) {
     res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+    console.error('Problème de connection à mysql', error);
   }
 });
 
