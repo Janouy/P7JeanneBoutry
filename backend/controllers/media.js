@@ -7,7 +7,7 @@ exports.addMedia = (req, res) => {
 	try{
 		db.query(query,params,(err,result) => {
 			if(err) {
-				throw err
+				console.error('Une erreur est survenue');
 			};
 			res.json({saved:result.affectedRows,inserted_id:result.insertId})
 		})

@@ -5,7 +5,7 @@ exports.likesDisplay = (req, res) => {
 	try{
 		db.query(query, (err,rows) => {
 			if(err) {
-				throw err
+				console.error('Une erreur est survenue');
 			};
 			res.json({data:rows})
 		});

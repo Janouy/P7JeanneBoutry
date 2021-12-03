@@ -72,7 +72,7 @@ exports.modifyUser = (req, res) => {
                 const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, hash, req.params.id];
                 db.query(query,params,(err,result,fields) => {
                     if(err) {
-                        throw err
+                        console.error('Une erreur est survenue');
                     };
                     res.json({updated:result.affectedRows})
                 });
@@ -83,7 +83,7 @@ exports.modifyUser = (req, res) => {
             const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, req.params.id]
             db.query(query,params,(err,result,fields) => {
                 if(err) {
-                    throw err
+                    console.error('Une erreur est survenue');
                 };
                 res.json({updated:result.affectedRows})
             });
@@ -99,7 +99,7 @@ exports.deleteUser = (req, res) => {
     try{
         db.query(query,params,(err,result,fields) => {
             if(err) {
-                throw err
+                console.error('Une erreur est survenue');
             };
             res.json({deleted:result.affectedRows})
         });
@@ -112,7 +112,7 @@ exports.getOneUser = (req, res) => {
     try{
         db.query('SELECT * FROM users where id=?',[req.params.id], (err,rows) => {
             if(err) {
-                throw err
+                console.error('Une erreur est survenue');
             };
             res.json({data:rows})
         });
@@ -125,7 +125,7 @@ exports.getAllUsers = (req, res) => {
     try{
         db.query('SELECT firstName, lastName, id FROM users', (err,rows) => {
             if(err) {
-                throw err
+                console.error('Une erreur est survenue');
             };
             res.json({data:rows})
         });

@@ -5,7 +5,7 @@ exports.getAllTexts = (req, res) => {
 	try{
 		db.query('SELECT*FROM post INNER JOIN users ON users.id = post.user_id OR user_id IS NULL ORDER BY post.id_post DESC', (err,rows) => {
 		if(err) {
-			throw err
+			console.error('Une erreur est survenue');
 		};
 		res.json({data:rows})
 		});
@@ -18,7 +18,7 @@ exports.getAllTextsOneUser = (req, res) => {
 	try{
 		db.query('SELECT*FROM post JOIN users ON post.user_id = users.id WHERE user_id = ?',[req.params.id], (err,rows) => {
 			if(err) {
-				throw err
+				console.error('Une erreur est survenue');
 			};
 			res.json({data:rows})
 		});
@@ -33,7 +33,7 @@ exports.addText = (req, res) => {
 	try{
 		db.query(query,params,(err,result) => {
 			if(err) {
-				throw err
+				console.error('Une erreur est survenue');
 			};
 			res.json({saved:result.affectedRows,inserted_id:result.insertId})
 		});
@@ -48,7 +48,7 @@ exports.deleteText = (req, res) => {
 	try{
 		db.query('SELECT media FROM post WHERE id_post=?', params, (err,rows) => {
 			if(err) {
-				throw err
+				console.error('Une erreur est survenue');
 			};
 			res.json({data:rows})
 			let imageUrl = rows[0].media;

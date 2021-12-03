@@ -6,7 +6,7 @@ exports.addPicture = (req, res) => {
 	try{
 	db.query('SELECT picture FROM users WHERE id=?', params, (err,rows) => {
 		if(err) {
-			throw err
+			console.error('Une erreur est survenue');
 		};
 		res.json({data:rows})
 		if(rows[0].picture != null){
@@ -38,7 +38,7 @@ exports.deletePicture = (req, res)=>{
 	try{
 		db.query('SELECT picture FROM users WHERE id=?', params, (err,rows) => {
 			if(err) {
-				throw err
+				console.error('Une erreur est survenue');
 			};
 			res.json({data:rows})
 			let imageUrl = rows[0].picture;
