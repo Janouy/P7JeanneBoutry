@@ -1,15 +1,24 @@
 const http = require('http');
 const app = require('./app');
+const dotenv = require("dotenv");
+dotenv.config();
 const mysql = require('mysql');
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "rootp7"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD
 });
 
-db.connect(function(err) {
-  if (err) {throw err};
-  console.log("Connecté à la base de données MySQL!");
+
+db.connect(function(err, res) {
+  try{
+    if (err) {
+      console.error('Problème de connection à mysql.');
+    };
+    console.log("Connecté à la base de données MySQL!");
+  }catch (err) {
+    res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+  }
 });
 
 const normalizePort = val => {
