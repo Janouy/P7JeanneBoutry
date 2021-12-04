@@ -1,49 +1,71 @@
 <template>
-    <div class="container-fluid background-logo">
-    <h1 class="col-12 my-4"> Bienvenue sur Groupomania People </h1>
-    <div class="container">
-        <div class='card'>
-            <header>
-                <h2 class="card_title h2" v-if="mode == 'login'"> Connexion </h2>
-                <p class="card_title h2" v-else> Inscription </p>
-                <p class="card_subtitle" v-if="mode== 'login'"> Vous n'avez pas encore de compte ?<span class="card_action" @click="switchToCreateAccount()"> Créer un compte </span> </p>
-                <p class="card_subtitle" v-else> Vous possédez déjà un compte ?<span class="card_action" @click="switchToLogin()"> Se connecter. </span> </p>
-            </header>
-            <section>
-                <form v-on:submit.prevent>
-                    <div class="form-row" v-if="mode == 'create'">
-                        <label for="emailInput" class="mx-3">Email:</label>
-                        <input v-model="email" type="email" class="form-control mx-3" id="emailInput" placeholder="*">
-                    </div>
-                    <div class="form-row" v-else>
-                        <label for="email" class="mx-3">Email:</label>
-                        <input v-model="email" type="email" class="form-control mx-3" id="email" placeholder="email">
-                    </div>
-                    <div class="form-row" v-if="mode == 'create'">
-                        <label for="lastnameInput" class="mx-3">Nom:</label>
-                        <input v-model="lastName" type="text" class="form-control mx-3" id="lastnameInput" placeholder="*">
-                        <label for="firstnameInput" class="mx-3">Prénom:</label>
-                        <input v-model="firstName" type="text" class="form-control mx-3" id="firstnameInput" placeholder="*">
-                    </div>
-                    <div class="form-row" v-if="mode == 'create'">
-                        <label for="passwordInput" class="mx-3">Mot de passe:</label>
-                        <input v-model="password" type="password" class="form-control my-3 mx-3" id="passwordInput" placeholder="le mot de passe doit contenir au moins 12 caractères*">
-                    </div>
-                    <div class="form-row" v-else>
-                        <label for="password" class="mx-3">Mot de passe:</label>
-                        <input v-model="password" type="password" class="form-control my-3 mx-3" id="password" placeholder="mot de passe">
-                    </div>
-                    <div class='form-row'>
-                        <button id="connectButton" type="submit" @click="login()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData" v-if="mode =='login'">Se connecter</button>
-                        <button id="createAccountButton" type="submit" @click="signup()" class="btn btn-primary col-3 my-3 mx-3" :disabled="!validatedFields || checkData" v-else> Créer un compte </button>
-                    </div>
-                </form>
-            </section>
+<div class="background">
+        <header>
+            <h1 class="col-12 pt-4"> Bienvenue sur Groupomania People </h1>
+        </header>
+        <div class="container">
+            <div class="container-fluid background-logo">
+            <div class='card card-login col-12 col-md-10 col-lg-5' v-if="mode == 'login'">
+                <section class="mt-2">
+                    <h2 class="card_title"> Connexion </h2>
+                    <p class="card_subtitle"> Vous n'avez pas encore de compte ?<span class="card_action" @click="switchToCreateAccount()"> Créer un compte </span> </p>
+                </section>
+                <section>
+                    <form v-on:submit.prevent>
+                        <div class="form-row">
+                            <label for="email" class="mx-3 mt-3">Email:*</label>
+                            <input v-model="email" type="email" class="form-control mx-3" id="email" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                        </div>
+                        <div class="form-row">
+                            <label for="password" class="mx-3 mt-3">Mot de passe:*</label>
+                            <input v-model="password" type="password" class="form-control mx-3" id="password" required minlength='12' pattern="^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ(){}|~<>;:[\]]{2,}$">
+                        </div>
+                        <div class='form-row mt-5'>
+                            <button id="connectButton" type="submit" @click="login()" class="btn btn-dark col-3 my-3 mx-3" :disabled ="!validatedFields || checkData">Se connecter</button>
+                            <button class="btn btn-dark col-5 my-3 mx-3" type="reset"> Effacer les données</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+            <div class='card card-create col-12 col-md-10 col-lg-5' v-else>
+                <section class="mt-2">
+                    <h2 class="card_title"> Inscription </h2>
+                    <p class="card_subtitle"> Vous possédez déjà un compte ?<span class="card_action" @click="switchToLogin()"> Se connecter. </span> </p>
+                </section>
+                <section>
+                    <form v-on:submit.prevent>
+                        <div class="form-row">
+                            <label for="lastnameInput" class="col-4 ml-3 mr-4 mt-3 text-left">Nom:*</label>
+                            <label for="firstnameInput" class="col-4 ml-5 mt-3 text-left">Prénom:*</label>
+                            <input v-model="lastName" type="text" class="form-control col-5 mx-3 " id="lastnameInput"  required pattern="[A-Za-z' -]+">
+                            <input v-model="firstName" type="text" class="form-control col-5 ml-4" id="firstnameInput"  required pattern="[A-Za-z' -]+">
+                        </div>
+                         <div class="form-row">
+                            <label for="emailInput" class="mx-3 mt-3">Email:*</label>
+                            <input v-model="email" type="email" class="form-control mx-3" id="emailInput"  required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                        </div>
+                        <div class="form-row">
+                            <label for="passwordInput" class="mx-3 mt-3">Mot de passe:*</label>
+                            <input v-model="password" type="password" class="form-control mx-3" id="passwordInput" minlength='12' required pattern="^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ(){}|~<>;:[\]]{2,}$">
+                            <div class="text-left">
+                                <div class="color valid-form ml-3 mt-1" :class="{color: isActive, 'text-danger': !checkPasswordLength}">le mot de passe contient plus de 12 caractères</div>                         
+                                <div class="color valid-form ml-3" :class="{color: isActive, 'text-danger': checkPassword }"> le mot de passe ne contient pas de caractères spéciaux</div>
+                            </div>
+                        </div>
+                        <div class='form-row'>
+                            <button id="createAccountButton" type="submit" @click="signup()" class="btn btn-dark col-4 my-3 mx-3" :disabled="!validatedFields || checkData"> Créer un compte </button>
+                            <button class="btn btn-dark col-5 my-3 mx-3" type="reset"> Effacer les données</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+            <p  class="validForm" v-if="mode == 'create'">Le formulaire n'accepte pas les caractères spéciaux</p>
+            <p v-else></p>
+            </div>
         </div>
-        <p  v-if="mode == 'create'">  * Le formulaire n'accepte pas les caractères spéciaux</p>
-        <p v-else></p>
-        </div>
-    </div>
+         <div class="logoFooter"></div>
+</div>
+
 </template> 
 
 <script>
@@ -56,7 +78,8 @@ export default{
             email: '',
             password: '',
             firstName: '',
-            lastName: ''
+            lastName: '',
+            isActive: true,
         }
     }, 
     computed:{
@@ -85,12 +108,27 @@ export default{
             }
             return false;
             }else{
-                 if(passwordVerif.test(this.password)== false || emailVerif.test(this.email)== false || !this.email.includes('@')){
+                 if(passwordVerif.test(this.password)== false && this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
                      return true;
                  }else{
                      return false;
                  }
 
+            }
+        },
+        checkPassword: function(){
+            let passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
+            if(passwordVerif.test(this.password)== false){
+                return true;
+            }else{
+                return false
+            }
+        },
+        checkPasswordLength: function(){
+            if(this.password.length >= 12 ){
+                return true
+            }else{
+                return false
             }
         },
     },
@@ -181,17 +219,61 @@ export default{
 </script>
 
 <style scoped lang='scss'>
-.background-logo{
-    background-image: url("../assets/logos/icon.png");
-    background-repeat: no-repeat;
-    background-size: 50%;
-    background-position-x: 50%;
-    background-position-y: 50%;
-}
-.card{
-    opacity: .8;
-}
-
+    .logoFooter{
+        background-image: url("../assets/logos/icon-left-font.svg");
+        background-color: rgb(240, 242, 245);
+        background-repeat: no-repeat;
+        margin-top: -2%;
+        height: 20%;
+        width: auto;
+        background-position-x: 50%;
+        background-position-y: -360%; 
+    }
+    .background-logo{
+        background-image: url("../assets/logos/icon.svg");
+        background-repeat: no-repeat;
+        background-size: 40%;
+        background-position-x: 50%;
+        background-position-y: 40%;
+    }
+    .background{
+        background-color: rgb(240, 242, 245);
+        height: 750px;
+    }
+    .card-login{
+        margin: 0 auto; 
+        float: none;
+        margin-top: 10%;
+        opacity: 0.8;
+        height: 400px;
+    }
+    .card-create{
+        margin: 0 auto; 
+        float: none;
+        margin-top: 6%;
+        opacity: 0.8;
+    }
+    h1{
+        font-size: 7vmin;
+        font-weight: bold;
+        color: #FD2D01;
+    }
+    h2{
+        font-size: 5vmin;
+    }
+    p{
+        font-size: 2vmin;
+    }
+   input:focus:invalid{
+        border: 2px dashed red;
+    }
+    .color{
+        color: green;
+        font-size: 1.8vmin;
+    }
+    .validForm, button, label{
+        font-size: 1.8vmin;
+    }
 </style>
 
 
