@@ -7,12 +7,13 @@ exports.addMedia = (req, res) => {
 	try{
 		db.query(query,params,(err,result) => {
 			if(err) {
-				console.error('Une erreur est survenue');
+				throw err;
 			};
 			res.json({saved:result.affectedRows,inserted_id:result.insertId})
 		})
-	}catch (err) {
+	}catch (error) {
 		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+		console.error('Une erreur est survenue', error);
 	};
 };
 

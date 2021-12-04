@@ -5,11 +5,12 @@ exports.likesDisplay = (req, res) => {
 	try{
 		db.query(query, (err,rows) => {
 			if(err) {
-				console.error('Une erreur est survenue');
+				throw err;
 			};
 			res.json({data:rows})
 		});
-	}catch (err) {
+	}catch (error) {
 		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+		console.error('Une erreur est survenue', error);
 	};
 };

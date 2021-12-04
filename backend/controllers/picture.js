@@ -6,7 +6,7 @@ exports.addPicture = (req, res) => {
 	try{
 	db.query('SELECT picture FROM users WHERE id=?', params, (err,rows) => {
 		if(err) {
-			console.error('Une erreur est survenue');
+			throw err;
 		};
 		res.json({data:rows})
 		if(rows[0].picture != null){
@@ -27,8 +27,9 @@ exports.addPicture = (req, res) => {
 			db.query(query,params);
 		}
 	})
-	}catch (err) {
+	}catch (error) {
 		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+		console.error('Une erreur est survenue', error);
 	}
 };
 
@@ -38,7 +39,7 @@ exports.deletePicture = (req, res)=>{
 	try{
 		db.query('SELECT picture FROM users WHERE id=?', params, (err,rows) => {
 			if(err) {
-				console.error('Une erreur est survenue');
+				throw err;
 			};
 			res.json({data:rows})
 			let imageUrl = rows[0].picture;
@@ -47,8 +48,9 @@ exports.deletePicture = (req, res)=>{
 				db.query(query,params)
 			});
 		});
-	}catch (err) {
-		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+	}catch (error) {
+		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'});
+		console.error('Une erreur est survenue', error);
 	}
 };
 

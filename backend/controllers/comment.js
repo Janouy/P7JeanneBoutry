@@ -6,12 +6,13 @@ exports.getAllComments = (req, res) => {
 	try{
 		db.query('SELECT id_user, id_post, comment, firstName, lastName, id_comment FROM comment LEFT JOIN users ON comment.id_user=users.id JOIN post ON comment.post_id=post.id_post ORDER BY id_comment DESC', (err,rows) => {
 			if(err) {
-				console.error('Une erreur est survenue');
+				throw err;
 			};
 			res.json({data:rows})
 		});
-	}catch (err) {
+	}catch (error) {
 		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+		console.error('Une erreur est survenue', error);
 	};
 };
 
@@ -21,12 +22,13 @@ exports.addComment = (req, res) => {
 	try{
 		db.query(query,params,(err,result) => {
 			if(err) {
-				console.error('Une erreur est survenue');
+				throw err;
 			}
 			res.json({saved:result.affectedRows,inserted_id:result.insertId})
 		}); 
-	}catch (err) {
+	}catch (error) {
 		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+		console.error('Une erreur est survenue', error);
 	};
 };
 
@@ -37,11 +39,12 @@ exports.deleteComment = (req, res) => {
 	try{
 		db.query(query,params,(err,result,fields) => {
 			if(err) {
-				console.error('Une erreur est survenue');
+				throw err;
 			};
 		res.json({deleted:result.affectedRows})
 		}); 
-	}catch(err){
+	}catch(error){
 		res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'});
+		console.error('Une erreur est survenue', error);
 	}
 };

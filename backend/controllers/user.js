@@ -72,7 +72,7 @@ exports.modifyUser = (req, res) => {
                 const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, hash, req.params.id];
                 db.query(query,params,(err,result,fields) => {
                     if(err) {
-                        console.error('Une erreur est survenue');
+                        throw err;
                     };
                     res.json({updated:result.affectedRows})
                 });
@@ -83,13 +83,14 @@ exports.modifyUser = (req, res) => {
             const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, req.params.id]
             db.query(query,params,(err,result,fields) => {
                 if(err) {
-                    console.error('Une erreur est survenue');
+                    throw err;
                 };
                 res.json({updated:result.affectedRows})
             });
         }
-    }catch (err) {
+    }catch (error) {
         res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+        console.error('Une erreur est survenue', error);
     }
 };
 
@@ -99,12 +100,13 @@ exports.deleteUser = (req, res) => {
     try{
         db.query(query,params,(err,result,fields) => {
             if(err) {
-                console.error('Une erreur est survenue');
+                throw err;
             };
             res.json({deleted:result.affectedRows})
         });
-    }catch (err) {
+    }catch (error) {
         res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+        console.error('Une erreur est survenue', error);
     }
 };
 
@@ -112,12 +114,13 @@ exports.getOneUser = (req, res) => {
     try{
         db.query('SELECT * FROM users where id=?',[req.params.id], (err,rows) => {
             if(err) {
-                console.error('Une erreur est survenue');
+                throw err;
             };
             res.json({data:rows})
         });
-    }catch (err) {
-        res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+    }catch (error) {
+        res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'});
+        console.error('Une erreur est survenue', error);
     }
 };
 
@@ -125,11 +128,12 @@ exports.getAllUsers = (req, res) => {
     try{
         db.query('SELECT firstName, lastName, id FROM users', (err,rows) => {
             if(err) {
-                console.error('Une erreur est survenue');
+                throw err;
             };
             res.json({data:rows})
         });
-    }catch (err) {
-        res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+    }catch (error) {
+        res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'});
+        console.error('Une erreur est survenue', error);
     }
 };
