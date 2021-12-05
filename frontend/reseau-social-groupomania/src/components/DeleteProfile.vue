@@ -1,6 +1,6 @@
 <template>
     <div class="btn-delete">
-        <button @click = "deleteProfile()" class="btn-primary"> Supprimer mon profil </button>
+        <button @click = "deleteProfile()" class="btn-dark"> Supprimer mon profil </button>
     </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="nav">
-            <router-link to="/profile"> Mon profil</router-link> 
+            <ConnectedUser/>
         </div>
         <h1> Page principale</h1>
         <div class="container">
@@ -37,12 +37,14 @@
 <script>
 import Publis from "../components/Publis"
 import DisplayUsers from "../components/DisplayUsers"
+import ConnectedUser from "../components/DisplayConnectedUser"
 import { mapState, mapActions} from 'vuex'
 export default {
     name: 'Main',
     components:{
         Publis,
-        DisplayUsers
+        DisplayUsers,
+        ConnectedUser
     },
     data: function(){
         return{
@@ -155,6 +157,7 @@ export default {
 
 <style lang="scss">
 .publication_image{
-    max-width: 150px
+    max-width: 150px;
+    height: auto;
 }
 </style>

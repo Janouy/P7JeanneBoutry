@@ -1,55 +1,50 @@
 <template>
     <div>
-        <div id="nav">
-            <router-link to="/groupomania/main" v-if="mode == 'view'"> Accueil </router-link>
-        </div>
+        <div id="nav"> <router-link to="/groupomania/main" v-if="mode == 'view'"><font-awesome-icon icon="home" alt='retour page principale' /></router-link></div>
         <div class="container">
             <div class='card'>
-                <div class="row">
-                <div class="card_title col-4 h2 " v-if="mode == 'view'"> Profil </div>
-                <div class="card_title col-4 h2 " v-else> Modification de votre Profil... </div>
-            </div>
-            <div class="card" v-if="mode == 'view'">
-                <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"></div>
-                <div class="card-img-top" v-else v-show="true">
-                    <img class="publication_image" :src=this.profilePicture>
+                <div class="card_title col h2 " v-if="mode == 'view'">{{this.firstName}} {{this.lastName}}</div>
+                <div class="card_title col h2 " v-else> Modification de votre Profil... </div>
+                <div class="card" v-if="mode == 'view'">
+                    <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"></div>
+                    <div class="card-img-top" v-else v-show="true">
+                    <img class="picture_profile" :src=this.profilePicture>
+                    </div>
+                    <div class="card-title"> Ma bio: </div>
+                    <div class="card-text my-3 mx-3 border"> {{this.description}}</div>
+                    <button class="btn col-3 my-3 mx-3" @click ="modifyProfile()"> Modifier mon profil</button>
+                    <button type="submit" @click="displayMyPosts()" class="btn btn-primary col-3 my-3 mx-3"> Gérer mes publications</button>
+                    <Disconnection/> <DeleteProfile/>
                 </div>
-                <div class="card-text my-3 mx-3 border"> {{this.email}} </div>
-                <div class="card-text my-3 mx-3 border"> {{this.firstName}}</div>
-                <div class="card-text my-3 mx-3 border"> {{this.lastName}}</div>
-                <div class="card-text my-3 mx-3 border"> {{this.description}}</div>
-                <button class="btn col-3 my-3 mx-3" @click ="modifyProfile()"> Modifier mon profil</button>
-                <button type="submit" @click="displayMyPosts()" class="btn btn-primary col-3 my-3 mx-3"> Voir mes publications</button>
-                <Disconnection/> <DeleteProfile/>
-            </div>
-            <form v-else>
-                <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
-                <div class="card-img-top" v-else v-show="true"> 
-                    <img class="picture_profile" :src=this.profilePicture> 
-                </div>
-                <form enctype="multipart/form-data">
-                    <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
-                    <button type="submit" @click="sendPicture()"> Envoi </button>
-                    <button @click="deletePicture()" class="btn border"> Supprimer cette photo</button> 
+
+                <form v-else>
+                    <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
+                    <div class="card-img-top" v-else v-show="true"> 
+                        <img class="picture_profile" :src=this.profilePicture> 
+                    </div>
+                    <form enctype="multipart/form-data">
+                        <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
+                        <button type="submit" @click="sendPicture()"> Envoi </button>
+                        <button @click="deletePicture()" class="btn border"> Supprimer cette photo</button> 
+                    </form>
+                    <div class="form-row"> Email:
+                        <input v-model="email" type="email" class="form-control my-3 mx-3"> 
+                    </div>
+                    <div class="form-row"> Prénom:
+                        <input v-model="firstName" type="text" class="form-control my-3 mx-3">
+                    </div>
+                    <div class="form-row"> Nom:
+                        <input v-model="lastName" type="text" class="form-control my-3 mx-3">
+                    </div>
+                    <div class="form-row"> Description:
+                        <input v-model="description" type="text-area" class="form-control my-3 mx-3">
+                    </div>
+                    <div class="form-row"> Nouveau mot de passe:
+                        <input v-model="password" type="password" class="form-control my-3 mx-3">
+                    </div>
+                    <button type="submit" @click="viewProfile()" class="btn btn-primary col-3 my-3 mx-3"> Retour</button>
+                    <button type="submit" @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
                 </form>
-                <div class="form-group"> Email:
-                    <input v-model="email" type="email" class="form-control my-3 mx-3"> 
-                </div>
-                <div class="form-group"> Prénom:
-                    <input v-model="firstName" type="text" class="form-control my-3 mx-3">
-                </div>
-                <div class="form-group"> Nom:
-                    <input v-model="lastName" type="text" class="form-control my-3 mx-3">
-                </div>
-                <div class="form-group"> Description:
-                    <input v-model="description" type="text" class="form-control my-3 mx-3">
-                </div>
-                <div class="form-group"> Nouveau mot de passe:
-                    <input v-model="password" type="password" class="form-control my-3 mx-3">
-                </div>
-                <button type="submit" @click="viewProfile()" class="btn btn-primary col-3 my-3 mx-3"> Retour</button>
-                <button type="submit" @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
-            </form>
             </div>
             <p v-if="mode == 'view'"></p>
             <p v-else> * Le formulaire n'accepte pas les caractères spéciaux </p>
@@ -101,9 +96,9 @@ export default {
             }else{
                 if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || emailVerif.test(this.email)== false || !this.email.includes('@')){
                 return true;
-            }else{
-                return false;
-            }
+                }else{
+                    return false;
+                }
             }
         },
     },
@@ -227,9 +222,10 @@ export default {
 
 <style lang="scss">
 .picture_profile{
-background-color: blue;
-display: block;
-max-width: 200px;
+    background-color: blue;
+    display: block;
+    max-width: 400px;
+    height: auto;
+    border-radius: 90px;
 };
-
 </style>

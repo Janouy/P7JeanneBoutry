@@ -1,6 +1,6 @@
 <template>
     <div class="btn-deco">
-        <button @click = "disconnect()" class="btn-primary"> Déconnexion </button>
+        <button @click = "disconnect()" class="btn-dark"> Déconnexion </button>
     </div>
 </template>
 

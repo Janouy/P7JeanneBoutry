@@ -1,15 +1,15 @@
 <template>
+
     <div class="background">
-        <div class="background-logo"> 
             <header>
                 <h1 class="col-12 pt-4"> Bienvenue sur Groupomania People </h1>
             </header>
-            <div class="container">
+            <div class="container background-logo">
                 <div class="container-fluid rounded">
-                <div class='card card-login col-12 col-md-10 col-lg-5' v-if="mode == 'login'">
+                <div class='card card-login col-12 col-md-10 col-lg-6' v-if="mode == 'login'">
                     <section class="mt-3 bg-dark text-light rounded">
                         <h2 class="card_title pt-2 pt-md-0 "> Connexion </h2>
-                        <p class="card_subtitle"> Vous n'avez pas encore de compte ?<span class="card_action" @click="switchToCreateAccount()"> Créer un compte </span> </p>
+                        <p class="card_subtitle"> Vous n'avez pas encore de compte ?<span class="card_action" @click="switchToCreateAccount()"> Créez un compte </span> </p>
                     </section>
                     <section>
                         <form v-on:submit.prevent>
@@ -22,13 +22,13 @@
                                 <input v-model="password" type="password" class="form-control mx-3" id="password" required minlength='12' pattern="^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ(){}|~<>;:[\]]{2,}$">
                             </div>
                             <div class='form-row mt-5'>
-                                <button id="connectButton" type="submit" @click="login()" class="btn btn-dark col-3 my-3 ml-3" :disabled ="!validatedFields || checkData">Se connecter</button>
+                                <button id="connectButton" type="submit" @click="login()" class="btn btn-success col-3 my-3 ml-3" :disabled ="!validatedFields || !checkData">Connexion</button>
                                 <button class="btn btn-dark col-5 my-3 ml-2" type="reset"> Effacer les données</button>
                             </div>
                         </form>
                     </section>
                 </div>
-                <div class='card card-create col-12 col-md-10 col-lg-5 border-shadow-sm' v-else>
+                <div class='card card-create col-12 col-md-12 col-lg-6 border-shadow-sm' v-else>
                     <section class="mt-3 bg-dark text-light rounded">
                         <h2 class="card_title pt-2 pt-md-0"> Inscription </h2>
                         <p class="card_subtitle"> Vous possédez déjà un compte ?<span class="card_action" @click="switchToLogin()"> Se connecter. </span> </p>
@@ -36,11 +36,12 @@
                     <section>
                         <form v-on:submit.prevent>
                             <div class="form-row">
-                                <label for="lastnameInput" class="col-md-4 ml-3 mr-4 mt-3 text-left">Nom:*</label>
-                                <label for="firstnameInput" class="d-none d-md-block col-md-4 ml-5 mt-3 text-left">Prénom:*</label>
+                                <label for="lastnameInput" class="col-md-4 ml-3 mr-5 mt-3 text-left">Nom:*</label>
+                                <label for="firstnameInputMd" class="d-none d-md-block col-md-4 ml-5 mt-3 text-left">Prénom:*</label>
+                                <input v-model="firstName" type="text" class="form-control d-none d-md-block col-md-5 mx-3" id="firstnameInputMd"  required pattern="[A-Za-z' -]+">
                                 <input v-model="lastName" type="text" class="form-control d-md-block col-md-5 mx-3 " id="lastnameInput"  required pattern="[A-Za-z' -]+">
                                 <label for="firstnameInput" class="d-sm-block d-md-none col-md-4 ml-3 mt-3 text-left">Prénom:*</label>
-                                <input v-model="firstName" type="text" class="form-control d-md-block col-md-5 mx-3" id="firstnameInput"  required pattern="[A-Za-z' -]+">
+                                <input v-model="firstName" type="text" class="form-control d-block d-md-none col-md-5 mx-3" id="firstnameInput"  required pattern="[A-Za-z' -]+">
                             </div>
                             <div class="form-row">
                                 <label for="emailInput" class="mx-3 mt-3">Email:*</label>
@@ -55,7 +56,7 @@
                                 </div>
                             </div>
                             <div class='form-row'>
-                                <button id="createAccountButton" type="submit" @click="signup()" class="btn btn-dark col-4 my-3 ml-3" :disabled="!validatedFields || checkData"> Créer un compte </button>
+                                <button id="createAccountButton" type="submit" @click="signup()" class="btn btn-info col-4 my-3 ml-3" :disabled="!validatedFields || !checkData"> Créer un compte </button>
                                 <button class="btn btn-dark col-4 my-3 ml-2" type="reset"> Effacer les données</button>
                             </div>
                         </form>
@@ -65,7 +66,6 @@
                 <p v-else></p>
                 </div>
             </div>
-        </div>
         <div><img class="img-fluid logoFooter" src="../assets/logos/icon-left-font.svg" alt="logo Groupomania"></div>
     </div>
 </template> 
@@ -106,14 +106,14 @@ export default{
             let passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
             if(this.mode == 'create'){
             if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || passwordVerif.test(this.password)== false || this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
-                return true;
+                return false;
             }
-            return false;
+            return true;
             }else{
-                 if(passwordVerif.test(this.password)== false && this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
-                     return true;
-                 }else{
+                 if(passwordVerif.test(this.password)== false || this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
                      return false;
+                 }else{
+                     return true;
                  }
 
             }
@@ -216,8 +216,13 @@ export default{
             });
         },
     },
+    mounted(){
+        this.email='',
+        this.password='',
+        this.firstName= '',
+        this.lastName= ''
+    },
 }
-
 </script>
 
 <style scoped lang='scss'>
@@ -226,7 +231,7 @@ export default{
         margin-top: -3%;
         width: auto;
         height: 200px;
-        z-index: 2;
+        z-index: 1;
     }
     .background-logo{
         background-image: url("../assets/logos/icon.svg");
@@ -234,7 +239,7 @@ export default{
         position: relative;
         z-index: 3;
         background-position: 50% 50%;
-    }
+    } 
     .background{
         background-color: rgb(240, 242, 245);
         @media screen and (max-width: 768px){
@@ -281,6 +286,7 @@ export default{
     h1{
         font-size: 7vmin;
         font-weight: bold;
+        color:#FD2D01;
     }
     h2{
         font-size: 5vmin;
