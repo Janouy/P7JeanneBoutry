@@ -1,54 +1,77 @@
 <template>
-    <div>
-        <div id="nav"> <router-link to="/groupomania/main" v-if="mode == 'view'"><font-awesome-icon icon="home" alt='retour page principale' /></router-link></div>
-        <div class="container">
-            <div class='card'>
-                <div class="card_title col h2 " v-if="mode == 'view'">{{this.firstName}} {{this.lastName}}</div>
-                <div class="card_title col h2 " v-else> Modification de votre Profil... </div>
-                <div class="card" v-if="mode == 'view'">
-                    <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"></div>
-                    <div class="card-img-top" v-else v-show="true">
-                    <img class="picture_profile" :src=this.profilePicture>
-                    </div>
-                    <div class="card-title"> Ma bio: </div>
-                    <div class="card-text my-3 mx-3 border"> {{this.description}}</div>
-                    <button class="btn col-3 my-3 mx-3" @click ="modifyProfile()"> Modifier mon profil</button>
-                    <button type="submit" @click="displayMyPosts()" class="btn btn-primary col-3 my-3 mx-3"> Gérer mes publications</button>
-                    <Disconnection/> <DeleteProfile/>
-                </div>
+    <div class="background">
+        <nav id="nav"> <router-link to="/groupomania/main" v-if="mode == 'view'"><font-awesome-icon icon="home" alt='retour page principale' aria-hidden="true"/></router-link></nav>
+        <div class="container pb-5">
+            <header>
+                <h1 class="col h1 py-4">{{this.firstName}} {{this.lastName}}</h1>
+            </header>
 
-                <form v-else>
-                    <div class="card-img-top" v-if="this.profilePicture == 'NULL'" v-show="false"> <img class="publication_image" :src=this.profilePicture> </div>
-                    <div class="card-img-top" v-else v-show="true"> 
-                        <img class="picture_profile" :src=this.profilePicture> 
+                <div class="card background-card" v-if="mode == 'view'">
+                    <div class="card-img picture" v-if="!this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png"/></div>
+                    <div class="card-img picture" v-else>
+                    <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
                     </div>
+                    <div class="card-group card_inside card_inside_1 rounded mx-2 my-2">
+                        <div class="card card_inside rounded mr-2">
+
+                            <div class="card-title text-left ml-4 mt-2 h5"> Ma bio: </div>
+                            <div class="card-text mx-3 px-2 py-2 border rounded text-left bg-light"> {{this.description}}</div>
+                        </div>
+
+                        <div class="card card_inside card_inside_2 rounded ">
+                           <div>
+                                <button class="btn btn_profile" @click ="modifyProfile()"> Modifier mon profil</button>
+                            </div>
+                            <div>
+                                <button class="btn btn_profile" @click="displayMyPosts()"> Gérer mes publications </button>
+                            </div>
+                            <Disconnection/> 
+                        </div>
+                    </div>
+                </div>
+                <div class="card" v-else>
+                    <div class="col h3 text-info my-4" > Modification de votre Profil... </div>
+                    <div class="card-img picture" v-if="!this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png"/></div>
+                    <div class="card-img picture" v-else>
+                    <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
+                    </div>
+
                     <form enctype="multipart/form-data">
-                        <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg">
+                        <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg"/>
                         <button type="submit" @click="sendPicture()"> Envoi </button>
                         <button @click="deletePicture()" class="btn border"> Supprimer cette photo</button> 
                     </form>
-                    <div class="form-row"> Email:
-                        <input v-model="email" type="email" class="form-control my-3 mx-3"> 
-                    </div>
-                    <div class="form-row"> Prénom:
-                        <input v-model="firstName" type="text" class="form-control my-3 mx-3">
-                    </div>
-                    <div class="form-row"> Nom:
-                        <input v-model="lastName" type="text" class="form-control my-3 mx-3">
-                    </div>
-                    <div class="form-row"> Description:
-                        <input v-model="description" type="text-area" class="form-control my-3 mx-3">
-                    </div>
-                    <div class="form-row"> Nouveau mot de passe:
-                        <input v-model="password" type="password" class="form-control my-3 mx-3">
-                    </div>
-                    <button type="submit" @click="viewProfile()" class="btn btn-primary col-3 my-3 mx-3"> Retour</button>
-                    <button type="submit" @click="modify(), viewProfile()" class="btn btn-primary col-3 my-3 mx-3" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
-                </form>
-            </div>
+                    <form >
+                        <div class="form-row">
+                            <label for="firstNameInputModif" class="col-4 ml-3 text-left">Prénom:*</label>
+                            <input v-model="firstName" type="text" id="firstNameInputModif" class="form-control mb-3 mx-3 "/>
+                        </div>
+                        <div class="form-row">
+                            <label for="lastNameInputModif" class="col-4 ml-3 mt-2 text-left">Nom:*</label>
+                            <input v-model="lastName" type="text" id="lastNameInputModif" class="form-control mb-3 mx-3"/>
+                        </div>
+                        <div class="form-row">
+                            <label for="bioInputModif" class="col-4 ml-3 mt-2 text-left">Décrivez-vous:</label>
+                            <input v-model="description" type="textarea" id="bioInputModif" maxlength="120" class="form-control mx-3"/>
+                            <p class="info ml-4"> 120 caractères maximum</p>
+                        </div>
+                         <div class="form-row"> 
+                            <label for="emailInputModif" class="col-4 ml-3 mt-2 text-left">Email:*</label>
+                            <input v-model="email" type="email" id="emailInputModif" class="form-control mb-3 mx-3"/> 
+                        </div>
+                        <div class="form-row"> 
+                            <label for="passwordInputModif" class="col-4 ml-3 mt-2 text-left">Nouveau mot de passe:</label>
+                            <input v-model="password" type="password" id="passwordInputModif" class="form-control mb-3 mx-3"/>
+                        </div>
+                        <button type="submit" @click="viewProfile()" class="btn btn-info col-3 mb-3"> Retour</button>
+                        <button type="submit" @click="modify(), viewProfile()" class="btn btn-success col-3 mb-3 ml-2" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
+                    </form>
+                </div>
             <p v-if="mode == 'view'"></p>
             <p v-else> * Le formulaire n'accepte pas les caractères spéciaux </p>
         </div>
+        <div v-if="mode == 'view'"> <DeleteProfile/></div>
+        
     </div>
 </template>
 
@@ -108,9 +131,11 @@ export default {
         },
         viewProfile: function(){
             this.mode = 'view';
+            this.displayProfile();
         },
         modifyProfile: function(){
             this.mode = 'modify';
+            this.displayProfile();
         },
         displayProfile: function(){
             let userId = localStorage.getItem("userId");
@@ -130,6 +155,7 @@ export default {
             this.firstName = data.data[0].firstName;
             this.profilePicture = data.data[0].picture;
             this.description = data.data[0].description;
+            console.log(this.profilePicture);
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -157,6 +183,7 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
+                this.displayProfile();
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -215,17 +242,67 @@ export default {
         },
     },
     mounted(){
-        this.displayProfile()
+        this.displayProfile();
     },
 }
 </script>
 
 <style lang="scss">
-.picture_profile{
-    background-color: blue;
-    display: block;
-    max-width: 400px;
-    height: auto;
-    border-radius: 90px;
-};
+    .background{
+        background-color: #F0F2F5;
+          @media screen and (max-width: 768px){
+            height: 900px;
+        }
+        @media screen and (min-width: 768px) and (max-width: 1023px){
+            min-height: 1100px;
+       }
+        @media screen and (min-width: 1024px) and (max-width: 1366px){
+            min-height:1300px;
+       }
+        @media screen and (min-width: 1367px){
+            min-height:800px;
+       }
+    }
+    .card{
+        box-shadow: 2px 2px 2px rgb(43, 42, 42);
+        &_inside{
+            box-shadow: none;
+                &_1{
+                    min-width: 90%;
+                }
+                &_2{
+                    max-width: 25%;
+                }
+        }
+    }
+    .background-card{
+        background-color: rgba(63, 60, 59, 0.3);
+    }
+    .picture{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 300px;
+        padding: auto;
+    }
+    .picture_profile{
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        height: 250px;
+        width: 250px;
+        margin-top:25px;
+        border-radius: 30px;
+        border: 3px solid yellow;
+    }
+    .no_picture_profile{
+        height: 250px;
+        width: 250px;
+        border-radius: 30px;
+        background-color: black;
+        margin-top:25px;
+    }
+    .info{
+        font-size: 1.2vmin;
+    }
 </style>

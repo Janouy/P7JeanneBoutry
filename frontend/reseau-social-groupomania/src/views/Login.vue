@@ -283,6 +283,9 @@ export default{
         z-index: 3;
         margin-top: 6%;
     }
+    .card_action{
+        cursor: pointer;
+    }
     h1{
         font-size: 7vmin;
         font-weight: bold;
