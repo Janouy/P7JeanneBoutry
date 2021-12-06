@@ -1,6 +1,6 @@
 <template>
     <div class="btn-deco">
-        <button @click = "disconnect()" class="btn btn-profile"> Déconnexion </button>
+        <button @click = "disconnect()" class="btn btn_profile"> Déconnexion </button>
     </div>
 </template>
 
@@ -15,3 +15,5 @@ export default{
     }
 }
 </script>
+
+

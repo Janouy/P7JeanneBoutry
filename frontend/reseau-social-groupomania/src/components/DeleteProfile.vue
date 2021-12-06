@@ -1,5 +1,5 @@
 <template>
-    <div class="col-9 text-right btn-delete">
+    <div class="col text-right btn-delete">
         <button @click = "deleteProfile()" class="btn-secondary rounded"><font-awesome-icon icon="user-times" alt='suppression du compte' aria-hidden="true"/></button>
         <span class="delete"> Supprimez définitivement votre compte et vos informations </span>
     </div>

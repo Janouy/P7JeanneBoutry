@@ -3,8 +3,9 @@
         <h1> Mes publications </h1>
         <div class="container">
             <div class="card">
+                <span class="card-text" v-if="this.publis.length ==0"> Vous n'avez rien publié </span>
                 <div v-for="publi in publis" :key='publi.id'>
-                    <span class="card-text">{{publi.text}} </span>
+                    <span class="card-text" >{{publi.text}} </span>
                     <img class="publication_image" :src=publi.media >
                     <button @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
                 </div>

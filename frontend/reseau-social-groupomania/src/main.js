@@ -8,6 +8,7 @@ import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { faUserTimes} from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import './assets/custom.scss'
@@ -21,6 +22,7 @@ library.add(faThumbsUp)
 library.add(faHome)
 library.add(faImages)
 library.add(faUserTimes)
+library.add(faTimesCircle)
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)

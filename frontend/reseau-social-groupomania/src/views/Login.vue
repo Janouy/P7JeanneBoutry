@@ -1,6 +1,7 @@
 <template>
 
     <div class="background">
+    <nav class='pt-3 text-left' id="nav"> <router-link to="/groupomania/main" v-if="mode == 'view'"><font-awesome-icon class='icon_home' icon="home" alt='retour page principale' aria-hidden="true"/></router-link> Accueil</nav>
             <header>
                 <h1 class="col-12 pt-4"> Bienvenue sur Groupomania People </h1>
             </header>
@@ -242,7 +243,7 @@ export default{
     } 
     .background{
         background-color: rgb(240, 242, 245);
-        @media screen and (max-width: 768px){
+       @media screen and (max-width: 768px){
             height: 900px;
         }
         @media screen and (min-width: 768px) and (max-width: 1023px){
@@ -253,7 +254,7 @@ export default{
        }
         @media screen and (min-width: 1367px){
             min-height:800px;
-       }
+       } 
     }
     .card-login{
         margin: 0 auto; 
@@ -262,18 +263,7 @@ export default{
         position: relative;
         z-index: 3;
         margin-top: 6%;
-        @media screen and (max-width: 767px){
-            height: 350px;
-        }
-        @media screen and (min-width: 768px) and (max-width: 1023px){
-            height: 330px;
-        }
-        @media screen and (min-width: 1024px) and (max-width: 1366px){
-            height: 400px;
-        }
-        @media screen and (min-width: 1367px){
-            height: 400px;
-        }
+        height: 400px;
     }
     .card-create{
         margin: 0 auto; 

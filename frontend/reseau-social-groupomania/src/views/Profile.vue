@@ -1,13 +1,12 @@
 <template>
     <div class="background">
-        <nav id="nav"> <router-link to="/groupomania/main" v-if="mode == 'view'"><font-awesome-icon icon="home" alt='retour page principale' aria-hidden="true"/></router-link></nav>
         <div class="container pb-5">
+            <nav class='pt-3 text-left' id="nav"> <router-link to="/groupomania/main"><font-awesome-icon class='icon_home' icon="home" alt='retour page principale' aria-hidden="true"/></router-link> Accueil</nav>
             <header>
-                <h1 class="col h1 py-4">{{this.firstName}} {{this.lastName}}</h1>
+                <h1 class="col py-4">{{this.firstName}} {{this.lastName}}</h1>
             </header>
-
                 <div class="card background-card" v-if="mode == 'view'">
-                    <div class="card-img picture" v-if="!this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png"/></div>
+                    <div class="card-img picture" v-if="this.profilePicture=='NULL' || !this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png"/></div>
                     <div class="card-img picture" v-else>
                     <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
                     </div>
@@ -29,49 +28,55 @@
                         </div>
                     </div>
                 </div>
-                <div class="card" v-else>
-                    <div class="col h3 text-info my-4" > Modification de votre Profil... </div>
-                    <div class="card-img picture" v-if="!this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png"/></div>
-                    <div class="card-img picture" v-else>
-                    <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
+                <div class="card card_modify" v-else>
+                    <div class="card-title h3 text-info my-4" > Modification de votre Profil... </div>
+                    <div class="card-group">
+                    <div class="card card_modify card_modify_inside rounded mx-4">
+                        <div class="card-img picture" v-if="this.profilePicture =='NULL' || !this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png"/></div>
+                        <div class="card-img picture" v-else>
+                        <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
+                        </div>
+                        <div @click="deletePicture(profilePicture)" class="delete_img text-right"><font-awesome-icon icon="times-circle" alt='suppression de la photo' aria-hidden="true"/><span>Supprimer cette photo</span> </div>
+                        
+                        <form enctype="multipart/form-data" class="border bg-secondary text-light mx-2 mt-5 rounded">
+                            <label for="file" class="col-6 ml-3 mt-2 mb-3 h4 text-center">Modifier la photo:</label> <br/>
+                            <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg"/>
+                            <span> <button type="submit" class="btn btn-success col-5 my-4" @click="sendPicture()"> Envoi </button> </span>
+                        </form>
                     </div>
-
-                    <form enctype="multipart/form-data">
-                        <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg"/>
-                        <button type="submit" @click="sendPicture()"> Envoi </button>
-                        <button @click="deletePicture()" class="btn border"> Supprimer cette photo</button> 
-                    </form>
-                    <form >
-                        <div class="form-row">
-                            <label for="firstNameInputModif" class="col-4 ml-3 text-left">Prénom:*</label>
-                            <input v-model="firstName" type="text" id="firstNameInputModif" class="form-control mb-3 mx-3 "/>
-                        </div>
-                        <div class="form-row">
-                            <label for="lastNameInputModif" class="col-4 ml-3 mt-2 text-left">Nom:*</label>
-                            <input v-model="lastName" type="text" id="lastNameInputModif" class="form-control mb-3 mx-3"/>
-                        </div>
-                        <div class="form-row">
-                            <label for="bioInputModif" class="col-4 ml-3 mt-2 text-left">Décrivez-vous:</label>
-                            <input v-model="description" type="textarea" id="bioInputModif" maxlength="120" class="form-control mx-3"/>
-                            <p class="info ml-4"> 120 caractères maximum</p>
-                        </div>
-                         <div class="form-row"> 
-                            <label for="emailInputModif" class="col-4 ml-3 mt-2 text-left">Email:*</label>
-                            <input v-model="email" type="email" id="emailInputModif" class="form-control mb-3 mx-3"/> 
-                        </div>
-                        <div class="form-row"> 
-                            <label for="passwordInputModif" class="col-4 ml-3 mt-2 text-left">Nouveau mot de passe:</label>
-                            <input v-model="password" type="password" id="passwordInputModif" class="form-control mb-3 mx-3"/>
-                        </div>
-                        <button type="submit" @click="viewProfile()" class="btn btn-info col-3 mb-3"> Retour</button>
-                        <button type="submit" @click="modify(), viewProfile()" class="btn btn-success col-3 mb-3 ml-2" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
-                    </form>
+                    <div class="card card_modify card_modify_inside rounded mx-4">
+                        <form >
+                            <div class="form-row">
+                                <label for="firstNameInputModif" class="col-4 ml-3 text-left">Prénom:*</label>
+                                <input v-model="firstName" type="text" id="firstNameInputModif" class="form-control mb-3 mx-3 "/>
+                            </div>
+                            <div class="form-row">
+                                <label for="lastNameInputModif" class="col-4 ml-3 mt-2 text-left">Nom:*</label>
+                                <input v-model="lastName" type="text" id="lastNameInputModif" class="form-control mb-3 mx-3"/>
+                            </div>
+                            <div class="form-row">
+                                <label for="bioInputModif" class="col-4 ml-3 mt-2 text-left">Bio:</label>
+                                <input v-model="description" type="textarea" id="bioInputModif" maxlength="120" class="form-control mx-3 text-center" placeholder='Décrivez-vous...'/>
+                                <p class="info ml-4"> 120 caractères maximum</p>
+                            </div>
+                            <div class="form-row"> 
+                                <label for="emailInputModif" class="col-4 ml-3 mt-2 text-left">Email:*</label>
+                                <input v-model="email" type="email" id="emailInputModif" class="form-control mb-3 mx-3"/> 
+                            </div>
+                            <div class="form-row"> 
+                                <label for="passwordInputModif" class="col-6 ml-3 mt-2 text-left">Nouveau mot de passe:</label>
+                                <input v-model="password" type="password" id="passwordInputModif" class="form-control mb-3 mx-3"/>
+                            </div>
+                            <button type="submit" @click="modify(), viewProfile()" class="btn btn-success col-4 mb-3 ml-2" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
+                        </form>
+                    </div>
+                    </div>
+                    <span class="col text-center mt-3"> <button type="submit" @click="viewProfile()" class="btn btn-info col-3 ml-3 mb-3"> Retour au profil</button> </span>
                 </div>
             <p v-if="mode == 'view'"></p>
             <p v-else> * Le formulaire n'accepte pas les caractères spéciaux </p>
+            <div class="row" v-if="mode == 'view'"> <DeleteProfile/></div>
         </div>
-        <div v-if="mode == 'view'"> <DeleteProfile/></div>
-        
     </div>
 </template>
 
@@ -155,7 +160,6 @@ export default {
             this.firstName = data.data[0].firstName;
             this.profilePicture = data.data[0].picture;
             this.description = data.data[0].description;
-            console.log(this.profilePicture);
             })
             .catch(error => {
                 this.errorMessage = error;
@@ -219,7 +223,10 @@ export default {
                 console.error("There was an error!", error);
             });
         }, 
-        deletePicture: function(){
+        deletePicture: function(element){
+            if (element == 'null' || !element){
+                alert("Vous n'avez aucune photo de profile")
+            }else{
             let userId = localStorage.getItem('userId');
             let url = "http://localhost:3000/api/pictures/" + userId;
             fetch(url,{
@@ -233,12 +240,13 @@ export default {
                 return Promise.reject(error);
             }
             alert("Votre photo de profil a bien été supprimée.");
-            location.reload();
+            this.displayProfile();
             })
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
             });
+            }
         },
     },
     mounted(){
@@ -263,6 +271,9 @@ export default {
             min-height:800px;
        }
     }
+    .icon_home{
+        font-size: 3vmin;
+    }
     .card{
         box-shadow: 2px 2px 2px rgb(43, 42, 42);
         &_inside{
@@ -273,6 +284,12 @@ export default {
                 &_2{
                     max-width: 25%;
                 }
+        }
+        &_modify{
+            &_inside{
+            background-color: #c5c8cc;
+            width: 40%;
+            }
         }
     }
     .background-card{
@@ -304,5 +321,12 @@ export default {
     }
     .info{
         font-size: 1.2vmin;
+    }
+    .delete_img{
+        cursor: pointer;
+        font-size: 1.8vmin;
+    }
+    .btn_profile:hover{
+        font-size: 3vmin;
     }
 </style>
