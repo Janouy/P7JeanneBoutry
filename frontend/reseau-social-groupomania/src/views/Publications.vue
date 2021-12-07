@@ -1,23 +1,28 @@
 <template>
     <div>
-        <h1> Mes publications </h1>
         <div class="container">
-            <div class="card">
-                <span class="card-text" v-if="this.publis.length ==0"> Vous n'avez rien publié </span>
-                <div v-for="publi in publis" :key='publi.id'>
-                    <span class="card-text" >{{publi.text}} </span>
-                    <img class="publication_image" :src=publi.media >
-                    <button @click="deletePost(publi.postId)" class="btn border"> Supprimer le post</button> 
+            <Navbar/>
+            <h1> Mes publications </h1>
+            <div class="card my-3">
+                <span class="card-text my-2 " v-if="this.publis.length ==0"> Vous n'avez rien publié </span>
+                <div v-for="publi in publis" :key='publi.id' class="border rounded mx-2 my-2 shadow">
+                    <span class="card-text my-2" >{{publi.text}} </span>
+                    <img class="publication_image my-2" :src=publi.media >
+                    <button @click="deletePost(publi.postId)" class="btn btn-dark border my-2 ml-5"> Supprimer ce post</button> 
                 </div>
             </div>
         </div>
-        <button @click="backToProfile()"> Retour </button>
+        <span class="col text-center mt-3"> <button type="submit" @click="backToProfile()" class="btn btn-info col-2 ml-3 mb-3"> Retour au profil</button> </span>
     </div>
 </template>
 
 <script>
+import Navbar from "../components/Navbar.vue"
 export default {
     name: 'Publications',
+    components:{
+        Navbar
+    },
     data: function(){
         return{
             publis:[

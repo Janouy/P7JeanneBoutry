@@ -1,5 +1,5 @@
 <template>
-    <div class="col text-right btn-delete">
+    <div class="col text-right btn-delete mr-2">
         <button @click = "deleteProfile()" class="btn-secondary rounded"><font-awesome-icon icon="user-times" alt='suppression du compte' aria-hidden="true"/></button>
         <span class="delete"> Supprimez définitivement votre compte et vos informations </span>
     </div>
@@ -37,11 +37,8 @@ export default{
 </script>
 
 <style scoped lang='scss'>
-    .btn-delete{
-        
-    }
     .delete{
-        font-size: 1.5vmin;
+        font-size: 1.8vmin;
         color: #A30000;
     }
 </style>

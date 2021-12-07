@@ -1,7 +1,6 @@
 <template>
 
     <div class="background">
-    <nav class='pt-3 text-left' id="nav"> <router-link to="/groupomania/main" v-if="mode == 'view'"><font-awesome-icon class='icon_home' icon="home" alt='retour page principale' aria-hidden="true"/></router-link> Accueil</nav>
             <header>
                 <h1 class="col-12 pt-4"> Bienvenue sur Groupomania People </h1>
             </header>

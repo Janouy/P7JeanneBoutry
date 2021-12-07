@@ -1,25 +1,27 @@
 <template>
     <div class="background">
         <div class="container py-5">
-        <nav class='py-3 text-left' id="nav"> <router-link to="/groupomania/main"><font-awesome-icon class='icon_home' icon="home" alt='retour page principale' aria-hidden="true"/></router-link> Accueil</nav>
-            <div class='card'>
+            <Navbar/>
+            <div class='card mt-5'>
                 <div class="row">
-                    <div class="card_title col-12 h2 ">{{this.firstName}} {{this.lastName}}</div>
+                    <div class="card_title col-12 h2 mt-2">{{this.firstName}} {{this.lastName}}</div>
                 </div>
-                <div class="card py-3">
-                    <div class="card-img-top" v-if="this.picture == 'NULL' || !this.picture"> <img class="publication_image" src="../assets/logos/user.png"> </div>
-                    <div class="card-img-top" v-else > <img class="picture_profile" :src=this.picture> </div>
+                    <div class="card-img" v-if="this.picture == 'NULL' || !this.picture"> <img class="publication_image" src="../assets/logos/user.png"> </div>
+                    <div class="card-img" v-else > <img class="picture_profile" :src=this.picture> </div>
                     <div class="card-text my-3 mx-3 border rounded " v-if="this.description"> {{this.description}}</div>
                     <div class="card-text my-3 mx-3 border rounded " v-else> {{this.firstName}} {{this.lastName}} n'a renseigné aucune bio...</div>
-                </div>
             </div> 
         </div>
     </div>
 </template>
 
 <script>
+import Navbar from "../components/Navbar.vue"
 export default {
     name: 'userPage',
+    components:{
+        Navbar
+    },
     props:['id'],
     data: function(){
     return{

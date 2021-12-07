@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div id="nav">
+        <div class="container-fluid">
+        <div id="top_menu" class="row">
             <ConnectedUser/>
         </div>
         <h1> Page principale</h1>
@@ -31,6 +32,7 @@
             @sendComment= "addComment"
             :key='publi.id'
         />
+        </div>
     </div>
 </template>
 
@@ -44,7 +46,7 @@ export default {
     components:{
         Publis,
         DisplayUsers,
-        ConnectedUser
+        ConnectedUser,
     },
     data: function(){
         return{
@@ -155,9 +157,12 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .publication_image{
     max-width: 150px;
     height: auto;
+}
+#top_menu{
+    display: flex;
 }
 </style>
