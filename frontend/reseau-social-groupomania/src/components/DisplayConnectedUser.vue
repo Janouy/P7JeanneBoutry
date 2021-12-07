@@ -1,7 +1,7 @@
 <template>
-    <div class="row userName ml-5">
+    <div class="row userName ml-3 mb-4 pt-3">
         <div class="pict" :style="{backgroundImage: `url(${picture})`}"></div>
-        <div class="text-left mt-3 ml-1"><router-link to="/profile">{{this.lastName}} {{this.firstName}}</router-link> </div>
+        <div class="text-left mt-3 ml-3"><router-link to="/profile">{{this.lastName}} {{this.firstName}}</router-link> </div>
     </div>
 </template>
 

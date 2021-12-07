@@ -1,24 +1,29 @@
 <template>
     <div>
-        <div class="container-fluid">
-        <div id="top_menu" class="row">
-            <ConnectedUser/>
-        </div>
-        <h1> Page principale</h1>
-        <div class="container">
+        <div class="container-fluid background">
+            <div class="pt-3">
+                <nav class='navbar navbar-expand bg-white rounded pt-2 text-left' id="nav"> <ConnectedUser/></nav>
+            </div>
+            <div class="row">
+                <div class="col-5 mb-5 caroussel">
+                    <Caroussel/>
+                </div>
+            </div>
+            <div class="row">
+
             <DisplayUsers/>
             <form>
-                <div class="form col-9">
-                    <input id="output" v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
-                    <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
-                    <form enctype="multipart/form-data">
-                        <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-                        <button type="submit" @click="sendMedia()">Poster une photo </button>
-                    </form>
-                </div>
+            <div class="form col-9">
+            <input id="output" v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
+            <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
+            <form enctype="multipart/form-data">
+            <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
+            <button type="submit" @click="sendMedia()">Poster une photo </button>
             </form>
-        </div>
-        <Publis
+            </div>
+            </form>
+            </div>
+            <Publis
             v-for="publi in posts" 
             :userId = "publi.userId"
             :name = "publi.name"
@@ -31,7 +36,7 @@
             :userIdLike = "publi.userIdLike"
             @sendComment= "addComment"
             :key='publi.id'
-        />
+            />
         </div>
     </div>
 </template>
@@ -40,6 +45,7 @@
 import Publis from "../components/Publis"
 import DisplayUsers from "../components/DisplayUsers"
 import ConnectedUser from "../components/DisplayConnectedUser"
+import Caroussel from "../components/Caroussel.vue"
 import { mapState, mapActions} from 'vuex'
 export default {
     name: 'Main',
@@ -47,6 +53,7 @@ export default {
         Publis,
         DisplayUsers,
         ConnectedUser,
+        Caroussel,
     },
     data: function(){
         return{
@@ -164,5 +171,9 @@ export default {
 }
 #top_menu{
     display: flex;
+}
+.caroussel{
+    float:none;
+    margin: 0 auto;
 }
 </style>
