@@ -8,7 +8,7 @@
       indicators
       img-width="853"
       img-height="490"
-      style="text-shadow: 1px 1px 2px #000;"
+      style="text-shadow: 1px 1px 2px #000; color: #000"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
     >
