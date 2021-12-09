@@ -1,7 +1,6 @@
 <template>
-    <div>
-        <div class="container-fluid background">
-            <h1 class="col text-center pt-3"> Groupomania People </h1>
+    <div class="container-fluid background">
+        <h1 class="col text-center pt-3"> Groupomania People </h1>
             <div class="col pt-3">
                 <nav class='navbar navbar-expand bg-white rounded pt-2 text-left shadow' id="nav"> <ConnectedUser/></nav>
             </div>
@@ -10,15 +9,17 @@
                     <Caroussel/>
                     </div>
             </div>
+        <div class="container">
+            
             <div class="row">
                 <DisplayUsers/>
-                <form class="col text_publi bg-light rounded shadow">
+                <form class="col-5 text_publi mx-auto bg-secondary rounded shadow">
                     <input id="output" v-model="text" type="textarea" maxlength="1200" class="form-control textarea mt-5" placeholder="Ecrivez quelque chose...">
-                    <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publiez</button>
+                    <button type="submit" @click="addPost()" class="btn btn-success col-3 mt-5 mx-3">Publiez</button>
                 </form>
-                <form enctype="multipart/form-data" class="col bg-light mr-3 rounded shadow">
+                <form enctype="multipart/form-data" class="col-3 text_publi bg-secondary text-light mx-auto pt-5 rounded shadow">
                     <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-                    <button type="submit" @click="sendMedia()">Postez une photo </button>
+                    <button type="submit" @click="sendMedia()" class="btn btn-success col-3 my-3 mx-3">Postez une photo</button>
                 </form>
             </div>
             <Publis
@@ -171,6 +172,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    .background{
+        background-color: #F0F2F5;
+    }
     h1{
         color: #169342;
         font-weight: bold;
@@ -190,7 +194,7 @@ export default {
     }
     .textarea {
         overflow-y: scroll;
-        height: 100px;
+        height: 40px;
         resize: none; 
     }
     .text_publi{

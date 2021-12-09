@@ -126,7 +126,7 @@ exports.getOneUser = (req, res) => {
 
 exports.getAllUsers = (req, res) => {
     try{
-        db.query('SELECT firstName, lastName, id FROM users ORDER BY lastName', (err,rows) => {
+        db.query('SELECT firstName, lastName, id, picture FROM users ORDER BY lastName', (err,rows) => {
             if(err) {
                 throw err;
             };

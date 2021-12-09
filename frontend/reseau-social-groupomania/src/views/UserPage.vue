@@ -60,3 +60,66 @@ export default {
     },
 }
 </script>
+
+<style scoped lang="scss">
+    .background{
+        background-color: #F0F2F5;
+        @media screen and (max-width: 768px){
+            min-height: 900px;
+        }
+        @media screen and (min-width: 768px) and (max-width: 1023px){
+            min-height: 1100px;
+       }
+        @media screen and (min-width: 1024px) and (max-width: 1366px){
+            min-height:1300px;
+       }
+        @media screen and (min-width: 1367px){
+            min-height: 800px;
+       }
+    }
+    .background-card{
+        background-color: rgba(63, 60, 59, 0.3);
+    }
+    .picture{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 300px;
+        padding: auto;
+    }
+    .picture_profile{
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        height: 250px;
+        width: 250px;
+        margin-top:25px;
+        border-radius: 30px;
+        border: 3px solid yellow;
+    }
+    .no_picture_profile{
+        height: 250px;
+        width: 250px;
+        border-radius: 30px;
+        background-color: black;
+        margin-top:25px;
+    }
+    .info{
+        font-size: 1.2vmin;
+    }
+    .delete_img{
+        cursor: pointer;
+        font-size: 1.8vmin;
+    }
+    .btn_profile:hover{
+        font-size: 3vmin;
+    }
+    .card-group{
+        @media screen and (max-width: 768px){
+            flex-direction: column;
+        }
+        @media screen and (min-width: 768px) and (max-width: 1023px){
+            flex-direction: column;
+        }
+    }
+</style>

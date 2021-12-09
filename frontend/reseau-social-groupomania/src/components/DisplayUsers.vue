@@ -1,9 +1,9 @@
 <template>
-    <div class="col-2 mx-3 mb-5 rounded bg-secondary text-light shadow">
+    <div class="col-3 mx-auto mb-5 rounded bg-secondary text-light shadow">
         <div class="row">
             <p class="col-12 mt-2"> Découvrez vos collaborateurs <p/>
             <form class="col-12 scroller">
-                    <input type="text" v-model="inputFilter"/>
+                    <input type="text" v-model="inputFilter" placeholder="Recherche"/>
                     <li v-for="user in filteredUsers" :key="user.id">
                         <div class="mini_pict" v-if="user.userId == userId" v-show="display=false"></div>
                         <div class="mini_pict mt-3 border rounded bg-light" v-else v-show="display=true">
