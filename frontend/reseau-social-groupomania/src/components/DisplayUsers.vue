@@ -1,15 +1,15 @@
 <template>
-    <div class="col-3 allUsers">
-        <p> Découvrez vos collaborateurs <p/>
-        <form>
-            <ul>
-                <input type="text" v-model="inputFilter"/>
-                <li v-for="user in filteredUsers" :key="user.id">
-                    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-if="user.userId == userId" v-show="display=false">{{user.name}}</router-link>
-                    <router-link :to="{name:'userPage', params:{id: user.userId}}" v-else v-show="display=true">{{user.name}}</router-link>
-                </li>
-            </ul>
-        </form>
+    <div class="col-2 ml-3 mb-5 rounded bg-light shadow">
+        <div class="row">
+            <p class="col-12 mt-2 "> Découvrez vos collaborateurs <p/>
+            <form class="col-12 scroller">
+                    <input type="text" v-model="inputFilter"/>
+                    <li v-for="user in filteredUsers" :key="user.id">
+                        <router-link :to="{name:'userPage', params:{id: user.userId}}" v-if="user.userId == userId" v-show="display=false">{{user.name}}</router-link>
+                        <router-link :to="{name:'userPage', params:{id: user.userId}}" v-else v-show="display=true" class="user_name">{{user.name}}</router-link>
+                    </li>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -65,11 +65,23 @@ export default{
 </script>
 
 <style lang="scss">
-.allUsers{
-    border: 1px black solid;
-
-}
-ul {
+li {
     list-style: none;
+    margin:0;
+}
+.user_name{
+    text-decoration:none;
+    color: black;
+}
+.scroller {
+  width: 300px;
+  height: 200px;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+p{
+    color:#169342;
+    font-size: 2.8vmin;
 }
 </style>

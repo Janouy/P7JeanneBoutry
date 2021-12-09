@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="card border-info my-3 mx-5" v-if="text">
+        <div class="card border-info" v-if="text">
             <div class="card-text border" v-if="text"> 
                 {{name}} a publié: 
             </div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="card border-primary my-3 mx-5" v-if="media">
+        <div class="card border-primary" v-if="media">
             <div class="card-text border" v-if="media"> 
                 {{name}} a publié:
             </div>

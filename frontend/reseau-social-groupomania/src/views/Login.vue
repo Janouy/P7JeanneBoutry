@@ -51,8 +51,8 @@
                                 <label for="passwordInput" class="mx-3 mt-3">Mot de passe:*</label>
                                 <input v-model="password" type="password" class="form-control mx-3" id="passwordInput" minlength='12' required pattern="^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ(){}|~<>;:[\]]{2,}$">
                                 <div class="text-left">
-                                    <div class="color valid-form ml-3 mt-1" :class="{color: isActive, 'text-danger': !checkPasswordLength}">le mot de passe contient plus de 12 caractères</div>                         
-                                    <div class="color valid-form ml-3" :class="{color: isActive, 'text-danger': checkPassword }"> le mot de passe ne contient pas de caractères spéciaux</div>
+                                    <div class="color valid-form ml-3 mt-1" :class="{color: isActive, 'text-danger': !checkPasswordLength}">le mot de passe doit contenir plus de 12 caractères</div>                         
+                                    <div class="color valid-form ml-3" :class="{color: isActive, 'text-danger': checkPassword }"> le mot de passe ne doit pas contenir de caractères spéciaux</div>
                                 </div>
                             </div>
                             <div class='form-row'>

@@ -1,27 +1,25 @@
 <template>
     <div>
         <div class="container-fluid background">
-            <div class="pt-3">
-                <nav class='navbar navbar-expand bg-white rounded pt-2 text-left' id="nav"> <ConnectedUser/></nav>
+            <h1 class="col text-center pt-3"> Groupomania People </h1>
+            <div class="col pt-3">
+                <nav class='navbar navbar-expand bg-white rounded pt-2 text-left shadow' id="nav"> <ConnectedUser/></nav>
             </div>
             <div class="row">
-                <div class="col-5 mb-5 caroussel">
+                    <div class="col-5 mb-5 caroussel">
                     <Caroussel/>
-                </div>
+                    </div>
             </div>
             <div class="row">
-
-            <DisplayUsers/>
-            <form>
-            <div class="form col-9">
-            <input id="output" v-model="text" type="textarea" class="form-control" placeholder="Publiez quelque chose...">
-            <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publier</button>
-            <form enctype="multipart/form-data">
-            <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-            <button type="submit" @click="sendMedia()">Poster une photo </button>
-            </form>
-            </div>
-            </form>
+                <DisplayUsers/>
+                <form class="col text_publi bg-light rounded shadow">
+                    <input id="output" v-model="text" type="textarea" maxlength="1200" class="form-control textarea mt-5" placeholder="Ecrivez quelque chose...">
+                    <button type="submit" @click="addPost()" class="btn btn-primary col-3 my-3 mx-3"> Publiez</button>
+                </form>
+                <form enctype="multipart/form-data" class="col bg-light mr-3 rounded shadow">
+                    <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
+                    <button type="submit" @click="sendMedia()">Postez une photo </button>
+                </form>
             </div>
             <Publis
             v-for="publi in posts" 
@@ -165,15 +163,29 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.publication_image{
-    max-width: 150px;
-    height: auto;
-}
-#top_menu{
-    display: flex;
-}
-.caroussel{
-    float:none;
-    margin: 0 auto;
-}
+    h1{
+        color: #169342;
+        font-weight: bold;
+        font-size: 8vmin;
+        text-shadow: 1px 2px 2px #000;
+    }
+    .publication_image{
+        max-width: 150px;
+        height: auto;
+    }
+    #top_menu{
+        display: flex;
+    }
+    .caroussel{
+        float:none;
+        margin: 0 auto;
+    }
+    .textarea {
+        overflow-y: scroll;
+        height: 100px;
+        resize: none; 
+    }
+    .text_publi{
+        height: 255px;
+    }
 </style>

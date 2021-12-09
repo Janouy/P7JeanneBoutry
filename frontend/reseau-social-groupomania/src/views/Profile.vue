@@ -11,14 +11,13 @@
                     <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
                     </div>
                     <div class="card-group card_inside rounded mx-2 my-2">
-                        <div class="card card_inside card_inside_1 rounded mr-2 pb-2 pb-md-0">
-
+                        <div class="card card_inside card_inside_1 rounded mx-2 pb-2 pb-md-0">
                             <div class="card-title text-left ml-4 mt-2 h5"> Ma bio: </div>
-                            <div class="card-text mx-3 px-2 py-2 border rounded text-left bg-light text-secondary" v-if="this.description =='null' || !this.description"> Vous n'avez renseigné aucune information sur vous</div>
-                            <div class="card-text mx-3 px-2 py-2 border rounded text-left bg-light" v-else> {{this.description}}</div>
+                            <div class="card-text mx-3 mb-3 px-2 py-2 border rounded text-left bg-light text-secondary" v-if="this.description =='null' || !this.description"> Vous n'avez renseigné aucune information sur vous</div>
+                            <div class="card-text mx-3 mb-3 px-2 py-2 border rounded text-left bg-light" v-else> {{this.description}}</div>
                         </div>
 
-                        <div class="card card_inside card_inside_2 rounded ">
+                        <div class="card card_inside card_inside_2 rounded mx-2 my-2">
                            <div>
                                 <button class="btn btn_profile" @click ="modifyProfile()"> Modifier mon profil</button>
                             </div>
@@ -282,23 +281,28 @@ export default {
             box-shadow: none;
                 &_1{
                     @media screen and (max-width: 768px){
-                        min-width: 100%;
+                        
+                         border: 2px solid green;
                     }
                     @media screen and (min-width: 768px) and (max-width: 1023px){
-                        min-width: 70%;
+                       
+                        border: 2px solid blue;
                     }
                     @media screen and (min-width: 1024px) and (max-width: 1366px){
+                        border: 2px solid orange;
                         min-width: 70%;
                     }
                     @media screen and (min-width: 1367px){
+                        border: 2px solid purple;
                         min-width: 70%;
                     } 
                 }
                 &_2{
                     @media screen and (max-width: 768px){
+                        
                     }
                     @media screen and (min-width: 768px) and (max-width: 1023px){
-                        min-width: 25%;
+                        
                     }
                     @media screen and (min-width: 1024px) and (max-width: 1366px){
                         min-width: 25%;

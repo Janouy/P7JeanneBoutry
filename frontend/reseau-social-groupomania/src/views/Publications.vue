@@ -4,15 +4,15 @@
             <Navbar/>
             <h1> Mes publications </h1>
             <div class="card my-3">
-                <span class="card-text my-2 " v-if="this.publis.length ==0"> Vous n'avez rien publié </span>
-                <div v-for="publi in publis" :key='publi.id' class="border rounded mx-2 my-2 shadow">
-                    <span class="card-text my-2" >{{publi.text}} </span>
-                    <img class="publication_image my-2" :src=publi.media >
-                    <button @click="deletePost(publi.postId)" class="btn btn-dark border my-2 ml-5"> Supprimer ce post</button> 
+                <div class="card-text my-2 " v-if="this.publis.length ==0"> Vous n'avez rien publié </div>
+                <div v-for="publi in publis" :key='publi.id' class="card border rounded mx-2 my-2 shadow">
+                    <div class="card-text my-2" >{{publi.text}} </div>
+                    <img class="card-img img_publication my-2 rounded" :src=publi.media >
+                    <span class="col text-center"><div @click="deletePost(publi.postId)" class="btn btn-dark button_publication border my-2"> Supprimer ce post</div> </span>
                 </div>
             </div>
         </div>
-        <span class="col text-center mt-3"> <button type="submit" @click="backToProfile()" class="btn btn-info col-2 ml-3 mb-3"> Retour au profil</button> </span>
+        <span class="col text-center mt-3"> <button type="submit" @click="backToProfile()" class="btn btn-info button_publication col-2 mb-3"> Retour au profil</button> </span>
     </div>
 </template>
 
@@ -85,3 +85,16 @@ export default {
     },
 }
 </script>
+
+<style scopeed lang="scss">
+.img_publication{
+    max-width: 30%;
+    margin: auto;
+    @media screen and (max-width: 768px){
+        max-width: 50%;
+    }
+}
+.button_publication{
+    font-size: 2vmin;
+}
+</style>

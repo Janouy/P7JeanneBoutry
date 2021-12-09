@@ -1,7 +1,8 @@
 <template>
     <div class="row userName ml-3 mb-4 pt-3">
-        <div class="pict" :style="{backgroundImage: `url(${picture})`}"></div>
-        <div class="text-left mt-3 ml-3"><router-link to="/profile">{{this.lastName}} {{this.firstName}}</router-link> </div>
+        <div  v-if="this.picture =='NULL' || !this.picture"><img class="pict" src="../assets/logos/user.png"/></div>
+        <div class="pict" v-else :style="{backgroundImage: `url(${picture})`}"></div>
+        <div class="text-left mt-3 ml-3"><router-link to="/profile" class="connected">{{this.lastName}} {{this.firstName}}</router-link> </div>
     </div>
 </template>
 
@@ -53,7 +54,7 @@ export default{
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .pict{
     background-size: cover;
     background-repeat: no-repeat;
@@ -61,5 +62,13 @@ export default{
     height: 50px;
     width: 50px;
     border-radius: 80px;
+    border: 2px solid #169342;
+}
+.connected{
+    color: #3d3d3d;
+    font-weight: bold;
+}
+.connected:link{
+    text-decoration:none;
 }
 </style>

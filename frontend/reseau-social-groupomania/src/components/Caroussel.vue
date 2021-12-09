@@ -8,7 +8,7 @@
       indicators
       img-width="853"
       img-height="490"
-      style="text-shadow: 1px 1px 2px #000; color: #000"
+      style="text-shadow: 1px 1px 2px #000;"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
     >
@@ -24,7 +24,7 @@
         </template>
       </b-carousel-slide>
     
-   <b-carousel-slide caption="Groupomania est en pleine expansion">
+   <b-carousel-slide caption="Nous sommes en pleine expansion">
         <template #img>
           <img
             class="d-block img-fluid"
@@ -48,7 +48,7 @@
         </template>
       </b-carousel-slide>
 
-  <b-carousel-slide caption="Vous êtes 300 à nous avoir rejoint en 3 ans">
+  <b-carousel-slide caption="Vous êtes 300 à nous avoir rejoint en 3 ans !">
         <template #img>
           <img
             class="d-block img-fluid"
