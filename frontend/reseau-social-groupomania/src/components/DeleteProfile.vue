@@ -10,11 +10,11 @@ export default{
     name: "DeleteProfile",
     methods: {
         deleteProfile: function(){
-            let userId = localStorage.getItem("userId");
+            let userId = sessionStorage.getItem("userId");
             let url = "http://localhost:3000/api/users/" + userId;
             fetch(url,{
                     method: "delete",
-                    headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+                    headers: {"Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")}
             })
             .then(async res => {
                 const data = await res.json();
@@ -22,14 +22,17 @@ export default{
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
-                localStorage.clear();
+                sessionStorage.clear();
                 window.location.href = '/';
                 alert("Votre compte a bien été supprimé.");
+                window.location.href = '/';
             })
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
-                location.reload();
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                
             });
         }
     }

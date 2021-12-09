@@ -14,7 +14,7 @@ export default{
             lastName :'',
             firstName :'',
             picture: '',
-            userId: localStorage.getItem('userId'),
+            userId: sessionStorage.getItem('userId'),
         }
     },
     methods:{
@@ -26,11 +26,11 @@ export default{
             }
         },
         displayUser: function(){
-            let userId = localStorage.getItem("userId");
+            let userId = sessionStorage.getItem("userId");
             let url = "http://localhost:3000/api/users/" + userId;
             fetch(url,{
                 method: "GET",
-                headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
             })
             .then(async res => {
                 const data = await res.json();

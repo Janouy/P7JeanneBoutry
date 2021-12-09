@@ -21,7 +21,7 @@ export default{
             users:[ 
             ],
             inputFilter:'',
-            userId: localStorage.getItem('userId'),
+            userId: sessionStorage.getItem('userId'),
         }
     },
     computed:{

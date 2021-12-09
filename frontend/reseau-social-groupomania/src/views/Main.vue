@@ -64,7 +64,7 @@ export default {
             image:'',
             imageUrl:'',
             newImage:'',
-            idUser: localStorage.getItem('UserId'),
+            idUser: sessionStorage.getItem('UserId'),
         }
     },
     computed:{
@@ -79,11 +79,11 @@ export default {
         sendMedia: function(){
             const formData = new FormData();
             formData.set("image", this.file)
-            let userId = localStorage.getItem("userId");
+            let userId = sessionStorage.getItem("userId");
             let url = "http://localhost:3000/api/medias/" + userId;
             fetch(url,{
                 method: "POST",
-                headers: {Authorization: "Bearer " + localStorage.getItem("token") },
+                headers: {Authorization: "Bearer " + sessionStorage.getItem("token") },
                 body: formData,
             })
             .then(async res => {
@@ -99,14 +99,17 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             });
         },   
         addPost: function(){
-            let userId = localStorage.getItem("userId");
+            let userId = sessionStorage.getItem("userId");
             let url = "http://localhost:3000/api/texts/";
             fetch(url, {    
                 method: "POST",
-                headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token") },
                 body: JSON.stringify({ 
                     id: userId,
                     text: this.text,
@@ -125,17 +128,20 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error('There was an error!', error);
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             });
         },
         addComment: function(e, f){
             this.publis[0].comment = f;
-            localStorage.setItem("publiId", e)
-            this.userId = localStorage.getItem('userId');
-            let postId = localStorage.getItem('publiId');
+            sessionStorage.setItem("publiId", e)
+            this.userId = sessionStorage.getItem('userId');
+            let postId = sessionStorage.getItem('publiId');
             let url = "http://localhost:3000/api/comments/" + postId;
             fetch(url, {    
                 method: "POST",
-                headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token") },
                 body: JSON.stringify({ 
                     comment: this.publis[0].comment,
                     userId: this.userId,
@@ -152,7 +158,9 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error('There was an error!', error);
-                alert("Une erreur est survenue.")
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             }); 
         },
     },

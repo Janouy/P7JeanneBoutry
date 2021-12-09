@@ -9,7 +9,7 @@ export default{
     name: "Disconnection",
     methods: {
         disconnect(){
-            localStorage.clear();
+            sessionStorage.clear();
             window.location.href = '/';
         }
     }

@@ -24,11 +24,11 @@ export default{
     data: function(){
         return{
             comments:[
-                {thisUserId: localStorage.getItem("userId")}
+                {thisUserId: sessionStorage.getItem("userId")}
             ],
             publis:[
             ],
-            admin: localStorage.getItem('isAdmin'),
+            admin: sessionStorage.getItem('isAdmin'),
         }
     },
     methods:{

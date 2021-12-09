@@ -80,11 +80,11 @@ export default{
     data: function(){
         return{
             comments:[
-                {thisUserId: localStorage.getItem("userId")}
+                {thisUserId: sessionStorage.getItem("userId")}
             ],
             comment:'',
             like: 0,
-            admin: localStorage.getItem('isAdmin'),
+            admin: sessionStorage.getItem('isAdmin'),
         }
     }, 
     computed:{
@@ -97,12 +97,12 @@ export default{
             this.comment='';
         },
         deletePost: function(e){
-            localStorage.setItem("publiId", e)
-            let postId = localStorage.getItem('publiId');
+            sessionStorage.setItem("publiId", e)
+            let postId = sessionStorage.getItem('publiId');
             let url = "http://localhost:3000/api/texts/" + postId;
             fetch(url,{
                 method: "delete",
-                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")}
             })
             .then(async res => {
                 const data = await res.json();
@@ -116,15 +116,18 @@ export default{
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             });
         },
         deleteComment: function(e){
-            localStorage.setItem("commentId", e)
-            let commentId = localStorage.getItem('commentId');
+            sessionStorage.setItem("commentId", e)
+            let commentId = sessionStorage.getItem('commentId');
             let url = "http://localhost:3000/api/comments/" + commentId;
             fetch(url,{
                 method: "delete",
-                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")}
             })
             .then(async res => {
                 const data = await res.json();
@@ -138,10 +141,13 @@ export default{
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             }); 
         },
         liked: function(e){
-            let userId = localStorage.getItem('userId');
+            let userId = sessionStorage.getItem('userId');
             if(e.includes(userId)){
                 this.like = 0
             }else if (!e.includes(userId)){
@@ -149,7 +155,7 @@ export default{
             }
         },
         unliked: function(e){
-            let userId = localStorage.getItem('userId');
+            let userId = sessionStorage.getItem('userId');
             if(e.includes(userId)){
                 this.like = 0
             }else if (!e.includes(userId)){
@@ -157,13 +163,13 @@ export default{
             }
         },
         likePost: function(e){
-            const userId = localStorage.getItem('userId');
-            localStorage.setItem("postId", e);
-            let postId = localStorage.getItem("postId");
+            const userId = sessionStorage.getItem('userId');
+            sessionStorage.setItem("postId", e);
+            let postId = sessionStorage.getItem("postId");
             let url = "http://localhost:3000/api/texts/" + postId;
             fetch(url,{
                 method: "POST",
-                headers: {"Content-Type": "application/json",Authorization: "Bearer " + localStorage.getItem("token") },
+                headers: {"Content-Type": "application/json",Authorization: "Bearer " + sessionStorage.getItem("token") },
                 body: JSON.stringify({ 
                     like: this.like,
                     userId: userId,
@@ -180,10 +186,13 @@ export default{
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             }); 
         },
         disabledLike: function(e){
-            let userId = localStorage.getItem('userId');
+            let userId = sessionStorage.getItem('userId');
             if(e.includes(userId)){
                 return true;
             }else{
@@ -191,7 +200,7 @@ export default{
             }
         },
         disabledUnlike: function(e){
-            let userId = localStorage.getItem('userId');
+            let userId = sessionStorage.getItem('userId');
             if(e.includes(userId)){
                 return true;
             }else{

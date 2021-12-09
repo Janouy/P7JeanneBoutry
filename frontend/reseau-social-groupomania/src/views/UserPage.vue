@@ -36,7 +36,7 @@ export default {
             let url = "http://localhost:3000/api/users/" + this.id ;
             fetch(url,{
                 method: "GET",
-                headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
             })
             .then(async res => {
                 const data = await res.json();

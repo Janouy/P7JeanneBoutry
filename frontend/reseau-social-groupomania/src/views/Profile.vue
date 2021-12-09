@@ -144,11 +144,11 @@ export default {
             this.displayProfile();
         },
         displayProfile: function(){
-            let userId = localStorage.getItem("userId");
+            let userId = sessionStorage.getItem("userId");
             let url = "http://localhost:3000/api/users/" + userId;
             fetch(url,{
                 method: "GET",
-                headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
             })
             .then(async res => {
                 const data = await res.json();
@@ -168,11 +168,11 @@ export default {
             });
         },
         modify: function(){
-            let userId = localStorage.getItem("userId");
+            let userId = sessionStorage.getItem("userId");
             let url = "http://localhost:3000/api/users/" + userId;
             fetch(url,{
                 method: "Put",
-                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
                 body: JSON.stringify({ 
                     email: this.email,
                     firstName: this.firstName,
@@ -193,8 +193,9 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
-                location.reload();
-                alert("Une erreur est survenue, merci de vérifier les informations entrées.")
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             });
         },
         onFileChange() {
@@ -204,11 +205,11 @@ export default {
         sendPicture: function(){
             const formData = new FormData();
             formData.set("image", this.file);
-            let userId = localStorage.getItem("userId");
+            let userId = sessionStorage.getItem("userId");
             let url = "http://localhost:3000/api/pictures/" + userId;
             fetch(url,{
                 method: "POST",
-                headers: {Authorization: "Bearer " + localStorage.getItem("token") },
+                headers: {Authorization: "Bearer " + sessionStorage.getItem("token") },
                 body: formData,
             })
             .then(async res => {
@@ -222,17 +223,20 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             });
         }, 
         deletePicture: function(element){
             if (element == 'null' || !element){
                 alert("Vous n'avez aucune photo de profile")
             }else{
-            let userId = localStorage.getItem('userId');
+            let userId = sessionStorage.getItem('userId');
             let url = "http://localhost:3000/api/pictures/" + userId;
             fetch(url,{
                 method: "delete",
-                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")}
             })
             .then(async res => {
                 const data = await res.json();
@@ -246,6 +250,9 @@ export default {
             .catch(error => {
                 this.errorMessage = error;
                 console.error("There was an error!", error);
+                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
             });
             }
         },

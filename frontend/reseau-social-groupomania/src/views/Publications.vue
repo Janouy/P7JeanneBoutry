@@ -35,7 +35,7 @@ export default {
             this.$router.go(-1)
         },
         displayText: function(){
-            let userId = localStorage.getItem('userId');
+            let userId = sessionStorage.getItem('userId');
             let url = "http://localhost:3000/api/texts/" + userId;
             fetch(url,{
                 method: "GET",
@@ -58,12 +58,12 @@ export default {
         });
     },
         deletePost: function(e){
-            localStorage.setItem("publiId", e)
-            let postId = localStorage.getItem('publiId');
+            sessionStorage.setItem("publiId", e)
+            let postId = sessionStorage.getItem('publiId');
             let url = "http://localhost:3000/api/texts/" + postId;
             fetch(url,{
                 method: "delete",
-                headers: {"Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")}
+                headers: {"Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")}
             })
             .then(async res => {
                 const data = await res.json();

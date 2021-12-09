@@ -163,7 +163,7 @@ export default{
                 this.postId = data.id;
                 fetch("http://localhost:3000/api/users/login",{
                     method: "POST",
-                    headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+                    headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
                     body: JSON.stringify({ 
                         email: this.email,
                         password: this.password, 
@@ -175,9 +175,9 @@ export default{
                 const error = (data && data.message) || res.status;
                 return Promise.reject(error);
                 }
-                localStorage.setItem("token", data.token);
-                localStorage.setItem('userId', data.id);
-                localStorage.setItem('isAdmin', data.admin);
+                sessionStorage.setItem("token", data.token);
+                sessionStorage.setItem('userId', data.id);
+                sessionStorage.setItem('isAdmin', data.admin);
                 window.location.href = window.location.href + 'groupomania/main';
                 
         })
@@ -192,7 +192,7 @@ export default{
         login: function(){
         fetch("http://localhost:3000/api/users/login",{
             method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token")},
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
             body: JSON.stringify({ 
                 email: this.email,
                 password: this.password, 
@@ -204,9 +204,9 @@ export default{
             const error = (data && data.message) || res.status;
             return Promise.reject(error);
             }
-            localStorage.setItem("token", data.token);
-            localStorage.setItem('userId', data.id);
-            localStorage.setItem('isAdmin', data.admin);
+            sessionStorage.setItem("token", data.token);
+            sessionStorage.setItem('userId', data.id);
+            sessionStorage.setItem('isAdmin', data.admin);
             window.location.href = window.location.href + 'groupomania/main';
         })
         .catch(error => {
@@ -285,6 +285,7 @@ export default{
     }
     p{
         font-size: 2vmin;
+        color: white;
     }
    input:focus:invalid{
         border: 2px dashed red;
@@ -297,6 +298,7 @@ export default{
         font-size: 1.8vmin;
         position: relative;
         z-index: 2;
+        color: black;
     }
 </style>
 
