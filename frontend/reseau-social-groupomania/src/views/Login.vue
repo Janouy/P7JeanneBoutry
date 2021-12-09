@@ -1,5 +1,4 @@
 <template>
-
     <div class="background">
             <header>
                 <h1 class="col-12 pt-4"> Bienvenue sur Groupomania People </h1>
@@ -19,7 +18,7 @@
                             </div>
                             <div class="form-row">
                                 <label for="password" class="mx-3 mt-3">Mot de passe:*</label>
-                                <input v-model="password" type="password" class="form-control mx-3" id="password" required minlength='12' pattern="^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ(){}|~<>;:[\]]{2,}$">
+                                <input v-model="password" type="password" class="form-control mx-3" id="password" required minlength='12'>
                             </div>
                             <div class='form-row mt-5'>
                                 <button id="connectButton" type="submit" @click="login()" class="btn btn-success col-3 my-3 ml-3" :disabled ="!validatedFields || !checkData">Connexion</button>
@@ -49,10 +48,9 @@
                             </div>
                             <div class="form-row">
                                 <label for="passwordInput" class="mx-3 mt-3">Mot de passe:*</label>
-                                <input v-model="password" type="password" class="form-control mx-3" id="passwordInput" minlength='12' required pattern="^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ(){}|~<>;:[\]]{2,}$">
+                                <input v-model="password" type="password" class="form-control mx-3" id="passwordInput" minlength='12' required>
                                 <div class="text-left">
                                     <div class="color valid-form ml-3 mt-1" :class="{color: isActive, 'text-danger': !checkPasswordLength}">le mot de passe doit contenir plus de 12 caractères</div>                         
-                                    <div class="color valid-form ml-3" :class="{color: isActive, 'text-danger': checkPassword }"> le mot de passe ne doit pas contenir de caractères spéciaux</div>
                                 </div>
                             </div>
                             <div class='form-row'>
@@ -62,8 +60,6 @@
                         </form>
                     </section>
                 </div>
-                <p  class="validForm mt-2" v-if="mode == 'create'">Le formulaire n'accepte pas les caractères spéciaux</p>
-                <p v-else></p>
                 </div>
             </div>
         <div><img class="img-fluid logoFooter" src="../assets/logos/icon-left-font.svg" alt="logo Groupomania"></div>
@@ -103,27 +99,17 @@ export default{
         checkData: function(){
             let nameVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
             let emailVerif = /^[\w'\-,.][^!¡?÷?¿/\\+=" "#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-            let passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
             if(this.mode == 'create'){
-            if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || passwordVerif.test(this.password)== false || this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
+            if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
                 return false;
             }
             return true;
             }else{
-                 if(passwordVerif.test(this.password)== false || this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
+                 if(this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
                      return false;
                  }else{
                      return true;
                  }
-
-            }
-        },
-        checkPassword: function(){
-            let passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
-            if(passwordVerif.test(this.password)== false){
-                return true;
-            }else{
-                return false
             }
         },
         checkPasswordLength: function(){
@@ -298,7 +284,6 @@ export default{
         font-size: 1.8vmin;
         position: relative;
         z-index: 2;
-        color: black;
     }
 </style>
 

@@ -1,12 +1,16 @@
 <template>
-    <div class="col-2 ml-3 mb-5 rounded bg-light shadow">
+    <div class="col-2 mx-3 mb-5 rounded bg-secondary text-light shadow">
         <div class="row">
-            <p class="col-12 mt-2 "> Découvrez vos collaborateurs <p/>
+            <p class="col-12 mt-2"> Découvrez vos collaborateurs <p/>
             <form class="col-12 scroller">
                     <input type="text" v-model="inputFilter"/>
                     <li v-for="user in filteredUsers" :key="user.id">
-                        <router-link :to="{name:'userPage', params:{id: user.userId}}" v-if="user.userId == userId" v-show="display=false">{{user.name}}</router-link>
-                        <router-link :to="{name:'userPage', params:{id: user.userId}}" v-else v-show="display=true" class="user_name">{{user.name}}</router-link>
+                        <div class="mini_pict" v-if="user.userId == userId" v-show="display=false"></div>
+                        <div class="mini_pict mt-3 border rounded bg-light" v-else v-show="display=true">
+                            <div v-if="user.picture =='NULL' || !user.picture"><img class="pict mt-2" src="../assets/logos/user.png"/></div>
+                            <div class="pict" v-else :style="{backgroundImage: `url(${user.picture})`}"></div>
+                            <router-link :to="{name:'userPage', params:{id: user.userId}}" class="user_name">{{user.name}}</router-link>
+                        </div>
                     </li>
             </form>
         </div>
@@ -46,7 +50,7 @@ export default{
                     return Promise.reject(error);
                 }
                 for (let i=0; i<data.data.length; i++){
-                    this.users.push({name: data.data[i].lastName + ' ' +data.data[i].firstName, userId:data.data[i].id})
+                    this.users.push({name: data.data[i].lastName + ' ' +data.data[i].firstName, userId:data.data[i].id, picture: data.data[i].picture})
                 }
             })
             .catch(error => {
@@ -64,7 +68,7 @@ export default{
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 li {
     list-style: none;
     margin:0;
@@ -72,6 +76,12 @@ li {
 .user_name{
     text-decoration:none;
     color: black;
+    position: relative;
+    top: 20%;
+    left: -5%;
+}
+.user_name:hover{
+    color: #169342;
 }
 .scroller {
   width: 300px;
@@ -81,7 +91,21 @@ li {
   scrollbar-width: thin;
 }
 p{
-    color:#169342;
     font-size: 2.8vmin;
+}
+.pict{
+    float: left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    height: 40px;
+    width: 40px;
+    border-radius: 80px;
+    border: 2px solid #169342;
+    margin-top: 1.8%;
+    margin-left: 2%;
+}
+.mini_pict{
+    height: 50px;
 }
 </style>

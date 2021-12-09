@@ -86,7 +86,7 @@ export default {
 }
 </script>
 
-<style scopeed lang="scss">
+<style scoped lang="scss">
 .img_publication{
     max-width: 30%;
     margin: auto;

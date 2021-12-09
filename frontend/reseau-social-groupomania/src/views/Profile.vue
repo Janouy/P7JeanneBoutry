@@ -17,7 +17,7 @@
                             <div class="card-text mx-3 mb-3 px-2 py-2 border rounded text-left bg-light" v-else> {{this.description}}</div>
                         </div>
 
-                        <div class="card card_inside card_inside_2 rounded mx-2 my-2">
+                        <div class="card card_inside card_inside_2 rounded mx-2 py-2 mt-2 mt-lg-0">
                            <div>
                                 <button class="btn btn_profile" @click ="modifyProfile()"> Modifier mon profil</button>
                             </div>
@@ -44,7 +44,7 @@
                         </form>
                     </div>
                     <div class="card card_modify card_modify_inside rounded mx-4">
-                        <form >
+                        <form v-on:submit.prevent>
                             <div class="form-row">
                                 <label for="firstNameInputModif" class="col-4 ml-3 mt-2 text-left">Prénom:*</label>
                                 <input v-model="firstName" type="text" id="firstNameInputModif" class="form-control mb-3 mx-3 "/>
@@ -115,9 +115,8 @@ export default {
         checkData: function(){
             let nameVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
             let emailVerif = /^[\w'\-,.][^!¡?÷?¿/\\+=" "#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-            let passwordVerif = /^[\w'\-,.][^_!¡?÷?¿/\\+=#$%ˆ&(){}|~<>;:[\]]{2,}$/;
             if(this.password){
-                if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || emailVerif.test(this.email)== false || !this.email.includes('@')|| passwordVerif.test(this.password)== false || this.password.length < 12){
+                if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || emailVerif.test(this.email)== false || !this.email.includes('@')|| this.password.length < 12){
                 return true;
             }else{
                 return false;
@@ -188,6 +187,7 @@ export default {
                     const error = (data && data.message) || res.statusText;
                     return Promise.reject(error);
                 }
+                alert('Votre profil a bien été modifié');
                 this.displayProfile();
             })
             .catch(error => {
@@ -263,7 +263,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     .background{
         background-color: #F0F2F5;
         @media screen and (max-width: 768px){
@@ -288,19 +288,13 @@ export default {
             box-shadow: none;
                 &_1{
                     @media screen and (max-width: 768px){
-                        
-                         border: 2px solid green;
                     }
                     @media screen and (min-width: 768px) and (max-width: 1023px){
-                       
-                        border: 2px solid blue;
                     }
                     @media screen and (min-width: 1024px) and (max-width: 1366px){
-                        border: 2px solid orange;
                         min-width: 70%;
                     }
                     @media screen and (min-width: 1367px){
-                        border: 2px solid purple;
                         min-width: 70%;
                     } 
                 }

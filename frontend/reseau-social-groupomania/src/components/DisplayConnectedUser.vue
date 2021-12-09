@@ -54,7 +54,7 @@ export default{
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .pict{
     background-size: cover;
     background-repeat: no-repeat;
