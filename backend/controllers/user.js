@@ -34,33 +34,38 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res, next) => {
-    db.query('SELECT * FROM users where email=?',[req.body.email], (err,rows) => {
-        if(err) {
-            return res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'})
-        }else{
-            if(rows.length > 0) {
-                bcrypt.compare(req.body.password, rows[0].password)
-                .then (valid => {
-                    if(!valid) {
-                        return res.status(401).json({error: 'Mot de passe incorrect'})
-                    }
-                    res.status(200).json({
-                        id: rows[0].id,
-                        token: jwt.sign(
-                        { userId: rows[0].id},
-                        'RANDOM_TOKEN_SECRET',
-                        { expiresIn: '24h'}
-                        ),
-                        admin: rows[0].admin,
-                    });
-                })
-                .catch(error => res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'}))
+    try{
+        db.query('SELECT * FROM users where email=?',[req.body.email], (err,rows) => {
+            if(err) {
+                return res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'})
+            }else{
+                if(rows.length > 0) {
+                    bcrypt.compare(req.body.password, rows[0].password)
+                    .then (valid => {
+                        if(!valid) {
+                            return res.status(401).json({error: 'Mot de passe incorrect'})
+                        }
+                        res.status(200).json({
+                            id: rows[0].id,
+                            token: jwt.sign(
+                            { userId: rows[0].id},
+                            'RANDOM_TOKEN_SECRET',
+                            { expiresIn: '30s'}
+                            ),
+                            admin: rows[0].admin,
+                        });
+                    })
+                    .catch(error => res.status(500).json({err: 'problème interne, veuillez réessayer plus tard'}))
+                }
+                else{
+                    return res.status(401).json({error: 'utilisateur non trouvé'})
+                };
             }
-            else{
-                return res.status(401).json({error: 'utilisateur non trouvé'})
-            };
-        }
-    })
+        })
+    }catch (error) {
+        res.status(500).json({err: 'problème interne, veuillez réessayer plus tard' });
+        console.error('Une erreur est survenue', error);
+    }
 }; 
 
 exports.modifyUser = (req, res) => {

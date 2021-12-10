@@ -28,11 +28,13 @@ export default{
                 window.location.href = '/';
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
-                sessionStorage.clear();
-                
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             });
         }
     }

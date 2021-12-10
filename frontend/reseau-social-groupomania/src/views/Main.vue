@@ -98,11 +98,13 @@ export default {
                 this.file = '';
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
-                sessionStorage.clear();
-                window.location.href = '/';
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             });
         },   
         addPost: function(){
@@ -127,11 +129,13 @@ export default {
                 this.recoverPosts();
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error('There was an error!', error);
-                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
-                sessionStorage.clear();
-                window.location.href = '/';
+                if(error == 401){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             });
         },
         addComment: function(e, f){
@@ -157,11 +161,13 @@ export default {
                 this.recoverComments();
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error('There was an error!', error);
-                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
-                sessionStorage.clear();
-                window.location.href = '/';
+                if(error == 401){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             }); 
         },
     },

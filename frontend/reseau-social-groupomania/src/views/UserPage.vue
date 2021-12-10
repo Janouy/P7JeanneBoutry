@@ -50,8 +50,13 @@ export default {
             this.description = data.data[0].description;
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             }); 
         },
     },

@@ -169,10 +169,13 @@ export default{
         })
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error('There was an error!', error);
-                alert("Une erreur est survenue, merci de vérifier les informations entrées.")
-                this.switchToCreateAccount();
+                if(error == 401){
+                    alert('cette adresse email est déjà utilisée')
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                    alert("Le serveur n'est pas disponible, veuillez réessayer plus tard")
+                    }
                 });
         },
         login: function(){
@@ -196,10 +199,14 @@ export default{
             window.location.href = window.location.href + 'groupomania/main';
         })
         .catch(error => {
-            this.errorMessage = error;
+         if(error == 401){
+            alert('Mot de passe ou email incorrect')
+            window.location.href = '/';
+        }else{
             console.error('There was an error!', error);
-            alert ("Identifiants incorrects.")
-            });
+            alert("Le serveur n'est pas disponible, veuillez réessayer plus tard")
+            }
+        });
         },
     },
     mounted(){

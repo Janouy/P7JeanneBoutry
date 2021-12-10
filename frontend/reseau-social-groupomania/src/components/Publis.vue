@@ -114,11 +114,13 @@ export default{
             this.recoverPosts()
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
-                sessionStorage.clear();
-                window.location.href = '/';
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             });
         },
         deleteComment: function(e){
@@ -139,11 +141,13 @@ export default{
                 this.recoverComments();
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
-                sessionStorage.clear();
-                window.location.href = '/';
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             }); 
         },
         liked: function(e){
@@ -184,11 +188,13 @@ export default{
                 this.recoverPosts()
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
-                alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
-                sessionStorage.clear();
-                window.location.href = '/';
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             }); 
         },
         disabledLike: function(e){
