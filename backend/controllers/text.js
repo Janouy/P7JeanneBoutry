@@ -3,7 +3,7 @@ const db = require('../models/dbConnect');
 
 exports.getAllTexts = (req, res) => {
 	try{
-		db.query('SELECT id_post, text, user_id, media, likes, dislikes, userLikes, userDislikes, id, firstName, lastName, admin FROM post LEFT JOIN users ON users.id = post.user_id ORDER BY post.id_post DESC', (err,rows) => {
+		db.query('SELECT id_post, text, user_id, media, likes, dislikes, userLikes, userDislikes, id, firstName, lastName, admin, picture FROM post LEFT JOIN users ON users.id = post.user_id ORDER BY post.id_post DESC', (err,rows) => {
 		if(err) {
 			throw err;
 		};

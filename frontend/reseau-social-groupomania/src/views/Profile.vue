@@ -55,7 +55,7 @@
                             </div>
                             <div class="form-row">
                                 <label for="bioInputModif" class="col-4 ml-3 mt-2 text-left">Bio:</label>
-                                <input v-model="description" type="textarea" id="bioInputModif" maxlength="120" class="form-control mx-3 text-center" placeholder='Décrivez-vous...'/>
+                                <textarea v-model="description" type="textarea" id="bioInputModif" maxlength="120" class="form-control mx-3 text-center" placeholder='Décrivez-vous...'></textarea>
                                 <p class="info ml-4"> 120 caractères maximum</p>
                             </div>
                             <div class="form-row"> 

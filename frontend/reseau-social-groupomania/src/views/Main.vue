@@ -9,34 +9,38 @@
                     <Caroussel/>
                     </div>
             </div>
-        <div class="container">
-            
             <div class="row">
-                <DisplayUsers/>
-                <form class="col-5 text_publi mx-auto bg-secondary rounded shadow">
-                    <input id="output" v-model="text" type="textarea" maxlength="1200" class="form-control textarea mt-5" placeholder="Ecrivez quelque chose...">
-                    <button type="submit" @click="addPost()" class="btn btn-success col-3 mt-5 mx-3">Publiez</button>
-                </form>
-                <form enctype="multipart/form-data" class="col-3 text_publi bg-secondary text-light mx-auto pt-5 rounded shadow">
-                    <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-                    <button type="submit" @click="sendMedia()" class="btn btn-success col-3 my-3 mx-3">Postez une photo</button>
-                </form>
+                <div class="col-2 displayusers">
+                    <DisplayUsers/>
+                </div>
+                <div class="col-10 colonnes">
+                    <div class="row">
+                        <form class="col text_publi mx-3 mb-2 rounded shadow">
+                            <textarea id="output" v-model="text" type="textarea" maxlength="500" class="form-control textarea mt-2" placeholder="Ecrivez quelque chose..."></textarea>
+                            <button type="submit" @click="addPost()" class="btn btn-success col-3 mt-2 mx-3">Publiez</button>
+                        </form>
+                        <form enctype="multipart/form-data" class="col text_publi mx-3 pt-5 mb-2 rounded shadow bg-light">
+                            <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
+                            <button type="submit" @click="sendMedia()" class="btn btn-success col-3 my-3 mx-3">Postez une photo</button>
+                        </form>
+                        <Publis
+                        v-for="publi in posts" 
+                        :userId = "publi.userId"
+                        :name = "publi.name"
+                        :text = "publi.text"
+                        :media = "publi.media"
+                        :postId = "publi.postId"
+                        :picture = "publi.picture"
+                        :likes = "publi.likes"
+                        :dislikes = "publi.dislikes"
+                        :userIdDislike = "publi.userIdDislike"
+                        :userIdLike = "publi.userIdLike"
+                        @sendComment= "addComment"
+                        :key='publi.id'
+                        />
+                    </div>
+                </div>
             </div>
-            <Publis
-            v-for="publi in posts" 
-            :userId = "publi.userId"
-            :name = "publi.name"
-            :text = "publi.text"
-            :media = "publi.media"
-            :postId = "publi.postId"
-            :likes = "publi.likes"
-            :dislikes = "publi.dislikes"
-            :userIdDislike = "publi.userIdDislike"
-            :userIdLike = "publi.userIdLike"
-            @sendComment= "addComment"
-            :key='publi.id'
-            />
-        </div>
     </div>
 </template>
 
@@ -200,10 +204,11 @@ export default {
     }
     .textarea {
         overflow-y: scroll;
-        height: 40px;
+        height: 120px;
+        width: 100%;
         resize: none; 
     }
     .text_publi{
-        height: 255px;
+        height: 200px;
     }
 </style>

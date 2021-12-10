@@ -29,7 +29,7 @@ export default{
             })
             .catch(error => {
                 if(error == 'Unauthorized'){
-                    alert('Votre session a expirée vous allez être redirigé vers la page de connexion')
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
                     sessionStorage.clear();
                     window.location.href = '/';
                 }else{

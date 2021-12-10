@@ -1,13 +1,14 @@
 <template>
-    <div>
-        <div class="card border-info" v-if="text">
-            <div class="card-text border" v-if="text"> 
-                {{name}} a publié: 
+    <div class="col-12">
+        <div class="card my-3 bg-secondary" v-if="text">
+            <div class="card-text bg-light pt-2 mt-2 mx-2 rounded-top text-left" v-if="text"> 
+                <div v-if="picture =='NULL' || !picture"><img class="pict mt-2" src="../assets/logos/user.png"/></div>
+                <div class="pict" v-else :style="{backgroundImage: `url(${picture})`}"></div>
+                {{name}}
             </div>
-            <div :id="'post'+ postId" :class="'card-text border' + ' ' +name" v-if="text">
+            <div :id="'post'+ postId" :class="'bg-light mx-2 mb-2 rounded-bottom card-text' + ' ' +name" v-if="text">
                 {{text}}
-                <button @click="deletePost(postId)" :id="postId" class="btn-primary" v-if="userId == comments[0].thisUserId || admin==1"> Supprimer cette publication </button>
-                    <div>
+                    <div class="my-2">
                         <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                         <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                     </div>
@@ -23,19 +24,21 @@
                         :key= "comment.id"
                       /> 
                 <div  class="card-text"> 
-                    <input v-model="comment" :id="'post' + postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
-                    <button type="submit" @click="addComment(postId, comment)" class="card-btn" > Ajouter un commentaire</button>
+                    <button @click="deletePost(postId)" :id="postId" class="card-btn" v-if="userId == comments[0].thisUserId || admin==1"> Supprimez cette publication </button>
+                    <input v-model="comment" :id="'post' + postId" type="textarea" maxlength="120" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                    <button type="submit" @click="addComment(postId, comment)" class="card-btn rounded mx-1 my-1" >Commentez</button>
                 </div>
             </div>
         </div>
-        <div class="card border-primary" v-if="media">
-            <div class="card-text border" v-if="media"> 
-                {{name}} a publié:
+        <div class="card bg-secondary my-3" v-if="media">
+            <div class="card-text bg-light pt-2 mt-2 mx-2 rounded-top text-left" v-if="media"> 
+                <div v-if="picture =='NULL' || !picture"><img class="pict mt-2" src="../assets/logos/user.png"/></div>
+                <div class="pict" v-else :style="{backgroundImage: `url(${picture})`}"></div>
+                {{name}}
             </div>
-            <div :class="'card-img border' + ' ' +name" v-if="media">
-                <img class="publication_image" :src=media>
-                <button @click="deletePost(postId)" :id="postId" class="btn-primary" v-if="userId == comments[0].thisUserId || admin==1"> Supprimer cette publication </button>
-                <div>
+            <div :class="'publication_image bg-light border-success rounded-bottom mx-2 mb-2' + ' ' +name" v-if="media">
+                <img class="rounded mt-3" :src=media>
+                <div class="my-2">
                     <button :id="'like'+postId" type="submit" @click="liked(userIdLike), likePost(postId)" class="btn" :disabled ="disabledLike(userIdDislike)"><font-awesome-icon icon="thumbs-up"/><span>{{likes}}</span></button>
                     <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                 </div>
@@ -50,8 +53,10 @@
                         @dropComment = "deleteComment"
                         :key= "comment.id"
                     /> 
-                <div class="card-text"> <input v-model="comment" :id="'post' + postId" type="textarea" class="form-control" placeholder="Ajoutez un commentaire..." > 
-                    <button type="submit" @click="addComment(postId, comment)" class="card-btn"> Ajouter un commentaire</button>
+                <div class="card-text"> 
+                    <button @click="deletePost(postId)" :id="postId" class="btn-primary" v-if="userId == comments[0].thisUserId || admin==1"> Supprimez cette publication </button>
+                    <input v-model="comment" :id="'post' + postId" type="textarea" maxlength="120" class="form-control" placeholder="Ajoutez un commentaire..." > 
+                    <button type="submit" @click="addComment(postId, comment)" class="card-btn rounded mx-1 my-1"> Commentez </button>
                 </div>
             </div>
         </div>
@@ -70,6 +75,7 @@ export default{
         userId: Number,
         name: String,
         text: String,
+        picture: String,
         media: String,
         postId: Number,
         likes: Number,
@@ -221,6 +227,22 @@ export default{
 </script>
 
 <style scoped lang="scss">
-
-
+.pict{
+    float: left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    height: 40px;
+    width: 40px;
+    border-radius: 80px;
+    border: 2px solid #169342;
+    margin-top: -0.2%;
+    margin-bottom: 0.2%;
+    margin-left: 2%;
+    margin-right: 0.5%;
+}
+.form-control{
+    width: 80%;
+    margin: auto;
+}
 </style>

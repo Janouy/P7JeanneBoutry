@@ -1,5 +1,5 @@
 <template>
-    <div class="col-3 mx-auto mb-5 rounded bg-secondary text-light shadow">
+    <div class="col rounded bg-secondary text-light shadow">
         <div class="row">
             <p class="col-12 mt-2"> Découvrez vos collaborateurs <p/>
             <form class="col-12 scroller">
@@ -85,7 +85,7 @@ li {
 }
 .scroller {
   width: 300px;
-  height: 200px;
+  height: 300px;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
