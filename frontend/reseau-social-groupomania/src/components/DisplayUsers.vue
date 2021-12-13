@@ -6,10 +6,10 @@
                     <input type="text" v-model="inputFilter" placeholder="Recherche"/>
                     <li v-for="user in filteredUsers" :key="user.id">
                         <div class="mini_pict" v-if="user.userId == userId" v-show="display=false"></div>
-                        <div class="mini_pict mt-3 border rounded bg-light" v-else v-show="display=true">
+                        <div class="mini_pict mt-3 border-success rounded bg-light" v-else v-show="display=true">
                             <div v-if="user.picture =='NULL' || !user.picture"><img class="pict mt-2" src="../assets/logos/user.png"/></div>
                             <div class="pict" v-else :style="{backgroundImage: `url(${user.picture})`}"></div>
-                            <router-link :to="{name:'userPage', params:{id: user.userId}}" class="user_name">{{user.name}}</router-link>
+                            <router-link :to="{name:'userPage', params:{id: user.userId}}" class="user_name ml-2 pb-2">{{user.name}}</router-link>
                         </div>
                     </li>
             </form>
@@ -84,11 +84,29 @@ li {
     color: #169342;
 }
 .scroller {
-  width: 300px;
-  height: 300px;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
+    @media screen and (max-width: 768px){
+        width: 300px;
+        height: 300px;
+        font-size: 16px;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1023px){
+        width: 300px;
+        height: 300px;
+        font-size: 2vmin;
+    }
+    @media screen and (min-width: 1024px) and (max-width: 1366px){
+        width: 300px;
+        height: 300px;
+        font-size: 2vmin;
+    }
+    @media screen and (min-width: 1367px){
+        width: 300px;
+        height: 300px;
+        font-size: 2vmin;
+    }
 }
 p{
     font-size: 2.8vmin;
@@ -98,14 +116,48 @@ p{
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
-    height: 40px;
-    width: 40px;
     border-radius: 80px;
     border: 2px solid #169342;
-    margin-top: 1.8%;
-    margin-left: 2%;
+    @media screen and (max-width: 768px){
+        margin-top: 0.5%;
+        margin-left: 2%;
+        height: 40px;
+        width: 40px;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1023px){
+      margin-top: 1.8%;
+      margin-left: 2%;
+      height: 40px;
+      width: 40px;
+    }
+    @media screen and (min-width: 1024px) and (max-width: 1366px){
+        margin-top: 8%;
+        margin-left: 2.5%;
+        height: 40px;
+        width: 40px;
+    }
+    @media screen and (min-width: 1367px){
+       margin-top: 1.8%;
+       margin-left: 2%;
+       height: 40px;
+       width: 40px;
+    }
+    
 }
 .mini_pict{
-    height: 50px;
+    @media screen and (max-width: 768px){
+        height: 45px;
+        width: 70%;
+        margin: auto;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1023px){
+        height: 70px;
+    }
+    @media screen and (min-width: 1024px) and (max-width: 1366px){
+        height: 70px;
+    }
+    @media screen and (min-width: 1367px){
+       height: 50px;
+    }
 }
 </style>

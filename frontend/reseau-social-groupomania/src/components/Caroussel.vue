@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="carousel">
     <b-carousel
       id="carousel-1"
       v-model="slide"
@@ -12,7 +12,7 @@
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
     >
-     <b-carousel-slide caption="Spécialisé dans la grande distribution">
+     <b-carousel-slide>
         <template #img >
           <img
             class="d-block img-fluid"
@@ -22,9 +22,10 @@
             alt="image slot"
           >
         </template>
+        <h2 class="h2_1"> "Spécialisé dans la grande distribution"</h2>
       </b-carousel-slide>
     
-   <b-carousel-slide caption="Nous sommes en pleine expansion">
+   <b-carousel-slide>
         <template #img>
           <img
             class="d-block img-fluid"
@@ -34,9 +35,10 @@
             alt="image slot"
           >
         </template>
+        <h2 class="h2_2"> "Nous sommes en pleine expansion"</h2>
       </b-carousel-slide>
 
-     <b-carousel-slide caption="Nous comptons actuellement plus de 600 collaborateurs">
+     <b-carousel-slide >
         <template #img>
           <img
             class="d-block img-fluid"
@@ -46,9 +48,10 @@
             alt="image slot"
           >
         </template>
+         <h2 class="h2_3"> "Nous comptons actuellement plus de 600 collaborateurs"</h2>
       </b-carousel-slide>
 
-  <b-carousel-slide caption="Vous êtes 300 à nous avoir rejoint en 3 ans !">
+  <b-carousel-slide>
         <template #img>
           <img
             class="d-block img-fluid"
@@ -58,8 +61,8 @@
             alt="image slot"
           >
         </template>
+        <h2 class="h2_4"> "Vous êtes 300 à nous avoir rejoint en 3 ans !"</h2>
       </b-carousel-slide>
-
     </b-carousel>
   </div>
 </template>
@@ -67,12 +70,6 @@
 <script>
   export default {
     name:'Caroussel',
-    data() {
-      return {
-        slide: 0,
-        sliding: null
-      }
-    },
     methods: {
       onSlideStart() {
         this.sliding = true
@@ -83,3 +80,15 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+#carousel{
+    @media screen and (max-width: 1023px){
+            display: none
+    }
+}
+h2{
+  font-size: 3vmin;
+}
+
+</style>

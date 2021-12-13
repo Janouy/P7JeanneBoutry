@@ -20,5 +20,11 @@ export default{
     background-size: 20%;
     background-position: 100% 50%;
     background-repeat: no-repeat;
+    @media screen and (max-width: 768px){
+        background-size: 50%;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1023px){
+            background-size: 50%;
+    }
 }
 </style>

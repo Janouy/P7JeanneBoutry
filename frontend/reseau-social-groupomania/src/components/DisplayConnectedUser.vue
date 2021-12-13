@@ -1,5 +1,5 @@
 <template>
-    <div class="row userName ml-3 mb-4 pt-3">
+    <div class="row userName ml-0 ml-md-3 mb-4 pt-3">
         <div  v-if="this.picture =='NULL' || !this.picture"><img class="pict" src="../assets/logos/user.png"/></div>
         <div class="pict" v-else :style="{backgroundImage: `url(${picture})`}"></div>
         <div class="text-left mt-3 ml-3"><router-link to="/profile" class="connected">{{this.lastName}} {{this.firstName}}</router-link> </div>
@@ -71,4 +71,5 @@ export default{
 .connected:link{
     text-decoration:none;
 }
+
 </style>

@@ -49,7 +49,7 @@ export default new Vuex.Store({
                 }
                 state.comms = [];
                 for (let i=0; i<data.data.length; i++){
-                    state.comms.push({userId: data.data[i].id_user, idPost: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].firstName + ' ' + data.data[i].lastName + ' ' + 'a commenté:', commentId: data.data[i].id_comment}) 
+                    state.comms.push({userId: data.data[i].id_user, idPost: data.data[i].id_post , comment :data.data[i].comment, name :data.data[i].lastName + ' ' + data.data[i].firstName + ' ' + ':', commentId: data.data[i].id_comment}) 
                 } 
             })
             .catch(error => {

@@ -325,7 +325,6 @@ export default {
         }
         &_modify{
             &_inside{
-                border: 2px yellow solid;
                 background-color: #c5c8cc;
                 @media screen and (max-width: 768px){
 
