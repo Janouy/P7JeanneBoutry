@@ -16,13 +16,15 @@
                 </div>
                 <div class="col-12 col-md-9 col-xl-10 colonnes">
                     <div class="row">
-                        <form class="col text_publi mx-3 mb-2 rounded shadow">
-                            <textarea id="output" v-model="text" type="textarea" maxlength="500" class="form-control textarea mt-3 mt-xl-2" placeholder="Ecrivez quelque chose..."></textarea>
-                            <button type="submit" @click="addPost()" class="btn btn-success col-6 col-lg-3 mt-3 mt-xl-2 mx-3">Publiez</button>
+                        <form class="col-12 col-lg text_publi mx-3 mb-2 rounded shadow">
+                            <label for="output"> Ecrivez quelque chose...</label>
+                            <textarea id="output" v-model="text" type="textarea" maxlength="500" class="form-control textarea mt-3 mt-xl-2"></textarea>
+                            <button type="submit" @click="addPost()" class="btn btn-success col-4 col-md-6 col-lg-3 mt-3 mt-xl-2 mx-3" aria-label="publish">Publier</button>
                         </form>
-                        <form enctype="multipart/form-data" class="col text_publi mx-3 pt-5 mb-2 rounded shadow bg-light">
+                        <form enctype="multipart/form-data" class="col-12 col-lg text_publi mx-3 pt-5 mb-2 rounded shadow bg-light">
+                            <label for="image"> Publiez une photo :</label>
                             <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-                            <button type="submit" @click="sendMedia()" class="btn btn-success col-4 col-xl-3 mt-5 my-xl-3 mx-3">Postez une photo</button>
+                            <button type="submit" @click="sendMedia()" class="btn btn-success col-4 col-xl-3 mt-5 my-xl-3 mx-3" aria-label="post picture"> Envoyer</button>
                         </form>
                         <Publis
                         v-for="publi in posts" 
@@ -207,11 +209,28 @@ export default {
     }
     .textarea {
         overflow-y: scroll;
-        height: 120px;
-        width: 100%;
         resize: none; 
+        @media screen and (max-width: 768px){
+            height: 80px;
+            width: 100%;
+        }
+        @media screen and (min-width: 768px) and (max-width: 1023px){
+            height: 80px;
+            width: 100%;
+       }
+        @media screen and (min-width: 1024px) and (max-width: 1366px){
+            height: 100px;
+            width: 100%;
+       }
+        @media screen and (min-width: 1367px){
+            height: 120px;
+            width: 100%;
+       }
     }
     .text_publi{
-        height: 200px;
+        height: 210px;
+    }
+    button{
+        color: black;
     }
 </style>

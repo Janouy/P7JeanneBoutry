@@ -1,17 +1,17 @@
 <template>
-    <div class="col rounded bg-secondary text-light shadow">
+    <div class="col rounded bg-secondary shadow">
         <div class="row">
-            <p class="col-12 mt-2"> Découvrez vos collaborateurs <p/>
             <form class="col-12 scroller">
-                    <input type="text" v-model="inputFilter" placeholder="Recherche"/>
-                    <li v-for="user in filteredUsers" :key="user.id">
-                        <div class="mini_pict" v-if="user.userId == userId" v-show="display=false"></div>
-                        <div class="mini_pict mt-3 border-success rounded bg-light" v-else v-show="display=true">
-                            <div v-if="user.picture =='NULL' || !user.picture"><img class="pict mt-2" src="../assets/logos/user.png"/></div>
-                            <div class="pict" v-else :style="{backgroundImage: `url(${user.picture})`}"></div>
-                            <router-link :to="{name:'userPage', params:{id: user.userId}}" class="user_name ml-2 pb-2">{{user.name}}</router-link>
-                        </div>
-                    </li>
+                <label for="searchPeople" class="search_title mx-3 mt-3 h5"> Découvrez vos collaborateurs</label>
+                <input id="searchPeople" type="text" v-model="inputFilter" placeholder="Recherche"/>
+                <div v-for="user in filteredUsers" :key="user.id">
+                <div class="mini_pict" v-if="user.userId == userId" v-show="display=false"></div>
+                <div class="mini_pict mt-3 border-success rounded bg-light" v-else v-show="display=true">
+                    <div v-if="user.picture =='NULL' || !user.picture"><img class="pict mt-2" src="../assets/logos/user.png"/></div>
+                    <div class="pict" v-else :style="{backgroundImage: `url(${user.picture})`}"></div>
+                    <router-link :to="{name:'userPage', params:{id: user.userId}}" class="user_name ml-2 pb-2">{{user.name}}</router-link>
+                </div>
+                </div>
             </form>
         </div>
     </div>
@@ -158,6 +158,9 @@ p{
     }
     @media screen and (min-width: 1367px){
        height: 50px;
+    }
+    label{
+        color: black;
     }
 }
 </style>

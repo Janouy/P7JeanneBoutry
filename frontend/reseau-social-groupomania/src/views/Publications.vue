@@ -6,13 +6,14 @@
             <div class="card my-3">
                 <div class="card-text my-2 " v-if="this.publis.length ==0"> Vous n'avez rien publié </div>
                 <div v-for="publi in publis" :key='publi.id' class="card border rounded mx-2 my-2 shadow">
-                    <div class="card-text my-2" >{{publi.text}} </div>
-                    <img class="card-img img_publication my-2 rounded" :src=publi.media >
-                    <span class="col text-center"><div @click="deletePost(publi.postId)" class="btn btn-dark button_publication border my-2"> Supprimer ce post</div> </span>
+                    <div class="card-text my-2" v-if="publi.text">{{publi.text}} </div>
+                    <div v-if="publi.media" v-show="display=true"><img class="card-img img_publication my-2 rounded" :src=publi.media alt="publication picture"></div>
+                    <div v-else-if="!publi.media" v-show="display=false"> </div>
+                    <span class="col text-center"><div @click="deletePost(publi.postId)" class="btn btn-dark button_publication border my-2" aria-label="delete post"> Supprimer ce post</div> </span>
                 </div>
             </div>
         </div>
-        <span class="col text-center mt-3"> <button type="submit" @click="backToProfile()" class="btn btn-info button_publication col-2 mb-3"> Retour au profil</button> </span>
+        <span class="col text-center mt-3"> <button type="submit" @click="backToProfile()" class="btn btn-info button_return col-2 mb-3" aria-label="return to profile"> Retour au profil</button> </span>
     </div>
 </template>
 
@@ -96,5 +97,9 @@ export default {
 }
 .button_publication{
     font-size: 2vmin;
+}
+.button_return{
+    font-size: 2vmin;
+    color: black;
 }
 </style>

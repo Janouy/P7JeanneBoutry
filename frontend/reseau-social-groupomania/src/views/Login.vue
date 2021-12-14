@@ -21,8 +21,8 @@
                                 <input v-model="password" type="password" class="form-control mx-3" id="password" required minlength='12'>
                             </div>
                             <div class='form-row mt-5'>
-                                <button id="connectButton" type="submit" @click="login()" class="btn btn-success col-3 my-3 ml-3" :disabled ="!validatedFields || !checkData">Connexion</button>
-                                <button class="btn btn-dark col-5 my-3 ml-2" type="reset"> Effacer les données</button>
+                                <button id="connectButton" type="submit" @click="login()" class="btn btn-success col-3 my-3 ml-3" :disabled ="!validatedFields || !checkData" aria-label="connection">Connexion</button>
+                                <button class="btn btn-dark col-5 my-3 ml-2" type="reset" aria-label="reset form data"> Effacer les données</button>
                             </div>
                         </form>
                     </section>
@@ -54,8 +54,8 @@
                                 </div>
                             </div>
                             <div class='form-row'>
-                                <button id="createAccountButton" type="submit" @click="signup()" class="btn btn-info col-4 my-3 ml-3" :disabled="!validatedFields || !checkData"> Créer un compte </button>
-                                <button class="btn btn-dark col-4 my-3 ml-2" type="reset"> Effacer les données</button>
+                                <button id="createAccountButton" type="submit" @click="signup()" class="btn btn-info col-4 my-3 ml-3" :disabled="!validatedFields || !checkData" aria-label="create account"> Créer un compte </button>
+                                <button class="btn btn-dark col-4 my-3 ml-2" type="reset" aria-label="reset form data"> Effacer les données</button>
                             </div>
                         </form>
                     </section>

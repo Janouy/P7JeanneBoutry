@@ -19,10 +19,10 @@
 
                         <div class="card card_inside card_inside_2 rounded mx-2 py-2 mt-2 mt-lg-0">
                            <div>
-                                <button class="btn btn_profile" @click ="modifyProfile()"> Modifier mon profil</button>
+                                <button class="btn btn_profile" @click ="modifyProfile()" aria-label="modify profile"> Modifier mon profil</button>
                             </div>
                             <div>
-                                <button class="btn btn_profile" @click="displayMyPosts()"> Gérer mes publications </button>
+                                <button class="btn btn_profile" @click="displayMyPosts()" aria-label="see my posts"> Gérer mes publications </button>
                             </div>
                             <Disconnection/> 
                         </div>
@@ -38,9 +38,9 @@
                         </div>
                         <div @click="deletePicture(profilePicture)" class="delete_img text-right pr-2"><font-awesome-icon icon="times-circle" alt='suppression de la photo' aria-hidden="true"/><span>Supprimer cette photo</span> </div>
                         <form enctype="multipart/form-data" class="border bg-secondary text-light mx-2 mt-5 mb-2 rounded">
-                            <label for="file" class="col-6 ml-3 mt-2 mb-3 h4 text-center">Modifier la photo:</label> <br/>
-                            <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg"/>
-                            <span> <button type="submit" class="btn btn-success col-5 my-4" @click="sendPicture()"> Envoi </button> </span>
+                            <label for="file" class="col-6 ml-3 mt-2 mb-3 text-dark h4 text-center">Modifier la photo:</label> <br/>
+                            <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg" class="text-dark"/>
+                            <span> <button type="submit" class="btn btn-success col-5 my-4" @click="sendPicture()" aria-label="send new picture"> Envoi </button> </span>
                         </form>
                     </div>
                     <div class="card card_modify card_modify_inside rounded mx-4">
@@ -66,11 +66,11 @@
                                 <label for="passwordInputModif" class="col-6 ml-3 mt-2 text-left">Nouveau mot de passe:</label>
                                 <input v-model="password" type="password" id="passwordInputModif" class="form-control mb-3 mx-3"/>
                             </div>
-                            <button type="submit" @click="modify(), viewProfile()" class="btn btn-success col-6 col-xs-4 col-xl-6 mb-3 ml-2" :disabled ="!validatedFields || checkData"> Valider les modifications</button>
+                            <button type="submit" @click="modify(), viewProfile()" class="btn btn-success col-6 col-xs-4 col-xl-6 mb-3 ml-2" :disabled ="!validatedFields || checkData" aria-label="send modifications"> Valider les modifications</button>
                         </form>
                     </div>
                     </div>
-                    <span class="card-footer text-center mt-3 pt-4"> <button type="submit" @click="viewProfile()" class="btn btn-info col-4 col-xs-4 col-xl-6 ml-3 mb-3"> Retour au profil</button> </span>
+                    <span class="card-footer text-center mt-3 pt-4"> <button type="submit" @click="viewProfile()" class="btn btn-info col-4 col-xs-4 col-xl-6 ml-3 mb-3" aria-label="return to profile"> Retour au profil</button> </span>
                 </div>
             <p v-if="mode == 'view'"></p>
             <p v-else> * Le formulaire n'accepte pas les caractères spéciaux </p>
@@ -369,7 +369,7 @@ export default {
         margin-top:25px;
     }
     .info{
-        font-size: 1.2vmin;
+        font-size: 1.5vmin;
     }
     .delete_img{
         cursor: pointer;
@@ -385,5 +385,8 @@ export default {
         @media screen and (min-width: 768px) and (max-width: 1023px){
             flex-direction: column;
         }
+    }
+    button{
+        color: black;
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="btn-deco">
-        <button @click = "disconnect()" class="btn btn_profile"> Déconnexion </button>
+        <button @click = "disconnect()" class="btn btn_profile" aria-label="disconnection"> Déconnexion </button>
     </div>
 </template>
 

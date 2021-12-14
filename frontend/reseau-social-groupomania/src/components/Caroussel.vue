@@ -5,7 +5,6 @@
       v-model="slide"
       :interval="5000"
       controls
-      indicators
       img-width="853"
       img-height="490"
       style="text-shadow: 1px 1px 2px #000;"
@@ -89,6 +88,7 @@
 }
 h2{
   font-size: 3vmin;
+  color: black;
 }
 
 </style>
