@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 const fsImages = require('../middleware/createImages');
 
 router.post("/signup", fsImages, userCtrl.signup);
-router.post("/login", userCtrl.login);
+router.post("/login", fsImages, userCtrl.login);
 router.put("/:id", auth, userCtrl.modifyUser);
 router.get("/:id", auth, userCtrl.getOneUser);
 router.get("/", userCtrl.getAllUsers);

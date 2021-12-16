@@ -37,7 +37,7 @@
                         <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
                         </div>
                         <div @click="deletePicture(profilePicture)" class="delete_img text-right pr-2"><font-awesome-icon icon="times-circle" alt='suppression de la photo' aria-hidden="true"/><span>Supprimer cette photo</span> </div>
-                        <form enctype="multipart/form-data" class="border bg-secondary text-light mx-2 mt-5 mb-2 rounded">
+                        <form v-on:submit.prevent enctype="multipart/form-data" class="border bg-secondary text-light mx-2 mt-5 mb-2 rounded">
                             <label for="file" class="col-6 ml-3 mt-2 mb-3 text-dark h4 text-center">Modifier la photo:</label> <br/>
                             <input @change="onFileChange()" id='file' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg" class="text-dark"/>
                             <span> <button type="submit" class="btn btn-success col-5 my-4" @click="sendPicture()" aria-label="send new picture"> Envoi </button> </span>
@@ -63,7 +63,7 @@
                                 <input v-model="email" type="email" id="emailInputModif" class="form-control mb-3 mx-3"/> 
                             </div>
                             <div class="form-row"> 
-                                <label for="passwordInputModif" class="col-6 ml-3 mt-2 text-left">Nouveau mot de passe:</label>
+                                <label for="passwordInputModif" class="col ml-3 mt-2 text-left">Nouveau mot de passe: (minimum 12 caractères)</label>
                                 <input v-model="password" type="password" id="passwordInputModif" class="form-control mb-3 mx-3"/>
                             </div>
                             <button type="submit" @click="modify(), viewProfile()" class="btn btn-success col-6 col-xs-4 col-xl-6 mb-3 ml-2" :disabled ="!validatedFields || checkData" aria-label="send modifications"> Valider les modifications</button>
@@ -114,7 +114,7 @@ export default {
         },
         checkData: function(){
             let nameVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-            let emailVerif = /^[\w'\-,.][^!¡?÷?¿/\\+=" "#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+            let emailVerif = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
             if(this.password){
                 if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || emailVerif.test(this.email)== false || !this.email.includes('@')|| this.password.length < 12){
                 return true;
@@ -199,10 +199,13 @@ export default {
                     alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
                     sessionStorage.clear();
                     window.location.href = '/';
+                }else if(error == 'Bad Request'){
+                    alert('Cet email est déjà utilisé')
+                    this.displayProfile();
                 }else{
                     console.error('There was an error!', error);
                 }
-            });
+                });
         },
         onFileChange() {
             this.file = this.$refs.file.files[0];

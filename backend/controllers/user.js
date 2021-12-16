@@ -77,7 +77,7 @@ exports.modifyUser = (req, res) => {
                 const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, hash, req.params.id];
                 db.query(query,params,(err,result,fields) => {
                     if(err) {
-                        throw err;
+                        return res.status(400).json({error: 'utilisateur non trouvé'})
                     };
                     res.json({updated:result.affectedRows})
                 });
@@ -88,7 +88,7 @@ exports.modifyUser = (req, res) => {
             const params=[req.body.email, req.body.lastName, req.body.firstName, req.body.description, req.params.id]
             db.query(query,params,(err,result,fields) => {
                 if(err) {
-                    throw err;
+                    return res.status(400).json({error: 'utilisateur non trouvé'})
                 };
                 res.json({updated:result.affectedRows})
             });

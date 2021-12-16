@@ -14,17 +14,18 @@
                 <div class="col-12 col-md-3 col-xl-2 mb-2 mb-md-0 displayusers">
                     <DisplayUsers/>
                 </div>
-                <div class="col-12 col-md-9 col-xl-10 colonnes">
+                <div class="col-12 col-md-9 col-xl-8 ml-xl-5 colonnes">
                     <div class="row">
-                        <form class="col-12 col-lg text_publi mx-3 mb-2 rounded shadow">
+                        <form v-on:submit.prevent class="col-12 col-lg text_publi mx-3 mb-2 rounded shadow">
                             <label for="output"> Ecrivez quelque chose...</label>
                             <textarea id="output" v-model="text" type="textarea" maxlength="500" class="form-control textarea mt-3 mt-xl-2"></textarea>
-                            <button type="submit" @click="addPost()" class="btn btn-success col-4 col-md-6 col-lg-3 mt-3 mt-xl-2 mx-3" aria-label="publish">Publier</button>
+                            <button type="submit" @click="addPost()" class="btn btn-success col-4 col-md-3 col-lg-3 mt-3 mt-xl-2 mx-3" aria-label="publish">Publier</button>
                         </form>
-                        <form enctype="multipart/form-data" class="col-12 col-lg text_publi mx-3 pt-5 mb-2 rounded shadow bg-light">
+                        <form v-on:submit.prevent enctype="multipart/form-data" class="col-12 col-lg text_publi mx-3 pt-5 mb-2 rounded shadow bg-light">
                             <label for="image"> Publiez une photo :</label>
                             <input @change="onFileChange()" id='image' type="file" ref="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-                            <button type="submit" @click="sendMedia()" class="btn btn-success col-4 col-xl-3 mt-5 my-xl-3 mx-3" aria-label="post picture"> Envoyer</button>
+                            <button type="submit" @click="sendMedia()" class="btn btn-success col-4 col-md-3 col-xl-3 mt-5 my-xl-3 mx-3" aria-label="post picture"> Envoyer</button>
+                            <button class="btn my-3 ml-2" type="reset" aria-label="reset form data"> <font-awesome-icon icon="times-circle" alt='suppression du fichier' aria-hidden="true" title="annuler l'envoi"/></button>
                         </form>
                         <Publis
                         v-for="publi in posts" 
@@ -50,7 +51,7 @@
 <script>
 import Publis from "../components/Publis"
 import DisplayUsers from "../components/DisplayUsers"
-import ConnectedUser from "../components/DisplayConnectedUser"
+import ConnectedUser from "../components/ConnectedUser"
 import Caroussel from "../components/Caroussel.vue"
 import Disconnection from "../components/Deco.vue"
 import { mapState, mapActions} from 'vuex'

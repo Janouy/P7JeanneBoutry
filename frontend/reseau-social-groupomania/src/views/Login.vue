@@ -98,7 +98,7 @@ export default{
         },
         checkData: function(){
             let nameVerif = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-            let emailVerif = /^[\w'\-,.][^!¡?÷?¿/\\+=" "#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+            let emailVerif = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
             if(this.mode == 'create'){
             if(nameVerif.test(this.firstName)== false || nameVerif.test(this.lastName)== false || this.password.length < 12 || emailVerif.test(this.email)== false || !this.email.includes('@')){
                 return false;
