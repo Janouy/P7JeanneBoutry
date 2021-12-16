@@ -13,7 +13,7 @@ export default new Vuex.Store({
             let url = "http://localhost:3000/api/texts";
             fetch(url,{
                 method: "GET",
-                headers: { "Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
             })
             .then(async res => {
                 const data = await res.json();
@@ -31,15 +31,20 @@ export default new Vuex.Store({
                 }  
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             });
         },
         DISPLAY_COMMENTS: function(state){
             let url = "http://localhost:3000/api/comments";
             fetch(url,{
                 method: "GET",
-                headers: { "Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json", Authorization: "Bearer " + sessionStorage.getItem("token")},
             })
             .then(async res => {
                 const data = await res.json();
@@ -53,8 +58,13 @@ export default new Vuex.Store({
                 } 
             })
             .catch(error => {
-                this.errorMessage = error;
-                console.error("There was an error!", error);
+                if(error == 'Unauthorized'){
+                    alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                }else{
+                    console.error('There was an error!', error);
+                }
             });
             },
     },
