@@ -37,8 +37,8 @@
                             <div class="form-row">
                                 <label for="lastnameInput" class="col-md-4 ml-3 mr-5 mt-3 text-left">Nom:*</label>
                                 <label for="firstnameInputMd" class="d-none d-md-block col-md-4 ml-5 mt-3 text-left">Prénom:*</label>
-                                <input v-model="firstName" type="text" class="form-control d-none d-md-block col-md-5 mx-3" id="firstnameInputMd"  required pattern="[A-Za-z' -]+">
-                                <input v-model="lastName" type="text" class="form-control d-md-block col-md-5 mx-3 " id="lastnameInput"  required pattern="[A-Za-z' -]+">
+                                <input v-model="firstName" type="text" class="form-control d-none d-md-block col-md-5 mx-3" id="firstnameInputMd"  required pattern="^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ*(){}|~<>;:[\]]{2,}$">
+                                <input v-model="lastName" type="text" class="form-control d-md-block col-md-5 mx-3 " id="lastnameInput"  required pattern="^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ*(){}|~<>;:[\]]{2,}$">
                                 <label for="firstnameInput" class="d-sm-block d-md-none col-md-4 ml-3 mt-3 text-left">Prénom:*</label>
                                 <input v-model="firstName" type="text" class="form-control d-block d-md-none col-md-5 mx-3" id="firstnameInput"  required pattern="[A-Za-z' -]+">
                             </div>

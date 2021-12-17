@@ -67,6 +67,7 @@
                                 <input v-model="password" type="password" id="passwordInputModif" class="form-control mb-3 mx-3"/>
                             </div>
                             <button type="submit" @click="modify(), viewProfile()" class="btn btn-success col-6 col-xs-4 col-xl-6 mb-3 ml-2" :disabled ="!validatedFields || checkData" aria-label="send modifications"> Valider les modifications</button>
+                            <button class="btn my-3 ml-2" id='cross_profile' type="reset" aria-label="reset form data"> <font-awesome-icon icon="times-circle" alt='suppression du fichier' aria-hidden="true" title="annuler l'envoi"/></button>
                         </form>
                     </div>
                     </div>
