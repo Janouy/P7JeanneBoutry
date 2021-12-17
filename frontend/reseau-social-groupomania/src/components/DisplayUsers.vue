@@ -88,6 +88,7 @@ li {
 }
 .scroller {
   overflow-y: scroll;
+  overflow-x: hidden;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
     @media screen and (max-width: 768px){
