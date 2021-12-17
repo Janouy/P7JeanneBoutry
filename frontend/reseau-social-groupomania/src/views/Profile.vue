@@ -32,7 +32,7 @@
                     <div class="card-title h3 text-info my-4" > Modification de votre Profil... </div>
                     <div class="card-group">
                     <div class="card card_modify card_modify_inside rounded mx-4 mb-2 mb-xl-0">
-                        <div class="card-img picture" v-if="this.profilePicture =='NULL' || !this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png"/></div>
+                        <div class="card-img picture" v-if="this.profilePicture =='NULL' || !this.profilePicture"><img class="no_picture_profile" src="../assets/logos/user.png" alt="logo user"/></div>
                         <div class="card-img picture" v-else>
                         <div class="picture_profile" :style="{backgroundImage: `url(${profilePicture})`}"  ></div>
                         </div>
@@ -241,7 +241,8 @@ export default {
             });
         }, 
         deletePicture: function(element){
-            if (element == 'null' || !element){
+            console.log(element);
+            if (element == 'NULL' || !element){
                 alert("Vous n'avez aucune photo de profile")
             }else{
             let userId = sessionStorage.getItem('userId');

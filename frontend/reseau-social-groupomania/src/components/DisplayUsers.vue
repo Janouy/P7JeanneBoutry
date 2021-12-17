@@ -2,12 +2,12 @@
     <div class="col rounded bg-secondary shadow">
         <div class="row">
             <form class="col-12 scroller">
-                <label for="searchPeople" class="search_title mx-3 mt-3 h5"> Découvrez vos collaborateurs</label>
+                <label for="searchPeople" class="search_title mx-3 my-3 h5"> Découvrez vos collaborateurs</label>
                 <input id="searchPeople" type="text" v-model="inputFilter" placeholder="Recherche"/>
                 <div v-for="user in filteredUsers" :key="user.id">
                 <div class="mini_pict" v-if="user.userId == userId" v-show="display=false"></div>
-                <div class="mini_pict mt-3 border-success rounded bg-light" v-else v-show="display=true">
-                    <div v-if="user.picture =='NULL' || !user.picture"><img class="pict mt-2" src="../assets/logos/user.png"/></div>
+                <div class="mini_pict mt-3 rounded bg-light" v-else v-show="display=true">
+                    <div v-if="user.picture =='NULL' || !user.picture"><img class="pict" src="../assets/logos/user.png" alt="logo user"/></div>
                     <div class="pict" v-else :style="{backgroundImage: `url(${user.picture})`}"></div>
                     <router-link :to="{name:'userPage', params:{id: user.userId}}" class="user_name ml-2 pb-2">{{user.name}}</router-link>
                 </div>
@@ -92,24 +92,16 @@ li {
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
     @media screen and (max-width: 768px){
-        width: 300px;
         height: 200px;
-        font-size: 16px;
     }
     @media screen and (min-width: 768px) and (max-width: 1023px){
-        width: 300px;
         height: 200px;
-        font-size: 2vmin;
     }
     @media screen and (min-width: 1024px) and (max-width: 1366px){
-        width: 300px;
         height: 500px;
-        font-size: 2vmin;
     }
     @media screen and (min-width: 1367px){
-        width: 300px;
         height: 500px;
-        font-size: 2vmin;
     }
 }
 p{
@@ -141,7 +133,7 @@ p{
         width: 40px;
     }
     @media screen and (min-width: 1367px){
-       margin-top: 1.8%;
+       margin-top: 1.5%;
        margin-left: 2%;
        height: 40px;
        width: 40px;
@@ -149,12 +141,13 @@ p{
     
 }
 .mini_pict{
+    font-size: 2vmin;
     @media screen and (max-width: 768px){
         height: 45px;
         width: 70%;
         margin: auto;
     }
-    @media screen and (min-width: 768px) and (max-width: 1023px){
+    @media screen and (min-width: 769px) and (max-width: 1023px){
         height: 70px;
     }
     @media screen and (min-width: 1024px) and (max-width: 1366px){
