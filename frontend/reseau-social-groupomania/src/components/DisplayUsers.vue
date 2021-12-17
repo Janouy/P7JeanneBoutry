@@ -83,28 +83,31 @@ li {
 .user_name:hover{
     color: #169342;
 }
+#searchPeople{
+    max-width: 80%;
+}
 .scroller {
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
     @media screen and (max-width: 768px){
         width: 300px;
-        height: 300px;
+        height: 200px;
         font-size: 16px;
     }
     @media screen and (min-width: 768px) and (max-width: 1023px){
         width: 300px;
-        height: 300px;
+        height: 200px;
         font-size: 2vmin;
     }
     @media screen and (min-width: 1024px) and (max-width: 1366px){
         width: 300px;
-        height: 300px;
+        height: 500px;
         font-size: 2vmin;
     }
     @media screen and (min-width: 1367px){
         width: 300px;
-        height: 300px;
+        height: 500px;
         font-size: 2vmin;
     }
 }
