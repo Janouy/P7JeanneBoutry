@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid background">
+    <div class="container-fluid">
         <h1 class="col text-center pt-3"> Groupomania People </h1>
             <div class="col pt-3">
                 <nav class='navbar navbar-expand bg-white rounded pt-2 text-left shadow' id="nav"><ConnectedUser/></nav>
@@ -11,10 +11,10 @@
                     </div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-3 col-xl-2 mb-2 mb-md-0 displayusers">
+                <div class="col-12 col-md-4 col-xl-2 mb-2 mb-md-0 displayusers">
                     <DisplayUsers/>
                 </div>
-                <div class="col-12 col-md-9 col-xl-8 ml-xl-5 colonnes">
+                <div class="col-12 col-md-8 col-xl-8 ml-xl-5 colonnes">
                     <div class="row">
                         <form v-on:submit.prevent class="col-12 col-lg text_publi mx-3 mb-2 rounded shadow">
                             <label for="output"> Ecrivez quelque chose...</label>
@@ -189,9 +189,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .background{
-        background-color: #F0F2F5;
-    }
     h1{
         color: #169342;
         font-weight: bold;

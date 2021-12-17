@@ -1,5 +1,5 @@
 <template>
-    <div class="background">
+    <div>
             <header>
                 <h1 class="col-12 pt-4"> Bienvenue sur Groupomania People </h1>
             </header>
@@ -62,7 +62,7 @@
                 </div>
                 </div>
             </div>
-        <div><img class="img-fluid logoFooter" src="../assets/logos/icon-left-font.svg" alt="logo Groupomania"></div>
+        <div><img class="img logoFooter" src="../assets/logos/icon-left-font.svg" alt="logo Groupomania"></div>
     </div>
 </template> 
 
@@ -220,7 +220,6 @@ export default{
 
 <style scoped lang='scss'>
     .logoFooter{
-        background-color: rgb(240, 242, 245);
         margin-top: -3%;
         width: auto;
         height: 200px;
@@ -233,21 +232,6 @@ export default{
         z-index: 3;
         background-position: 50% 50%;
     } 
-    .background{
-        background-color: rgb(240, 242, 245);
-       @media screen and (max-width: 768px){
-            height: 900px;
-        }
-        @media screen and (min-width: 768px) and (max-width: 1023px){
-            min-height: 1100px;
-       }
-        @media screen and (min-width: 1024px) and (max-width: 1366px){
-            min-height:1300px;
-       }
-        @media screen and (min-width: 1367px){
-            min-height:800px;
-       } 
-    }
     .card-login{
         margin: 0 auto; 
         box-shadow: 6px 6px 6px rgb(43, 42, 42);
@@ -255,7 +239,6 @@ export default{
         position: relative;
         z-index: 3;
         margin-top: 6%;
-        height: 400px;
     }
     .card-create{
         margin: 0 auto; 

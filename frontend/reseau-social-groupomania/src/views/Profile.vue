@@ -1,5 +1,5 @@
 <template>
-    <div class="background">
+    <div>
         <div class="container pb-5">
             <navbar/>
             <header>
@@ -278,21 +278,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .background{
-        background-color: #F0F2F5;
-        @media screen and (max-width: 768px){
-            min-height: 900px;
-        }
-        @media screen and (min-width: 768px) and (max-width: 1023px){
-            min-height: 1100px;
-       }
-        @media screen and (min-width: 1024px) and (max-width: 1366px){
-            min-height:1300px;
-       }
-        @media screen and (min-width: 1367px){
-            min-height: 800px;
-       }
-    }
     .icon_home{
         font-size: 3vmin;
     }

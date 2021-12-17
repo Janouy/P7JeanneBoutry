@@ -14,6 +14,8 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: rgb(240, 242, 245);
+  min-height: 1000px;
 }
 </style>
 
