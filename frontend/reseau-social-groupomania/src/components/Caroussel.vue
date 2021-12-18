@@ -91,5 +91,6 @@
 h2{
   font-size: 3vmin;
   color: black;
+  background-color: white;
 }
 </style>
