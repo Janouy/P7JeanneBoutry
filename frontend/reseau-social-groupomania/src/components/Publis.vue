@@ -13,21 +13,21 @@
                         <button :id="'unlike'+postId" type="submit" @click="unliked(userIdDislike), likePost(postId)" class="btn" :disabled ="disabledUnlike(userIdLike)" aria-label="dislike"><font-awesome-icon icon="thumbs-down"/><span>{{dislikes}}</span></button>
                     </div>
                       <button @click="deletePost(postId)" :id="postId" class="card-btn rounded mb-2" v-if="userId == comments[0].thisUserId || admin==1" aria-label="delete picture"> <font-awesome-icon icon="times-circle" alt='suppression de la photo' aria-hidden="true" title="supprimer cette publication"/></button>
-                      <Comments 
-                        v-for= "comment in comms" 
-                        :commentId= "comment.commentId"
-                        :comment= "comment.comment"
-                        :userId= "comment.userId"
-                        :idPost = "comment.idPost"
-                        :name= "comment.name"
-                        :postId = "postId"
-                        @dropComment = "deleteComment"
-                        :key= "comment.id"
-                      /> 
                 <div  class="card-text"> 
                     <label :for="'comment' + postId"> Ajoutez un commentaire</label>
                     <input v-model="comment" :id="'comment' + postId" type="textarea" maxlength="120" class="form-control"> 
                     <button type="submit" @click="addComment(postId, comment)" class="card-btn rounded mx-1 my-1" aria-label="add comment">Commentez</button>
+                    <Comments 
+                    v-for= "comment in comms" 
+                    :commentId= "comment.commentId"
+                    :comment= "comment.comment"
+                    :userId= "comment.userId"
+                    :idPost = "comment.idPost"
+                    :name= "comment.name"
+                    :postId = "postId"
+                    @dropComment = "deleteComment"
+                    :key= "comment.id"
+                    /> 
                 </div>
             </div>
         </div>
@@ -48,18 +48,18 @@
                     <label :for="'comment' + postId"> Ajoutez un commentaire</label>
                     <input v-model="comment" :id="'comment' + postId" type="textarea" maxlength="120" class="form-control" > 
                     <button type="submit" @click="addComment(postId, comment)" class="card-btn rounded mx-1 my-1" aria-label="add comment"> Commentez </button>
+                    <Comments 
+                    v-for="comment in comms" 
+                    :commentId= "comment.commentId"
+                    :comment= "comment.comment"
+                    :userId= "comment.userId"
+                    :idPost= "comment.idPost"
+                    :name= "comment.name"
+                    :postId = "postId"
+                    @dropComment = "deleteComment"
+                    :key= "comment.id"
+                    /> 
                 </div>
-                <Comments 
-                v-for="comment in comms" 
-                :commentId= "comment.commentId"
-                :comment= "comment.comment"
-                :userId= "comment.userId"
-                :idPost= "comment.idPost"
-                :name= "comment.name"
-                :postId = "postId"
-                @dropComment = "deleteComment"
-                :key= "comment.id"
-                /> 
             </div>
         </div>
     </div>

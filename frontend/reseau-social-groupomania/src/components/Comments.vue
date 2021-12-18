@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-2"> 
-        <div :id="'comm'+ commentId" class="comment pt-2 px-2 border bg-dark text-white text-left" v-if="postId == idPost && userId != null"> 
+    <div> 
+        <div :id="'comm'+ commentId" class="comment my-1 py-2 px-2 bg-dark text-white text-left" v-if="postId == idPost && userId != null"> 
             {{name}} {{comment}} 
         </div>
         <button @click="deleteComment(commentId)" :id="commentId" class="btn" v-if="(postId == idPost && userId != null) && (userId == comments[0].thisUserId || admin== 1)" aria-label="delete picture"> <font-awesome-icon icon="times-circle" alt='suppression de la photo' aria-hidden="true" title="supprimer ce commentaire"/></button>

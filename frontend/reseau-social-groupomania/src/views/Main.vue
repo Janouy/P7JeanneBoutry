@@ -6,7 +6,7 @@
             </div>
             <div class="col-1"> <Disconnection/> </div>
             <div class="row">
-                    <div class="col-5 mb-5 caroussel">
+                    <div class="col mb-5 caroussel">
                     <Caroussel/>
                     </div>
             </div>

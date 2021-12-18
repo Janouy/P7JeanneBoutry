@@ -84,10 +84,12 @@
     @media screen and (max-width: 1023px){
             display: none
     }
+    width: 853px;
+    float:none;
+    margin: 0 auto;
 }
 h2{
   font-size: 3vmin;
   color: black;
 }
-
 </style>
