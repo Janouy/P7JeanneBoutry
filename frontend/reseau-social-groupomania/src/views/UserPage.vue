@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="card_title col-12 h2 mt-2">{{this.firstName}} {{this.lastName}}</div>
                 </div>
-                    <div class="card-img" v-if="this.picture == 'NULL' || !this.picture"> <img class="publication_image" src="../assets/logos/user.png" alt="user logo"> </div>
+                    <div class="card-img" v-if="this.picture == 'NULL' || !this.picture"> <img class="picture_profile" src="../assets/logos/user.png" alt="user logo"> </div>
                     <div class="card-img" v-else > <img class="picture_profile" :src=this.picture alt="profile picture"> </div>
                     <div class="card-text my-3 mx-3 border rounded " v-if="this.description"> {{this.description}}</div>
                     <div class="card-text my-3 mx-3 border rounded " v-else> {{this.firstName}} {{this.lastName}} n'a renseigné aucune bio...</div>
