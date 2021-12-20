@@ -54,8 +54,13 @@ export default {
             } 
         })
         .catch(error => {
-            this.errorMessage = error;
-            console.error("There was an error!", error);
+            if(error == 'Unauthorized'){
+                alert('Votre session a expiré vous allez être redirigé vers la page de connexion')
+                sessionStorage.clear();
+                window.location.href = '/';
+            }else{
+                console.error('There was an error!', error);
+            }
         });
     },
         deletePost: function(e){
